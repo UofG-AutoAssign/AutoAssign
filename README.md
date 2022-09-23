@@ -1,3 +1,16 @@
+# Placeholder text
+
+Members  
+Naral Chalermchaikosol - 2783720c@student.gla.ac.uk  
+Max Wang - 2561238w@student.gla.ac.uk  
+Vaughn Muirhead - 2575235m@student.gla.ac.uk  
+Binhao Li - 2534558l@student.gla.ac.uk  
+Prith Manickam - 2518533m@student.gla.ac.uk  
+Hugo Findlay - 2554911f@student.gla.ac.uk  
+
+Team Coach  
+Tim Storer - Timothy.Storer@glasgow.ac.uk
+
 # Main
 
 
