@@ -21,6 +21,12 @@ Tim Storer - Timothy.Storer@glasgow.ac.uk
 
 Automated Allocation for Grad Programme 
 
+
+## Links
+ER Diagram: https://gla-my.sharepoint.com/:u:/g/personal/2575235m_student_gla_ac_uk/EYP84zhmkexCrAAsUlQMdy8BEKsUjhI-rGA96Qrc9Q0Yzg?e=GZfZoZ
+Figma (Wireframes): https://www.figma.com/file/AH6i7Z9b0IayMIizR5B4XR/Final-Frontend-Prototype?node-id=0%3A1
+
+
 ## Description
 
 A set of automated distribution systems for Barclays has been provided to help Barclays distribute employees to suitable jobs.
