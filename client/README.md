@@ -6,6 +6,7 @@
 ### Steps (Work in Progress)
 1. `cd ./client`
 2. `npm install`
+3. `npm run dev`
 
 ## Useful Tutorials/Documentations
 1. React/TypeScript
@@ -45,7 +46,8 @@
 1. `npm install -D tailwindcss postcss autoprefixer`
 2. `npx tailwindcss init -p`
 3. Your `tailwind.config.js` should look like this:
-``` /** @type {import('tailwindcss').Config} */
+``` 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
