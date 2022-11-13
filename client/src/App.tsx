@@ -1,15 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import "./App.css";
+import AccountPage from "./pages/AccountPage";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
 
+  // Implement routing later
   return (
-    <div className='bg-blue-500'>
-      hello world
+    <div className="">
+      <AccountPage />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
