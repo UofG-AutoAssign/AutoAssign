@@ -7,7 +7,7 @@ interface Props {}
 const Navbar: React.FC<Props> = () => {
 
   return (
-    <div className="navbar bg-white text-black px-5 py-3 mb-5">
+    <div className="navbar bg-white text-black px-5 py-3 mb-5 border-b-slate-200 border-2">
       <div className="navbar-start">
         <img className="max-w-lg hover:animate-spin" src={logo}/>
         <div className="btn btn-ghost normal-case text-xl mx-10">
