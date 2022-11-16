@@ -8,8 +8,8 @@ const App: React.FC = () => {
 
   // Implement routing later
   return (
-    <div className="">
-      <LoginPage />
+    <div className="bg-white">
+      <AccountPage />
     </div>
   );
 };
