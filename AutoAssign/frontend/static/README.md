@@ -1,0 +1,1 @@
+Static file hold all of our static files

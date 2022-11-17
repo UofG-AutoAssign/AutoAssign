@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include, re_path,include
-from Assign import views
+
 
 urlpatterns = [
-    path('', include("Assign.urls")),
+    path('', include("frontend.urls")),
 ]
