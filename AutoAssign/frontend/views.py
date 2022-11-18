@@ -1,12 +1,21 @@
-from django.shortcuts import render, HttpResponse
-
+from django.shortcuts import render, HttpResponse,render
+from django.urls import reverse
 # Create your views here.
 
 
 
 #This is for login Page
 def login(request):
-    return HttpResponse("This is login page which is the first page")
+
+    #About distributing different types of users to different pages
+    # logic
+    # EX
+    # Get User type.
+    # if User = HR
+    # url = reverse("home_hr")
+    # return redirect(url)
+
+    return render(request,'login.html')
 
 def forget(request):
     return HttpResponse("This is forget password page")
@@ -17,7 +26,7 @@ def create(request):
 
 #  This is for Home Page
 def home(request):
-    return HttpResponse("This is home pages")
+    return render(request, 'home.html')
 
 def home_hr(request):
     return HttpResponse("This is home_hr pages")
