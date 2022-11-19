@@ -1,1 +1,0 @@
-Put all templates into this file

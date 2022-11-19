@@ -1,1 +1,0 @@
-Static file hold all of our components
