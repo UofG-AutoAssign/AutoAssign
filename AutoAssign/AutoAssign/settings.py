@@ -38,9 +38,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    #Backend api
     "Assign.apps.AssignConfig",
-    "frontend",
-    'rest_framework',
+
+
+    # third_party
+    "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +56,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5173',
 ]
 
 ROOT_URLCONF = "AutoAssign.urls"
@@ -80,7 +91,7 @@ WSGI_APPLICATION = "AutoAssign.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "newdatabase",
     }
 }
 

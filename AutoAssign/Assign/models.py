@@ -37,6 +37,8 @@ class Graduate(models.Model):
     # password
     password = models.CharField(verbose_name="Password", max_length=64, )
 
+    def __str__(self):
+        return self.name
 
 class Manager(models.Model):
     # man_id = models.BigAutoField(verbose_name="man_id ",

@@ -18,5 +18,5 @@ from django.urls import path,include, re_path,include
 
 
 urlpatterns = [
-    path('', include("frontend.urls",namespace='front')),
+    path('', include("Assign.urls",namespace='back')),
 ]
