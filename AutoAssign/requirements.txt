@@ -6,6 +6,7 @@ Django              4.1
 django-cors-headers 3.13.0
 djangorestframework 3.14.0
 pip                 22.2.2
+PyMySQL             1.0.2
 pytz                2022.6
 setuptools          65.5.0
 sqlparse            0.4.1

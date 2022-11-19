@@ -1,13 +1,8 @@
 from django.db import models
-import string
-import random
-
-
 # Create your models here.
 
 # unique = True ,Give a unique index to email, greatly improve the efficiency of mysql query
 # db_index=True Give an index to name, greatly improve the efficiency of mysql query
-
 
 class Graduate(models.Model):
     # grad_id = models.BigAutoField(verbose_name="grad_id ",

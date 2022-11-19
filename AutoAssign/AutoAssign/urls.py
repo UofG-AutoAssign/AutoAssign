@@ -18,5 +18,5 @@ from django.urls import path,include, re_path,include
 
 
 urlpatterns = [
-    path('', include("Assign.urls",namespace='back')),
+    path('', include("Assign.urls",namespace='Assign')),
 ]
