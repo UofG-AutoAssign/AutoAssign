@@ -8,6 +8,7 @@ from Assign import models
 # Create your views here.
 
 class LoginView(APIView):
+    authentication_classes = []
 
     def post(self, request):
         # 1.Receive username and password submitted by user POST
@@ -49,10 +50,18 @@ class LoginView(APIView):
 
 
 class HrView(APIView):
+
     def get(self, request):
         print(request.user, request.auth)
-        return Response("HrView")
+        first_name = request.user.first_name
+        second_name = request.user.second_name
+        hr_email = request.user.hr_email
+
+        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})
 
     def post(self, request):
-        print(request.user, request.auth)
-        return Response("HrView")
+        first_name = request.user.first_name
+        second_name = request.user.second_name
+        hr_email = request.user.hr_email
+
+        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})

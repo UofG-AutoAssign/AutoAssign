@@ -132,6 +132,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "ext.auth.HrAuthentication",
+        "ext.auth.QueryParamsAuthentication",
+        "ext.auth.HeaderAuthentication",
+        "ext.auth.NoAuthentication",
     ]
 }
