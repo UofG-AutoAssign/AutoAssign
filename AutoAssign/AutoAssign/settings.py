@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -30,23 +29,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
+    # "django.contrib.admin",
+    # "django.contrib.auth",
+    # "django.contrib.contenttypes",
+    # "django.contrib.sessions",
+    # "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Backend app
     "Assign.apps.AssignConfig",
+    # Third_party
     'rest_framework',
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
+    # "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
+    # "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -65,8 +66,8 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+                # "django.contrib.auth.context_processors.auth",
+                # "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -82,9 +83,9 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "rango",
         'USER': 'root',
-        'PASSWORD': 'Abc123456',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306'
+        'PASSWORD': 'Wwwd2001.',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
     }
 }
 
@@ -126,3 +127,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ############## drf ###############
+REST_FRAMEWORK = {
+    "UNAUTHENTICATED_USER": None,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "ext.auth.HrAuthentication",
+    ]
+}
