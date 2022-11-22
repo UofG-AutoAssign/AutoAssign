@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from Assign import models
 
+from ext.per import HrPermission,ManagerPermission,GradPermission
+
 
 # Create your views here.
 
@@ -32,27 +34,27 @@ class LoginView(APIView):
             manger_object.token = token
             manger_object.save()
 
-            return Response({"status": True, 'User Type': 'Manger', 'data': token})
+            return Response({"status": True, 'User Type': 'Manger', 'token': token})
 
         if hr_object:
             hr_object.token = token
             hr_object.save()
 
-            return Response({"status": True, "UserType": "HR", 'data': token})
+            return Response({"status": True, "UserType": "HR", 'token': token})
 
         if grad_object:
             grad_object.token = token
             grad_object.save()
 
-            return Response({"status": True, 'User Type': 'Graduate', 'data': token})
+            return Response({"status": True, 'User Type': 'Graduate', 'token': token})
 
         return Response({"status": False, 'msg': "username or password is incorrect"})
 
 
 class HrView(APIView):
-
+    permission_classes = [HrPermission,]
     def get(self, request):
-        print(request.user, request.auth)
+        # print(request.user, request.auth)
         first_name = request.user.first_name
         second_name = request.user.second_name
         hr_email = request.user.hr_email

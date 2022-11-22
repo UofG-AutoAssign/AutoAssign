@@ -7,7 +7,7 @@ from Assign import models
 class QueryParamsAuthentication(BaseAuthentication):
     def authenticate(self, request):
         token = request.query_params.get("token")
-        print(token)
+        # print(token)
         if not token:
             return
 
@@ -19,7 +19,6 @@ class QueryParamsAuthentication(BaseAuthentication):
             return manger_object, token  # request.user = user object; request.auth = token
 
         if hr_object:
-            print("hr")
             return hr_object, token
 
         if grad_object:
@@ -33,7 +32,7 @@ class QueryParamsAuthentication(BaseAuthentication):
 class HeaderAuthentication(BaseAuthentication):
     def authenticate(self, request):
         token = request.META.get("HTTP_AUTHORIZATION")
-        print(token)
+        # print(token)
         if not token:
             return
 

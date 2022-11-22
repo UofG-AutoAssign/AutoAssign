@@ -38,7 +38,7 @@ class Graduate(models.Model):
     # When the user logs in, a token information needs to be stored
 
     token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
-
+    role = models.IntegerField(verbose_name="Roles", default=1)
 
 class Manager(models.Model):
     # man_id = models.BigAutoField(verbose_name="man_id ",
@@ -56,7 +56,7 @@ class Manager(models.Model):
     password = models.CharField(verbose_name="Password", max_length=64, null=True)
 
     token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
-
+    role = models.IntegerField(verbose_name="Roles", default=2)
 
 class Department(models.Model):
     # depart_id = models.BigAutoField(verbose_name="department's id ",
@@ -81,6 +81,8 @@ class HR(models.Model):
     password = models.CharField(verbose_name="Password", max_length=64, null=True)
 
     token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
+    role = models.IntegerField(verbose_name="Roles", default=3)
+
 
 class Form(models.Model):
     # form_id = models.BigAutoField(verbose_name="department's id ",

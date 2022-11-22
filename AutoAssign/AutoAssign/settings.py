@@ -136,4 +136,5 @@ REST_FRAMEWORK = {
         "ext.auth.HeaderAuthentication",
         "ext.auth.NoAuthentication",
     ]
+
 }
