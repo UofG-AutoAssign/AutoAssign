@@ -1,57 +1,64 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import exceptions
 
 from Assign import models
 
+from ext.jwt_auth import parse_payload
 
-class QueryParamsAuthentication(BaseAuthentication):
+
+def locateUser(payload):
+
+    print(payload)
+    data = payload['data']
+    user = data['email']
+
+    manger_object = models.Manager.objects.filter(email=user).first()
+    hr_object = models.HR.objects.filter(email=user).first()
+    grad_object = models.Graduate.objects.filter(email=user).first()
+
+    if manger_object:
+        return manger_object
+    elif hr_object:
+        return hr_object
+    elif grad_object:
+        return grad_object
+
+
+
+class JwtQueryParamAuthentication(BaseAuthentication):
+
+    """
+   The user needs to transfer the parameters in the url to transfer tokens, for example:
+    http://www.abc.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
+    """
+
     def authenticate(self, request):
-        token = request.query_params.get("token")
-        # print(token)
-        if not token:
+        token = request.query_params.get('token')
+        payload = parse_payload(token)
+        if not payload['status']:
             return
 
-        manger_object = models.Manager.objects.filter(token=token).first()
-        hr_object = models.HR.objects.filter(token=token).first()
-        grad_object = models.Graduate.objects.filter(token=token).first()
-
-        if manger_object:
-            return manger_object, token  # request.user = user object; request.auth = token
-
-        if hr_object:
-            return hr_object, token
-
-        if grad_object:
-            return grad_object, token
-
-    def authenticate_header(self, request):
-        # return 'Basic realm="API"'
-        return "Assign"
+        user_object = locateUser(payload)
+        return user_object, token
 
 
-class HeaderAuthentication(BaseAuthentication):
+class JwtAuthorizationAuthentication(BaseAuthentication):
+    """
+       Users need to transfer tokens in the form of request headers, for example:
+       Authorization:jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
+       """
+
     def authenticate(self, request):
+
+        # Verification token is required for non-login pages
         token = request.META.get("HTTP_AUTHORIZATION")
-        # print(token)
-        if not token:
-            return
+        payload = parse_payload(token)
+        if not payload['status']:
+            raise exceptions.AuthenticationFailed(payload)
 
-        manger_object = models.Manager.objects.filter(token=token).first()
-        hr_object = models.HR.objects.filter(token=token).first()
-        grad_object = models.Graduate.objects.filter(token=token).first()
-
-        if manger_object:
-            return manger_object, token  # request.user = user object; request.auth = token
-
-        if hr_object:
-            return hr_object, token
-
-        if grad_object:
-            return grad_object, token
-
-    def authenticate_header(self, request):
-        # return 'Basic realm="API"'
-        return "Assign"
+        user_object = locateUser(payload)
+        return user_object, token
 
 
 class NoAuthentication(BaseAuthentication):
