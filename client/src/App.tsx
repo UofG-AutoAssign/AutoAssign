@@ -7,6 +7,7 @@ import GraduatePage from "./pages/GraduatePage";
 import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
+import HRhomePage from "./pages/HRhomePage";
 
 const App: React.FC = () => {
   // Implement routing later
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/graduate" element={<GraduatePage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/HRhomePage" element={<HRhomePage/>} />
         <Route path="/*" element={<NotFoundPage />} />
         <Route path="/forgot_password" element={<ForgotPassPage />} />
       </Routes>
