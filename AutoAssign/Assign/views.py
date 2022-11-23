@@ -61,3 +61,32 @@ class HrView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+
+class HrViewCreat(APIView):
+    permission_classes = [HrPermission, ]
+
+    # 1.Get initial data
+    def post(self, request):
+        # 2 Check data format
+
+        ser_role = serializers.RoleSerializer(data=request.data)
+
+        if ser_role.is_valid():
+            role = ser_role.validated_data["role"]
+
+        if role == 1:
+            ser = serializers.CreatGraduateSerializer(data=request.data)
+            context = {"status": True, "Create": "Graduate", "Status": "success"}
+        elif role == 2:
+            ser = serializers.CreatMangerSerializer(data=request.data)
+            context = {"status": True, "Create": "Manager", "Status": "success"}
+        elif role == 3:
+            ser = serializers.CreatHrSerializer(data=request.data)
+            context = {"status": True, "Create": "Hr", "Status": "success"}
+
+        if ser.is_valid():
+            ser.save()
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})
