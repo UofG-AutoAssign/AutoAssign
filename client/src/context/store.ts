@@ -1,3 +1,5 @@
+// Integrate MobX into our state management later
+
 import { makeAutoObservable } from "mobx"; // Add this to where we centralize our data
 
 class Store {

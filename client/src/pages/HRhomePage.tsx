@@ -25,7 +25,7 @@ const HRhomePage: React.FC = () => {
             <div>
                 <div className="text-5xl text-center text-blue-900 m-5" >Hi! Naral</div>
             </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 m-5">
                     {data.map((e) => {return <LandingButton title={e.title} desc={e.desc} btn_color={e.btn_color} />})}
                 </div>
 

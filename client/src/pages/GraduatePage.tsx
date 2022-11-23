@@ -3,10 +3,14 @@ import AvatarBar from "../components/AvatarBar";
 import LandingButton, { LandingButtonProps } from "../components/LandingButton";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import { useContext } from "react";
+import AuthContext, { IAuthContext } from "../context/AuthContext";
 
 interface Props { }
 
 const GraduatePage: React.FC = () => {
+    const authContext = useContext(AuthContext)
+
     const data: LandingButtonProps[] = [{ title: "Form", desc: "Submit this form to learn more about team preferences.", btn_color: "bg-btnColor1"},
     { title: "Your Team", desc: "View Team.", btn_color: "bg-btnColor2" },
     { title: "Roles", desc: "Learn more about the roles in general.", btn_color: "bg-btnColor3" }];
@@ -17,7 +21,7 @@ const GraduatePage: React.FC = () => {
                 <Navbar />
             </nav>
             <div>
-                <div className="text-5xl text-center text-blue-900">Hi! Martin</div>
+                <div className="text-5xl text-center text-blue-900">Hi! {authContext?.username}</div>
             </div>
             <div className="p-16 flex flex-col gap-5">
                 <div className="grid grid-cols-2 gap-5">

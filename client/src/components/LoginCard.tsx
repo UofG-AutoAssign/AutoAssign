@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { default as logo } from "../assets/react.svg";
 import { FcSettings, FcPicture } from "react-icons/all";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 interface Props {}
 
 const Navbar: React.FC<Props> = () => {
+  const authContext = useContext(AuthContext);
+
   return (
     <div>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -77,6 +80,7 @@ const Navbar: React.FC<Props> = () => {
             </div>
             <Link to="/graduate">
               <button
+              onClick={authContext?.ARBITARY_FUNCTION}
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
