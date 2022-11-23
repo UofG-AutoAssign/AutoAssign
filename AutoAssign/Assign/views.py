@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from Assign import models
 
-from ext.per import HrPermission,ManagerPermission,GradPermission
+from ext.per import HrPermission, ManagerPermission, GradPermission
+from Assign import serializers
 
 
 # Create your views here.
@@ -52,18 +53,40 @@ class LoginView(APIView):
 
 
 class HrView(APIView):
-    permission_classes = [HrPermission,]
+    permission_classes = [HrPermission, ]
+
     def get(self, request):
-        # print(request.user, request.auth)
-        first_name = request.user.first_name
-        second_name = request.user.second_name
-        hr_email = request.user.hr_email
+        ser = serializers.HrSerializer(instance=request.user)
 
-        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})
+        context = {"status": True, "data": ser.data}
 
+        return Response(context)
+
+
+class HrViewCreat(APIView):
+    permission_classes = [HrPermission, ]
+
+    # 1.Get initial data
     def post(self, request):
-        first_name = request.user.first_name
-        second_name = request.user.second_name
-        hr_email = request.user.hr_email
+        # 2 Check data format
 
-        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})
+        ser_role = serializers.RoleSerializer(data=request.data)
+
+        if ser_role.is_valid():
+            role = ser_role.validated_data["role"]
+
+        if role == 1:
+            ser = serializers.CreatGraduateSerializer(data=request.data)
+            context = {"status": True, "Create": "Graduate", "Status": "success"}
+        elif role == 2:
+            ser = serializers.CreatMangerSerializer(data=request.data)
+            context = {"status": True, "Create": "Manager", "Status": "success"}
+        elif role == 3:
+            ser = serializers.CreatHrSerializer(data=request.data)
+            context = {"status": True, "Create": "Hr", "Status": "success"}
+
+        if ser.is_valid():
+            ser.save()
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})

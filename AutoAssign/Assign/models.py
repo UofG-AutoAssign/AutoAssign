@@ -10,23 +10,23 @@ class Graduate(models.Model):
     # grad_id = models.BigAutoField(verbose_name="grad_id ",
     #                               primary_key=True)
 
-    grad_email = models.CharField(verbose_name="Graduate's email", max_length=100,
-                                  null=True,
-                                  unique=True,
-                                  )
+    email = models.CharField(verbose_name="Graduate's email", max_length=100,
+                             null=True,
+                             unique=True,
+                             )
 
     # One to Many Link to Manger
 
-    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE)
+    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE, default=1)
 
     # One to Many Link to team
 
-    team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE)
+    team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE, default=1)
 
     # One to Many Link to Departments
     # If we delete a department ,The department id for Graduate will be set to NULL
 
-    depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE)
+    depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, default=1)
 
     first_name = models.CharField(verbose_name="first name", max_length=30, null=True)
     second_name = models.CharField(verbose_name="second name", max_length=30, null=True)
@@ -40,14 +40,15 @@ class Graduate(models.Model):
     token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
     role = models.IntegerField(verbose_name="Roles", default=1)
 
+
 class Manager(models.Model):
     # man_id = models.BigAutoField(verbose_name="man_id ",
     #                              primary_key=True)
 
-    man_email = models.CharField(verbose_name="manger's email", max_length=100,
-                                 null=True,
-                                 unique=True,
-                                 )
+    email = models.CharField(verbose_name="manger's email", max_length=100,
+                             null=True,
+                             unique=True,
+                             )
 
     first_name = models.CharField(verbose_name="first name", max_length=30, null=True)
     second_name = models.CharField(verbose_name="second name", max_length=30, null=True)
@@ -57,6 +58,7 @@ class Manager(models.Model):
 
     token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
     role = models.IntegerField(verbose_name="Roles", default=2)
+
 
 class Department(models.Model):
     # depart_id = models.BigAutoField(verbose_name="department's id ",
@@ -69,10 +71,10 @@ class Department(models.Model):
 class HR(models.Model):
     # hr_id = models.BigAutoField(primary_key=True)
 
-    hr_email = models.CharField(verbose_name="Hr's email", max_length=100,
-                                null=True,
-                                unique=True,
-                                )
+    email = models.CharField(verbose_name="Hr's email", max_length=100,
+                             null=True,
+                             unique=True,
+                             )
 
     first_name = models.CharField(verbose_name="first_name", max_length=30, null=True)
     second_name = models.CharField(verbose_name="second_name", max_length=30, null=True)
@@ -104,9 +106,9 @@ class Team(models.Model):
     #                               primary_key=True)
 
     team_name = models.CharField(verbose_name="Team's name", max_length=100,
-                                null=True,
-                                unique=True,
-                                )
+                                 null=True,
+                                 unique=True,
+                                 )
 
     team_profile = models.CharField(verbose_name="team's profile ",
                                     max_length=100,
