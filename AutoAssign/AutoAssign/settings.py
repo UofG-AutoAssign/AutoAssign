@@ -80,12 +80,8 @@ WSGI_APPLICATION = "AutoAssign.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "rango",
-        'USER': 'root',
-        'PASSWORD': 'Wwwd2001.',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "newdatabase",
     }
 }
 
