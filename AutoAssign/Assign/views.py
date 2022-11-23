@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from Assign import models
 
-from ext.per import HrPermission,ManagerPermission,GradPermission
+from ext.per import HrPermission, ManagerPermission, GradPermission
+from Assign import serializers
 
 
 # Create your views here.
@@ -52,18 +53,11 @@ class LoginView(APIView):
 
 
 class HrView(APIView):
-    permission_classes = [HrPermission,]
+    permission_classes = [HrPermission, ]
+
     def get(self, request):
-        # print(request.user, request.auth)
-        first_name = request.user.first_name
-        second_name = request.user.second_name
-        hr_email = request.user.hr_email
+        ser = serializers.HrSerializer(instance=request.user)
 
-        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})
+        context = {"status": True, "data": ser.data}
 
-    def post(self, request):
-        first_name = request.user.first_name
-        second_name = request.user.second_name
-        hr_email = request.user.hr_email
-
-        return Response({"hr_email": hr_email, 'name': first_name + " " + second_name})
+        return Response(context)
