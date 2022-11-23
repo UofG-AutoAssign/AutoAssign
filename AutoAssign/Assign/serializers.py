@@ -9,7 +9,7 @@ from rest_framework import exceptions
 class HrSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.HR
-        fields = ["first_name", "second_name", "hr_email"]
+        fields = ["first_name", "second_name", "email"]
         list_serializer_class = serializers.ListSerializer
 
 

@@ -34,10 +34,6 @@ class Graduate(models.Model):
     # password
     password = models.CharField(verbose_name="Password", max_length=64, )
 
-    # This is a temporary method ,will use JWT in the future
-    # When the user logs in, a token information needs to be stored
-
-    token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
     role = models.IntegerField(verbose_name="Roles", default=1)
 
 
@@ -56,7 +52,6 @@ class Manager(models.Model):
     # password
     password = models.CharField(verbose_name="Password", max_length=64, null=True)
 
-    token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
     role = models.IntegerField(verbose_name="Roles", default=2)
 
 
@@ -82,7 +77,6 @@ class HR(models.Model):
     # password
     password = models.CharField(verbose_name="Password", max_length=64, null=True)
 
-    token = models.CharField(verbose_name="TOKEN", max_length=64, null=True, blank=True)
     role = models.IntegerField(verbose_name="Roles", default=3)
 
 

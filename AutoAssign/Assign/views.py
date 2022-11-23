@@ -6,6 +6,7 @@ from Assign import models
 
 from ext.per import HrPermission, ManagerPermission, GradPermission
 from Assign import serializers
+from ext.jwt_auth import create_token
 
 
 # Create your views here.
@@ -23,33 +24,30 @@ class LoginView(APIView):
         # print(request.data)
 
         # 2.database validation
-        manger_object = models.Manager.objects.filter(man_email=user, password=pwd).first()
-        hr_object = models.HR.objects.filter(hr_email=user, password=pwd).first()
-        grad_object = models.Graduate.objects.filter(grad_email=user, password=pwd).first()
+        manger_object = models.Manager.objects.filter(email=user, password=pwd).first()
+        hr_object = models.HR.objects.filter(email=user, password=pwd).first()
+        grad_object = models.Graduate.objects.filter(email=user, password=pwd).first()
 
-        token = str(uuid.uuid4())
-
+        user_object = False
         if manger_object:
-            # check the token
-
-            manger_object.token = token
-            manger_object.save()
-
-            return Response({"status": True, 'User Type': 'Manger', 'token': token})
+            user_object = manger_object
+            token = create_token({'email': manger_object.email})
+            user_type = 'Manger'
 
         if hr_object:
-            hr_object.token = token
-            hr_object.save()
-
-            return Response({"status": True, "UserType": "HR", 'token': token})
+            user_object = hr_object
+            token = create_token({'email': hr_object.email})
+            user_type = 'Hr'
 
         if grad_object:
-            grad_object.token = token
-            grad_object.save()
+            user_object = grad_object
+            token = create_token({'email': grad_object.email})
+            user_type = 'Graduate'
 
-            return Response({"status": True, 'User Type': 'Graduate', 'token': token})
+        if user_object:
+            return Response({'status': True, 'User Type': user_type, 'token': token})
 
-        return Response({"status": False, 'msg': "username or password is incorrect"})
+        return Response({'status': False, 'error': 'User name or password error'})
 
 
 class HrView(APIView):
