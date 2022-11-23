@@ -43,9 +43,18 @@ Depending on what you are making, it can be a good idea to include screenshots o
 
 ## Installation
 
-Python-3.9 
-Django-4.1.3
+See [requirements.txt](requirements.txt)
 
+## Setup
+First install all dependancies using:  
+- ``` pip install -r requirements.txt ```
+
+Second, create the database by running the following commands inside /AutoAssign:  
+- ``` python manage.py makemigrations ```  
+- ``` python manage.py migrate ```
+
+Third, run the backend server with:  
+- ``` python manage.py runserver ```
 
 ## Usage
 

@@ -1,15 +1,15 @@
-Package             Version
-------------------- ---------
-asgiref             3.5.2
-certifi             2022.9.24
-Django              4.1
-django-cors-headers 3.13.0
-djangorestframework 3.14.0
-pip                 22.2.2
-PyMySQL             1.0.2
-pytz                2022.6
-setuptools          65.5.0
-sqlparse            0.4.1
-tzdata              2021.1
-wheel               0.37.1
-wincertstore        0.2
+# Package             Version
+# ------------------- ---------
+asgiref             == 3.5.2
+certifi             == 2022.9.24
+Django              == 4.1
+django-cors-headers == 3.13.0
+djangorestframework == 3.14.0
+pip                 == 22.2.2
+PyMySQL             == 1.0.2
+pytz                == 2022.6
+setuptools          == 65.5.0
+sqlparse            == 0.4.1
+tzdata              == 2021.1
+wheel               == 0.37.1
+wincertstore        == 0.2
