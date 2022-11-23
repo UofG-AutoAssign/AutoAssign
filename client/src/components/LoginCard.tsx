@@ -66,12 +66,14 @@ const Navbar: React.FC<Props> = () => {
                   </label>
                 </div>
               </div>
+              <Link to="/forgot_password">
               <a
-                href="#"
+                href="/forgot_password"
                 className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 Forgot password?
               </a>
+              </Link>
             </div>
             <Link to="/graduate">
               <button
