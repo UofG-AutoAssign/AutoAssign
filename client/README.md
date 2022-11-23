@@ -10,6 +10,7 @@
 
 ## Useful Tutorials/Documentations
 1. React/TypeScript
+    > https://youtube.com/playlist?list=PLNqp92_EXZBJ4CBroxVBJEpAXoz1g-naZ
     > https://youtu.be/z8lDwLKthr8  
     > https://youtu.be/Z5iWr6Srsj8  
 2. MobX
