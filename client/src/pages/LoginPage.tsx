@@ -12,7 +12,7 @@ const AccountPage: React.FC = () => {
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
-      <div className="flex flex-row justify-between bg-white min-h-screen py-12">
+      <div className="flex flex-col md:flex-row justify-between bg-white min-h-screen py-12 transition-all delay-100">
         <div className="w-full bg-loginBlue basis-1/2 rounded-r-3xl flex flex-col justify-center">
           <div className="bg-loginTeal w-3/4 h-3/4 rounded-3xl mx-auto p-5 gap-5 flex flex-col">
             <p className="text-blue-800 text-5xl font-semibold">Login</p>
@@ -20,7 +20,7 @@ const AccountPage: React.FC = () => {
           </div>
         </div>
         <div className="w-full h-screen bg-white basis-1/2 min-h-screen">
-          <div className="bg-gray-200 basis-1/2 rounded-3xl w-3/4 mx-auto p-5">
+          <div className="bg-gray-200 basis-1/2 rounded-3xl w-3/4 mx-auto p-5 transition-all delay-150">
             <LoginCard />
           </div>
         </div>

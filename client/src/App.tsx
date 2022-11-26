@@ -28,7 +28,7 @@ const App: React.FC = () => {
           }
         /> */}
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/HRhomePage" element={<HRhomePage/>} />
+        <Route path="/hr" element={<HRhomePage/>} />
         <Route path="/*" element={<NotFoundPage />} />
         <Route path="/forgot_password" element={<ForgotPassPage />} />
       </Routes>

@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { default as logo } from "../assets/react.svg";
 import { FcSettings, FcPicture } from "react-icons/all";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import { DiReact } from "react-icons/all";
 
 interface Props {}
 
 const Navbar: React.FC<Props> = () => {
+  const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    authContext?.getUserInfo();
+  }, [])
+  
+
   return (
     <div className="navbar bg-white text-black px-5 py-3 mb-5 border-b-slate-200 border-2 flex flex-col justify-between sm:flex-row">
       <div className="">
+        {/* <DiReact className="text-teal-400 text-5xl hover:animate-spin"/> */}
         <img className="max-w-lg hover:animate-spin" src={logo} />
         <div className="btn btn-ghost normal-case text-xl mx-10">
           AutoAssign
         </div>
-        <div>Graduate</div>
+        <div className="text-xl">{authContext?.userType}</div>
       </div>
       <div className="gap-10 text-3xl">
         <Link to="/account">
