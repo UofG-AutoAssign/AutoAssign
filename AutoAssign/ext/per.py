@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 
 # Permissions
 class GradPermission(BasePermission):
-    message = {"status": False, 'msg': "no access 1"}
+    message = {"status": False, 'msg': "Require Graduate's Permission"}
 
     def has_permission(self, request, view):
         if request.user.role == 1:
@@ -11,7 +11,7 @@ class GradPermission(BasePermission):
 
 
 class ManagerPermission(BasePermission):
-    message = {"status": False, 'msg': "no access 2"}
+    message = {"status": False, 'msg': "Require Manager's Permission"}
 
     def has_permission(self, request, view):
         if request.user.role == 2:
@@ -20,7 +20,7 @@ class ManagerPermission(BasePermission):
 
 
 class HrPermission(BasePermission):
-    message = {"status": False, 'msg': "no access 3"}
+    message = {"status": False, 'msg': "Require Hr's Permission"}
 
     def has_permission(self, request, view):
         if request.user.role == 3:
