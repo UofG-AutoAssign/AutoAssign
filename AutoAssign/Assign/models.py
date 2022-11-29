@@ -18,18 +18,21 @@ class Graduate(models.Model):
     # One to Many Link to Manger
 
     man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,
-                               null=False)
+                               null=False,
+                               default=1)
 
     # One to Many Link to team
 
     team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE,
-                                null=False)
+                                null=False,
+                                default=1)
 
     # One to Many Link to Departments
     # If we delete a department ,The department id for Graduate will be set to NULL
 
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE,
-                                  null=False)
+                                  null=False,
+                                  default=1)
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)

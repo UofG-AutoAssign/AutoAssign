@@ -36,7 +36,7 @@ class RoleSerializer(serializers.Serializer):
         return value
 
 
-class CreatGraduateSerializer(serializers.ModelSerializer):
+class CreateGraduateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
         fields = ["role", "email", "password", "first_name", "second_name"]
@@ -48,7 +48,7 @@ class CreatGraduateSerializer(serializers.ModelSerializer):
         }
 
 
-class CreatMangerSerializer(serializers.ModelSerializer):
+class CreateMangerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Manager
         fields = ["role", "email", "password", "first_name", "second_name"]
@@ -60,7 +60,7 @@ class CreatMangerSerializer(serializers.ModelSerializer):
         }
 
 
-class CreatHrSerializer(serializers.ModelSerializer):
+class CreateHrSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.HR
         fields = ["role", "email", "password", "first_name", "second_name"]
