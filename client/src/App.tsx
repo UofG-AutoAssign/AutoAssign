@@ -8,11 +8,12 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
 import HRhomePage from "./pages/HRhomePage";
+import PreferencePage from "./pages/PreferencePage";
 
 const App: React.FC = () => {
   // Implement routing later
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-screen">
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/graduate" element={<GraduatePage />} />
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path="/HRhomePage" element={<HRhomePage/>} />
         <Route path="/*" element={<NotFoundPage />} />
         <Route path="/forgot_password" element={<ForgotPassPage />} />
+        <Route path="/preference_page" element={<PreferencePage />} />
       </Routes>
     </div>
   );

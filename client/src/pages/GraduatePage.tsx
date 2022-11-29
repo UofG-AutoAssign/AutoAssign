@@ -7,9 +7,9 @@ import Table from "../components/Table";
 interface Props { }
 
 const GraduatePage: React.FC = () => {
-    const data: LandingButtonProps[] = [{ title: "Form", desc: "Submit this form to learn more about team preferences.", btn_color: "bg-btnColor1"},
-    { title: "Your Team", desc: "View Team.", btn_color: "bg-btnColor2" },
-    { title: "Roles", desc: "Learn more about the roles in general.", btn_color: "bg-btnColor3" }];
+    const data: LandingButtonProps[] = [{ title: "Form", desc: "Submit this form to learn more about team preferences.", btn_color: "bg-btnColor1", link:"preference_page"},
+    { title: "Your Team", desc: "View Team.", btn_color: "bg-btnColor2", link:"graduate"},
+    { title: "Roles", desc: "Learn more about the roles in general.", btn_color: "bg-btnColor3", link:"graduate"}];
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -21,7 +21,7 @@ const GraduatePage: React.FC = () => {
             </div>
             <div className="p-16 flex flex-col gap-5">
                 <div className="grid grid-cols-2 gap-5">
-                    {data.map((e) => {return <LandingButton title={e.title} desc={e.desc} btn_color={e.btn_color} />})}
+                    {data.map((e) => {return <LandingButton title={e.title} desc={e.desc} btn_color={e.btn_color} link={e.link}/>})}
                 </div>
             </div>
 

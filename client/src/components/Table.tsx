@@ -4,7 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 interface Props {}
 
 const Table: React.FC<Props> = () => {
-  const data = ["First Name", "Last Name", "Number", "Mail"];
+  const data = ["First Name", "Last Name", "Mail"];
 
   return (
     <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
