@@ -60,7 +60,7 @@ const HRhomePage: React.FC = () => {
       <div>
         <div className="text-5xl text-center text-blue-900 m-5">Hi! Naral</div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 m-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 m-5">
         {data.map((e) => {
           return (
             <LandingButton
