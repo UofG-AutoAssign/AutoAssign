@@ -60,6 +60,28 @@ class HrView(APIView):
 
         return Response(context)
 
+
+class GradView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        ser = serializers.GradSerializer(instance=request.user)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+class ManView(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def get(self, request):
+        ser = serializers.ManSerializer(instance=request.user)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
 class HrViewCreat(APIView):
     permission_classes = [HrPermission, ]
 

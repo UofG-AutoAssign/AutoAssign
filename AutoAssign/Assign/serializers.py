@@ -13,6 +13,20 @@ class HrSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+class GradSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["first_name", "second_name", "email"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class ManSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Manager
+        fields = ["first_name", "second_name", "email"]
+        list_serializer_class = serializers.ListSerializer
+
+
 class RoleSerializer(serializers.Serializer):
     role = serializers.IntegerField(required=True)
 
@@ -23,7 +37,6 @@ class RoleSerializer(serializers.Serializer):
 
 
 class CreatGraduateSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.Graduate
         fields = ["role", "email", "password", "first_name", "second_name"]

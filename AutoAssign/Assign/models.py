@@ -138,3 +138,4 @@ class skill(models.Model):
                                   null=False,
                                   unique=True,
                                   )
+
