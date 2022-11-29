@@ -128,5 +128,5 @@ class Team(models.Model):
     # One to Many Link to Departments
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE)
 
-    ratio = models.FloatField(verbose_name="Ratio" ,
+    ratio = models.FloatField(verbose_name="Ratio",
                               null=False)
