@@ -130,3 +130,11 @@ class Team(models.Model):
 
     ratio = models.FloatField(verbose_name="Ratio",
                               null=False)
+
+
+class skill(models.Model):
+
+    skill_name = models.CharField(verbose_name="skills_name", max_length=100,
+                                  null=False,
+                                  unique=True,
+                                  )

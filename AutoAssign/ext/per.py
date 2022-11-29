@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 
+
 # Permissions
 class GradPermission(BasePermission):
     message = {"status": False, 'msg': "Require Graduate's Permission"}

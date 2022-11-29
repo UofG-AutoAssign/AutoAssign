@@ -60,7 +60,6 @@ class HrView(APIView):
 
         return Response(context)
 
-
 class HrViewCreat(APIView):
     permission_classes = [HrPermission, ]
 
