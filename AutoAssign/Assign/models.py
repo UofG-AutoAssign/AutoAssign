@@ -103,10 +103,10 @@ class Form(models.Model):
     #                               primary_key=True)
 
     # One to One Link to Graduate
-    team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE)
-    tech = models.JSONField(verbose_name="Technology")
-    experience = models.JSONField(verbose_name="Experience")
-    interest = models.JSONField(verbose_name="Interest")
+    grad_id = models.ForeignKey(to="Graduate", on_delete=models.CASCADE)
+    skill_id = models.ForeignKey(to="Skill", on_delete=models.CASCADE)
+    experience = models.IntegerField(verbose_name="Experience", null=False)
+    interest = models.IntegerField(verbose_name="Interest", null=False)
 
 
 class Team(models.Model):
@@ -132,7 +132,7 @@ class Team(models.Model):
                               null=False)
 
 
-class skill(models.Model):
+class Skill(models.Model):
 
     skill_name = models.CharField(verbose_name="skills_name", max_length=100,
                                   null=False,
