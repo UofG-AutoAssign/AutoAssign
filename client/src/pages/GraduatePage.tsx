@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import AvatarBar from "../components/AvatarBar";
 import LandingButton, { LandingButtonProps } from "../components/LandingButton";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import AuthContext from "../context/AuthContext";
 
-interface Props {}
+interface GraduatePageProps {}
 
-const GraduatePage: React.FC = () => {
+const GraduatePage: React.FC<GraduatePageProps> = () => {
+  const authContext = useContext(AuthContext);
+
   const data: LandingButtonProps[] = [
     {
       title: "Form",
@@ -34,7 +37,7 @@ const GraduatePage: React.FC = () => {
         <Navbar />
       </nav>
       <div>
-        <div className="text-5xl text-center text-blue-900">Hi! Martin</div>
+        <div className="text-5xl text-center text-blue-900">Hi! {authContext?.username}</div>
       </div>
       <div className="p-16 flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-5">

@@ -25,6 +25,8 @@ const AuthContextProvider = ({ children }: any) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username: "Hr@email.com", password: "123456" }),
+      // body: JSON.stringify({ username: "Grad@email.com", password: "123456" }),
+      // body: JSON.stringify({ username: "Man@email.com", password: "123456" }),
     }).then((response) => {
       console.log(
         response.json().then((data: tokenType) => {

@@ -5,13 +5,17 @@ import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { DiReact } from "react-icons/all";
 
-interface Props {}
+interface NavbarProps {}
 
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC<NavbarProps> = () => {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
     authContext?.getUserInfo();
+
+    return () => {
+      // Clean up here
+    }
   }, [])
   
 

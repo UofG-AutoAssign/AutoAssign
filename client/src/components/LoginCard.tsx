@@ -73,7 +73,7 @@ const Navbar: React.FC<Props> = () => {
                 Forgot password?
               </Link>
             </div>
-            <Link to="/graduate">
+            <Link to="/hr">
               <button
               onClick={authContext?.loginUser}
                 type="submit"

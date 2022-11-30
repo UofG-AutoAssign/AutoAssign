@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import AvatarBar from "../components/AvatarBar";
 import LandingButton, { LandingButtonProps } from "../components/LandingButton";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import AuthContext from "../context/AuthContext";
 
 interface Props {}
 
 const HRhomePage: React.FC = () => {
+  const authContext = useContext(AuthContext);
+
   const data: LandingButtonProps[] = [
     {
       title: "Manage Team",
@@ -58,9 +61,9 @@ const HRhomePage: React.FC = () => {
         <Navbar />
       </nav>
       <div>
-        <div className="text-5xl text-center text-blue-900 m-5">Hi! Naral</div>
+        <div className="text-5xl text-center text-blue-900 m-5">Hi! {authContext?.username}</div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {data.map((e) => {
           return (
             <LandingButton
