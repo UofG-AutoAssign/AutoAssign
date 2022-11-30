@@ -45,7 +45,7 @@ class LoginView(APIView):
             user_type = 'Graduate'
 
         if user_object:
-            return Response({'status': True, 'User Type': user_type, 'token': token})
+            return Response({'status': True, 'user_type': user_type, 'token': token})
 
         return Response({'status': False, 'error': 'User name or password error'})
 
