@@ -9,7 +9,6 @@ from ext.jwt_auth import parse_payload
 
 def locateUser(payload):
 
-    print(payload)
     data = payload['data']
     user = data['email']
 

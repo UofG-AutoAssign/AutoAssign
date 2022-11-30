@@ -61,7 +61,28 @@ class HrView(APIView):
         return Response(context)
 
 
-class HrViewCreat(APIView):
+class GradView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        ser = serializers.GradSerializer(instance=request.user)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+class ManView(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def get(self, request):
+        ser = serializers.ManSerializer(instance=request.user)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class HrViewCreate(APIView):
     permission_classes = [HrPermission, ]
 
     # 1.Get initial data
@@ -74,13 +95,13 @@ class HrViewCreat(APIView):
             role = ser_role.validated_data["role"]
 
         if role == 1:
-            ser = serializers.CreatGraduateSerializer(data=request.data)
+            ser = serializers.CreateGraduateSerializer(data=request.data)
             context = {"status": True, "Create": "Graduate", "Status": "success"}
         elif role == 2:
-            ser = serializers.CreatMangerSerializer(data=request.data)
+            ser = serializers.CreateMangerSerializer(data=request.data)
             context = {"status": True, "Create": "Manager", "Status": "success"}
         elif role == 3:
-            ser = serializers.CreatHrSerializer(data=request.data)
+            ser = serializers.CreateHrSerializer(data=request.data)
             context = {"status": True, "Create": "Hr", "Status": "success"}
 
         if ser.is_valid():
