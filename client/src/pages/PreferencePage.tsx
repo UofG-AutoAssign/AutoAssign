@@ -21,20 +21,20 @@ export const interest_options = [
 ];
 
 export const tech_options = [
-  { value: "full_stack_developement", label: "Full Stack Developement" },
+  { value: "full_stack_development", label: "Full Stack Development" },
   { value: "ui_ux_development", label: "UI/UX Development" },
   { value: "machine_learning", label: "Machine Learning" },
   { value: "cyber_security", label: "Cyber Security" },
 ];
 
 export const MyExperience: React.FC = () => (
-  <Select className="relative h-10 w-3/4" options={experience_options} />
+  <Select className="relative w-3/4 h-10" options={experience_options} />
 );
 export const MyInterest: React.FC = () => (
-  <Select className="relative h-10 w-3/4" options={interest_options} />
+  <Select className="relative w-3/4 h-10" options={interest_options} />
 );
 export const MyTech: React.FC = () => (
-  <Select className="relative h-10 w-3/4" options={tech_options} />
+  <Select className="relative w-3/4 h-10" options={tech_options} />
 );
 
 export interface ItemType {
@@ -49,7 +49,7 @@ const PreferencePage: React.FC = () => {
         <Navbar />
       </nav>
       <div>
-      <div className="text-5xl text-center text-blue-900 py-5">Team Preference Form</div>
+      <div className="py-5 text-5xl text-center text-blue-900">Team Preference Form</div>
         
       </div>
       <section className="flex flex-row gap-5 py-5">
