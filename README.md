@@ -16,9 +16,6 @@ Tim Storer - Timothy.Storer@glasgow.ac.uk
 
 
 ## Project
-![image](https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh23/sh23-dissertation/-/raw/main/images/Project%20Picture.png?inline=false)
-
-
 Automated Allocation for Grad Programme 
 
 
