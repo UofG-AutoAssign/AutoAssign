@@ -11,6 +11,8 @@ import PrivateRoute from "./utility/PrivateRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
 import HRhomePage from "./pages/HRhomePage";
 import PreferencePage from "./pages/PreferencePage";
+import ManagerPage from "./pages/ManagerPage";
+import ManagerTeamPage from "./pages/ManagerTeamPage";
 
 const App: React.FC = () => {
   // Implement routing later
@@ -30,6 +32,8 @@ const App: React.FC = () => {
         /> */}
         <Route path="/account" element={<AccountPage />} />
         <Route path="/hr" element={<HRhomePage/>} />
+        <Route path="/manager" element={<ManagerPage/>} />
+        <Route path="/managerTeam" element={<ManagerTeamPage/>} />
         <Route path="/*" element={<NotFoundPage />} />
         <Route path="/forgot_password" element={<ForgotPassPage />} />
         <Route path="/preference_page" element={<PreferencePage />} />
