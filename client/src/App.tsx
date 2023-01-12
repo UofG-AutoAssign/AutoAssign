@@ -9,9 +9,11 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
 import PrivateRoute from "./utility/PrivateRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
-import HRhomePage from "./pages/HRhomePage";
 import PreferencePage from "./pages/PreferencePage";
 import HRManagePage from "./pages/HRManagePage";
+import ManagerTeamPage from "./pages/ManagerTeamPage";
+import ManagerPage from "./pages/ManagerPage";
+import HRhomePage from "./pages/HRhomePage";
 
 const App: React.FC = () => {
   // Implement routing later

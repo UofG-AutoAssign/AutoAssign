@@ -15,7 +15,7 @@ const HRManagePage: React.FC = () => {
 
   const assignManager = (): JSX.Element => {
     return (<div className="w-3/4 pr-5">
-    <div className="mb-7 ">
+    <div className="mb-7 text-black">
       Type the graduates email and the specific team you want to move them
       to.
     </div>
@@ -68,7 +68,7 @@ const HRManagePage: React.FC = () => {
   const removeManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 ">
-        <div className="mb-7 ">
+        <div className="mb-7 text-black">
         Type the managers email and delete their account permanently.
         </div>
           <form>
@@ -99,10 +99,11 @@ const HRManagePage: React.FC = () => {
         </div>
     );
   };
+
   const removeGraduate = (): JSX.Element => {
     return (
-      <div className="w-3/4 pr-5 ">
-        <div className="mb-7 ">
+      <div className="w-3/4 pr-5">
+        <div className="mb-7 text-black">
         Type the graduates email and delete their account permanently.
         </div>
           <form>
@@ -139,7 +140,7 @@ const HRManagePage: React.FC = () => {
     return (  
       <div className="w-3/4 pr-5">
           
-          <div className="mb-7 ">
+          <div className="mb-7 text-black">
             Type the graduates email and the specific team you want to move them to.
           </div>
           <form>
