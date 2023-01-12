@@ -23,8 +23,6 @@ const ManagerTeamPage: React.FC = () => {
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
   ]);
 
   const [techList, setTechList] = useState<ItemType[]>([
