@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import React, { useRef, useState } from "react";
 import PickTable from "../components/PickTable";
-import { tech_options } from "./PreferencePage";
+import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./PreferencePage";
 import { HiOutlineTrash } from "react-icons/hi";
 
 export interface ManagerTableType {
@@ -27,9 +27,30 @@ const ManagerTeamPage: React.FC = () => {
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
 
-  const [mockTechList, setMockTechList] = useState<string[]>(
-    tech_options.map(({ label }) => label)
-  );
+  const [techList, setTechList] = useState<ItemType[]>([
+    { id: 0, name: "Full-Stack Development" },
+  ]);
+
+  const [curId, setCurId] = useState<number>(1);
+
+  const deleteItem = (delete_id: number) => {
+    let newList: ItemType[] = [...techList];
+
+    newList = newList.filter((item) => {
+      return item.id !== delete_id;
+    });
+    console.log(newList);
+    setTechList(newList);
+  };
+
+  const addItem = () => {
+    let newList: ItemType[] = [...techList];
+
+    newList.push({id:curId, name: "hi"});
+    console.log(newList);
+    setTechList(newList);
+    setCurId((prev) => prev + 1)
+  };
 
   const [sliderValue, setSliderValue] = useState("50");
 
@@ -81,17 +102,17 @@ const ManagerTeamPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {mockTechList.map((techName, idx) => (
+              {techList.map((item) => (
                 <tr
                   className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={idx}
+                  key={item.id}
                 >
                   <th
                     scope="row"
                     className="flex flex-row justify-between px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {techName}
-                    <button className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150">
+                    <MyTech />
+                    <button className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150" onClick={() => deleteItem(item.id)}>
                       <HiOutlineTrash />
                     </button>
                   </th>
@@ -104,6 +125,7 @@ const ManagerTeamPage: React.FC = () => {
           <button
             type="button"
             className="mb-10 hover:scale-110 transition-all duration-150 my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            onClick={() => addItem()}
           >
             Add New Row
           </button>
@@ -149,7 +171,7 @@ const ManagerTeamPage: React.FC = () => {
       </nav>
       <div>
         <div className="py-5 text-5xl text-center text-blue-900">
-          Team Preference Form
+          Pick Your Team Preference
         </div>
         <div className="flex flex-row items-center justify-center gap-5">
           <div className="text-black">
