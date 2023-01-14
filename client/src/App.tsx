@@ -10,10 +10,12 @@ import ForgotPassPage from "./pages/ForgotPassPage";
 import PrivateRoute from "./utility/PrivateRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
 import PreferencePage from "./pages/PreferencePage";
+import ComfirmPopup from "./pages/ComfirmPopup";
+import AssignPopup from "./pages/AssignPopup";
 import HRManagePage from "./pages/HRManagePage";
 import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerPage";
-import HRhomePage from "./pages/HRhomePage";
+import HRhomePage from "./pages/HRHomePage";
 
 const App: React.FC = () => {
   // Implement routing later
@@ -38,6 +40,8 @@ const App: React.FC = () => {
         <Route path="/*" element={<NotFoundPage />} />
         <Route path="/forgot_password" element={<ForgotPassPage />} />
         <Route path="/preference_page" element={<PreferencePage />} />
+        <Route path="/comfirmPop" element={<ComfirmPopup/>} />
+        <Route path="/assignPop" element={<AssignPopup/>} />
         <Route path="/hr_manage" element={<HRManagePage />} />
       </Routes>
       </AuthContextProvider>
