@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import { initialComponent } from "../pages/HRManagePage";
 
-export interface LandingButtonProps {
+export interface LandingButtonLinkProps {
   title: string;
   desc: string;
   btn_color: string;
   link: string | null;
+  initialState: initialComponent;
 }
 
-const LandingButton: React.FC<LandingButtonProps> = ({
+const LandingButtonLink: React.FC<LandingButtonLinkProps> = ({
   title,
   desc,
   btn_color,
@@ -15,7 +17,7 @@ const LandingButton: React.FC<LandingButtonProps> = ({
 }) => {
   return (
     <>
-      {/* <Link to={`/${link}`}> */}
+      <Link to={`/${link}`}>
       <button
         className={`${btn_color} h-36 flex flex-col w-4/5 mx-auto min-h-40 p-5 rounded-2xl hover:scale-110 transition-all delay-100 focus:border-black focus:border-2`}
       >
@@ -24,9 +26,9 @@ const LandingButton: React.FC<LandingButtonProps> = ({
         </p>
         <p className="text-left w-full text-gray-600">{desc}</p>
       </button>
-      {/* </Link> */}
+      </Link>
     </>
   );
 };
 
-export default LandingButton;
+export default LandingButtonLink;

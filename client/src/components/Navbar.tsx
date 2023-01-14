@@ -15,18 +15,19 @@ const Navbar: React.FC<NavbarProps> = () => {
 
     return () => {
       // Clean up here
-    }
-  }, [])
-  
+    };
+  }, []);
 
   return (
     <div className="navbar bg-white text-black px-5 py-3 mb-5 border-b-slate-200 border-2 flex flex-col justify-between sm:flex-row">
       <div className="">
         {/* <DiReact className="text-teal-400 text-5xl hover:animate-spin"/> */}
         <img className="max-w-lg hover:animate-spin" src={logo} />
-        <div className="btn btn-ghost normal-case text-xl mx-10">
-          AutoAssign
-        </div>
+        {/* <Link to="/"> */}
+          <div className="btn btn-ghost normal-case text-xl mx-10">
+            AutoAssign
+          </div>
+        {/* </Link> */}
         <div className="text-xl">{authContext?.userType}</div>
       </div>
       <div className="gap-10 text-3xl">

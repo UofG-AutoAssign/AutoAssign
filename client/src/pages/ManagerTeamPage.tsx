@@ -3,13 +3,13 @@ import React, { useRef, useState } from "react";
 import PickTable from "../components/PickTable";
 import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./PreferencePage";
 import { HiOutlineTrash } from "react-icons/hi";
-
 export interface ManagerTableType {
   name: string;
   email: string;
 }
 
 const ManagerTeamPage: React.FC = () => {
+  
   const [currentTab, setCurrentTab] = useState<"Your Team" | "Team Settings">(
     "Your Team"
   );
@@ -24,7 +24,7 @@ const ManagerTeamPage: React.FC = () => {
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
-
+  
   const [techList, setTechList] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
   ]);
@@ -51,7 +51,7 @@ const ManagerTeamPage: React.FC = () => {
   };
 
   const [sliderValue, setSliderValue] = useState("50");
-
+  
   const teamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
@@ -86,7 +86,7 @@ const ManagerTeamPage: React.FC = () => {
       </div>
     );
   };
-
+  
   const settingsTable = (): JSX.Element => {
     return (
       <div>
