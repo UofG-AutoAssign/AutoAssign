@@ -5,6 +5,7 @@ import React, { Fragment, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import { ManagerTableType } from "./ManagerTeamPage";
 
 export type initialComponent =
   | "Teams"
@@ -14,7 +15,7 @@ export type initialComponent =
   | "Remove Manager";
 
 interface HRManagePageProps {
-  initialState: initialComponent
+  initialState: initialComponent;
 }
 
 const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
@@ -24,8 +25,52 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
     | "Remove Graduate"
     | "Assign Manager"
     | "Remove Manager"
-  >("Teams");
+  >(initialState);
   console.log(initialState);
+
+  const teamTable = (): JSX.Element => {
+    return (
+      <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-full">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Team & Department
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Manager Email
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+              { team_department: "Team 1 - Cyber Security", manager_email: "Jack@yahoo.com" },
+            ].map(({ team_department, manager_email }, idx) => (
+              <tr
+                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                key={idx}
+              >
+                <th
+                  scope="row"
+                  className="flex flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {team_department}
+                </th>
+                <td className="px-6 py-4">{manager_email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   const assignManager = (): JSX.Element => {
     return (
@@ -219,7 +264,7 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
 
   const displayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <div>yooo</div>;
+      return teamTable();
     }
     if (currentTab === "Assign Graduate") {
       return assignGraduate();
@@ -273,6 +318,8 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
       </>
     );
   };
+
+  
 
   return (
     <div className="flex flex-col min-h-screen">
