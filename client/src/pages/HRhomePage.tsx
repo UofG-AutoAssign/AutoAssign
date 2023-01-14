@@ -43,11 +43,11 @@ const HRhomePage: React.FC = () => {
       initialState: "Assign Manager"
     },
     {
-      title: "Auto Assign",
-      desc: "Remove manager profiles from the app",
-      btn_color: "bg-btnColor6",
-      link: "hr",
-      initialState: "Assign Manager"
+      title: "Assign Graduates",
+      desc: "Manually assign graduates to teams based on their form responses",
+      btn_color: "bg-btnColor4",
+      link: "hr_manage",
+      initialState: "Assign Graduate"
     },
     {
       title: "Create Account",
@@ -175,12 +175,13 @@ const HRhomePage: React.FC = () => {
           );
         })}
         <LandingButtonModal
-          title="Assign Graduates"
-          btn_color="bg-btnColor4"
-          desc="Manually assign graduates to teams based on their form responses"
+          title="Auto Assign"
+          btn_color="bg-btnColor6"
+          desc="Remove manager profiles from the app"
           modal={assignGradModal()}
           modalId={assignGradModalId}
         />
+        
       </div>
     </div>
   );
