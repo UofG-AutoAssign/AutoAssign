@@ -1,10 +1,23 @@
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { assign } from "mobx/dist/internal";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 
-const HRManagePage: React.FC = () => {
+export type initialComponent =
+  | "Teams"
+  | "Assign Graduate"
+  | "Remove Graduate"
+  | "Assign Manager"
+  | "Remove Manager";
+
+interface HRManagePageProps {
+  initialState: initialComponent
+}
+
+const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
   const [currentTab, setCurrentTab] = useState<
     | "Teams"
     | "Assign Graduate"
@@ -12,102 +25,18 @@ const HRManagePage: React.FC = () => {
     | "Assign Manager"
     | "Remove Manager"
   >("Teams");
+  console.log(initialState);
 
   const assignManager = (): JSX.Element => {
-    return (<div className="w-3/4 pr-5">
-    <div className="mb-7 text-black">
-      Type the graduates email and the specific team you want to move them
-      to.
-    </div>
-    <form>
-      <div className="grid gap-6 mb-6 md:grid-cols-2">
-        <div>
-          <label
-            htmlFor="first_name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Graduate email
-          </label>
-          <input
-            type="text"
-            id="first_name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="graduate@email.com"
-            required
-          ></input>
-        </div>
-        <div>
-          <label
-            htmlFor="last_name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Team & Department
-          </label>
-          <input
-            type="text"
-            id="last_name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="e.g. Cyber Security"
-            required
-          ></input>
-        </div>
-        
-      </div>
-      <div className="flex flex-col items-center">
-          <button
-            type="button"
-            className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Assign
-          </button>
-        </div>
-    </form>
-  </div>)
-  }
-
-  const removeManager = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5 ">
-        <div className="mb-7 text-black">
-        Type the managers email and delete their account permanently.
-        </div>
-          <form>
-            <div className="flex flex-col justify-center items-center">
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Manager email
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="manager@email.com                         "
-                required
-              ></input>
-              <div className="flex flex-col items-center">
-                <button
-                  type="button"
-                  className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-    );
-  };
-
-  const removeGraduate = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
         <div className="mb-7 text-black">
-        Type the graduates email and delete their account permanently.
+          Type the graduates email and the specific team you want to move them
+          to.
         </div>
-          <form>
-            <div className="flex flex-col justify-center items-center">
+        <form>
+          <div className="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
               <label
                 htmlFor="first_name"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -117,61 +46,180 @@ const HRManagePage: React.FC = () => {
               <input
                 type="text"
                 id="first_name"
-                className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="graduate@email.com                         "
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="graduate@email.com"
                 required
               ></input>
-              <div className="flex flex-col items-center">
-                <button
-                  type="button"
-                  className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-                >
-                  Delete
-                </button>
-              </div>
             </div>
-          </form>
-        </div>
+            <div>
+              <label
+                htmlFor="last_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Team & Department
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="e.g. Cyber Security"
+                required
+              ></input>
+            </div>
+          </div>
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Assign
+            </button>
+          </div>
+        </form>
+      </div>
     );
-
   };
 
-  const assignGraduate = (): JSX.Element => {
-    return (  
-      <div className="w-3/4 pr-5">
-          
-          <div className="mb-7 text-black">
-            Type the graduates email and the specific team you want to move them to.
-          </div>
-          <form>
-            <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-                <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Graduate email</label>
-                <input type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="graduate@email.com" required></input>
-            </div>
-            <div>
-                <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Team & Department</label>
-                <input type="text" id="last_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Cyber Security" required></input>
-            </div>
-            
-            </div>
-            <div className="flex flex-col items-center">
-                <button
-                  type="button"
-                  className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Assign
-                </button>
-              </div>
-        </form>
+  const removeManager = (): JSX.Element => {
+    return (
+      <div className="w-3/4 pr-5 ">
+        <div className="mb-7 text-black">
+          Type the managers email and delete their account permanently.
         </div>
+        <form>
+          <div className="flex flex-col justify-center items-center">
+            <label
+              htmlFor="first_name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Manager email
+            </label>
+            <input
+              type="text"
+              id="first_name"
+              className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="manager@email.com                         "
+              required
+            ></input>
+            <div className="flex flex-col items-center">
+              <button
+                type="button"
+                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     );
+  };
 
+  const removeGraduate = (): JSX.Element => {
+    return (
+      <div className="w-3/4 pr-5">
+        <div className="mb-7 text-black">
+          Type the graduates email and delete their account permanently.
+        </div>
+        <form>
+          <div className="flex flex-col justify-center items-center">
+            <label
+              htmlFor="first_name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Graduate email
+            </label>
+            <input
+              type="text"
+              id="first_name"
+              className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="graduate@email.com                         "
+              required
+            ></input>
+            <div className="flex flex-col items-center">
+              <button
+                type="button"
+                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
+  };
+
+  const confirmGraduateToTeamModalId: string = "confirm-graduate";
+
+  const assignGraduate = (): JSX.Element => {
+    return (
+      <div className="w-3/4 pr-5">
+        <div className="mb-7 text-black">
+          Type the graduates email and the specific team you want to move them
+          to.
+        </div>
+        <form>
+          <div className="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+              <label
+                htmlFor="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Graduate email
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="graduate@email.com"
+                required
+              ></input>
+            </div>
+            <div>
+              <label
+                htmlFor="last_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Team & Department
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="e.g. Cyber Security"
+                required
+              ></input>
+            </div>
+          </div>
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor={confirmGraduateToTeamModalId}
+              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Submit
+            </label>
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId}
+              className="modal-toggle"
+            />
+            {/* <button
+              type="button"
+              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Assign
+            </button> */}
+            {reassureModal()}
+          </div>
+        </form>
+      </div>
+    );
   };
 
   const displayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <div>yooo</div>
+      return <div>yooo</div>;
     }
     if (currentTab === "Assign Graduate") {
       return assignGraduate();
@@ -185,8 +233,46 @@ const HRManagePage: React.FC = () => {
     if (currentTab === "Remove Manager") {
       return removeManager();
     }
-    return <div>yooo</div>
-  }
+    return <div>yooo</div>;
+  };
+
+  const reassureModal = (): JSX.Element => {
+    function classNames(...classes: any) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    return (
+      <>
+        <div className="modal z-50 overflow-y-auto">
+          <div className="modal-box flex flex-col bg-white">
+            <h3 className="font-bold text-lg text-black">Are you Sure? </h3>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="py-4 text-black">
+                  Are you sure that you want to delete [member]?{" "}
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              <label
+                htmlFor={confirmGraduateToTeamModalId}
+                className="btn bg-gray-200 text-black shadow-lg"
+              >
+                Cancel
+              </label>
+              <label
+                htmlFor={confirmGraduateToTeamModalId}
+                className="btn bg-blue-800 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -235,6 +321,7 @@ const HRManagePage: React.FC = () => {
           </button>
         </div>
         {displayComponent()}
+        {reassureModal()}
       </section>
     </div>
   );

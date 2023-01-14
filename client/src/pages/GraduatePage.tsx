@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import AvatarBar from "../components/AvatarBar";
-import LandingButton, { LandingButtonProps } from "../components/LandingButton";
+import LandingButtonLink, { LandingButtonLinkProps } from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
@@ -10,7 +10,7 @@ interface GraduatePageProps {}
 const GraduatePage: React.FC<GraduatePageProps> = () => {
   const authContext = useContext(AuthContext);
 
-  const data: LandingButtonProps[] = [
+  const data: LandingButtonLinkProps[] = [
     {
       title: "Form",
       desc: "Submit this form to learn more about team preferences.",
@@ -43,7 +43,7 @@ const GraduatePage: React.FC<GraduatePageProps> = () => {
         <div className="grid grid-cols-2 gap-5">
           {data.map((e) => {
             return (
-              <LandingButton
+              <LandingButtonLink
                 title={e.title}
                 desc={e.desc}
                 btn_color={e.btn_color}
