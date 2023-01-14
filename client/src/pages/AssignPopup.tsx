@@ -13,7 +13,6 @@ function classNames(...classes: any) {
 const AssignPopup: React.FC = () => {
   return (
     <>
-      // head page//
       <label
         htmlFor="my-modal"
         className="btn bg-loginBlue focus:bg-loginBlue text-black"
@@ -25,8 +24,6 @@ const AssignPopup: React.FC = () => {
         <div className="modal-box flex flex-col">
           <h3 className="font-bold text-lg">Assign Graduates</h3>
           <div className="flex flex-row gap-2 justify-between">
-            
-
             <div className="form-control max-w-xs w-full ">
               <input
                 type="text"
@@ -35,7 +32,6 @@ const AssignPopup: React.FC = () => {
               />
               <label className="label"></label>
             </div>
-
             <Menu as="div" className="relative inline-block text-left h-1 ">
               <div>
                 <Menu.Button className="inline-flex w-full  justify-center rounded-md border  border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
@@ -46,7 +42,6 @@ const AssignPopup: React.FC = () => {
                   />
                 </Menu.Button>
               </div>
-
               <Transition
                 as={Fragment}
                 enter="transition ease-out duration-100"
@@ -125,7 +120,6 @@ const AssignPopup: React.FC = () => {
               </Transition>
             </Menu>
           </div>
-
           <div className="modal-action">
             <label htmlFor="my-modal" className="btn">
               59/79 response
