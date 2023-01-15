@@ -77,7 +77,7 @@ class Department(models.Model):
                                    db_index=True)
 
     num_employ = models.PositiveIntegerField(verbose_name="Number of employ", default=0,
-                                             null=False)
+                                             null=True)
 
 
 class HR(models.Model):
@@ -154,17 +154,17 @@ class Team(models.Model):
                                  )
 
     team_profile = models.JSONField(verbose_name="team's profile ",
-                                    null=False)
+                                    null=True)
 
     # One to Many Link to Manger
 
-    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE)
+    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,null = True)
 
     # One to Many Link to Departments
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)
 
     ratio = models.FloatField(verbose_name="Ratio",
-                              null=False)
+                              null=True)
 
     Skill_One = models.ForeignKey(to="Skill", related_name='Skill_One_id', on_delete=models.CASCADE, null=True)
     Skill_Two = models.ForeignKey(to="Skill", related_name='Skill_Two_id', on_delete=models.CASCADE, null=True)
