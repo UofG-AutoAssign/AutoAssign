@@ -13,7 +13,7 @@ import PreferencePage from "./pages/PreferencePage";
 import HRManagePage from "./pages/HRManagePage";
 import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerPage";
-import HRhomePage from "./pages/HRHomePage";
+import HRhomePage from "./pages/HRhomePage";
 
 const App: React.FC = () => {
   // Implement routing later

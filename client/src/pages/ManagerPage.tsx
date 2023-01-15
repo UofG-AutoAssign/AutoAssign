@@ -16,18 +16,21 @@ const ManagerPage: React.FC = () => {
       desc: "Submit this form to learn more about your team preferences.",
       btn_color: "bg-btnColor1",
       link: "manager",
+      initialState: "Teams"
     },
     {
       title: "Your Team",
       desc: "View your Team",
       btn_color: "bg-btnColor2",
       link: "managerTeam",
+      initialState: "Teams"
     },
     {
       title: "Roles",
       desc: "Learn more about roles here at {company_name}",
       btn_color: "bg-btnColor3",
       link: "manager",
+      initialState: "Teams"
     },
     
   ];
@@ -47,8 +50,7 @@ const ManagerPage: React.FC = () => {
               title={e.title}
               desc={e.desc}
               btn_color={e.btn_color}
-              link={e.link}
-            />
+              link={e.link} initialState={"Teams"}            />
           );
         })}
       </div>

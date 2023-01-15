@@ -16,18 +16,21 @@ const GraduatePage: React.FC<GraduatePageProps> = () => {
       desc: "Submit this form to learn more about team preferences.",
       btn_color: "bg-btnColor1",
       link: "preference_page",
+      initialState: "Assign Graduate"
     },
     {
       title: "Your Team",
       desc: "View Team.",
       btn_color: "bg-btnColor2",
       link: "graduate",
+      initialState: "Assign Graduate"
     },
     {
       title: "Roles",
       desc: "Learn more about the roles in general.",
       btn_color: "bg-btnColor3",
       link: "graduate",
+      initialState: "Assign Graduate"
     },
   ];
 
@@ -47,8 +50,7 @@ const GraduatePage: React.FC<GraduatePageProps> = () => {
                 title={e.title}
                 desc={e.desc}
                 btn_color={e.btn_color}
-                link={e.link}
-              />
+                link={e.link} initialState={"Teams"} />
             );
           })}
         </div>
