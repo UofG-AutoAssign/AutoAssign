@@ -3,8 +3,6 @@ import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 
-interface Props {}
-
 const AccountPage: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">

@@ -26,7 +26,7 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
     | "Assign Manager"
     | "Remove Manager"
   >(initialState);
-  console.log(initialState);
+  // console.log(initialState);
 
   const teamTable = (): JSX.Element => {
     return (
