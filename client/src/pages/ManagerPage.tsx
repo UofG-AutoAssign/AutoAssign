@@ -5,17 +5,16 @@ import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 
-interface Props {}
 
 const ManagerPage: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
     {
-      title: "Form",
-      desc: "Submit this form to learn more about your team preferences.",
+      title: "Team Settings",
+      desc: "Weight how much you value each technology.",
       btn_color: "bg-btnColor1",
-      link: "manager",
+      link: "managerTeam",
       initialState: "Teams"
     },
     {

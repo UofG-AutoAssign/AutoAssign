@@ -8,8 +8,6 @@ import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
 
-interface Props {}
-
 const HRhomePage: React.FC = () => {
   const authContext = useContext(AuthContext);
 

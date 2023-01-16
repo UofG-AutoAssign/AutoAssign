@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { DiReact } from "react-icons/all";
 
-interface NavbarProps {}
-
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {

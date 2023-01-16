@@ -3,9 +3,7 @@ import { default as logo } from "../assets/react.svg";
 import { FcSettings, FcPicture } from "react-icons/all";
 import { Link } from "react-router-dom";
 
-interface Props {}
-
-const Navbar: React.FC<Props> = () => {
+const ForgotPassCard: React.FC = () => {
   return (
     <div>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -52,4 +50,4 @@ const Navbar: React.FC<Props> = () => {
   );
 };
 
-export default Navbar;
+export default ForgotPassCard;

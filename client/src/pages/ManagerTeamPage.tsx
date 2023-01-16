@@ -37,7 +37,7 @@ const ManagerTeamPage: React.FC = () => {
     newList = newList.filter((item) => {
       return item.id !== delete_id;
     });
-    console.log(newList);
+    // console.log(newList);
     setTechList(newList);
   };
 
@@ -45,7 +45,7 @@ const ManagerTeamPage: React.FC = () => {
     let newList: ItemType[] = [...techList];
 
     newList.push({id:curId, name: "hi"});
-    console.log(newList);
+    // console.log(newList);
     setTechList(newList);
     setCurId((prev) => prev + 1)
   };
@@ -136,7 +136,7 @@ const ManagerTeamPage: React.FC = () => {
     return (
       <div>
         <input
-          onChange={(e) => console.log(e.target.value)}
+          onChange={(e) => setSliderValue(e.target.value)}
           id="minmax-range"
           type="range"
           min="0"
@@ -171,7 +171,7 @@ const ManagerTeamPage: React.FC = () => {
         <div className="py-5 text-5xl text-center text-blue-900">
           Pick Your Team Preference
         </div>
-        <div className="flex flex-row items-center justify-center gap-5">
+        {currentTab !== 'Your Team' && <div className="flex flex-row items-center justify-center gap-5">
           <div className="text-black">
             Choose the what technologies your team would use.
           </div>
@@ -181,7 +181,7 @@ const ManagerTeamPage: React.FC = () => {
           >
             Save
           </button>
-        </div>
+        </div>}
       </div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl">

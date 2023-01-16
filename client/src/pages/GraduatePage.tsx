@@ -5,9 +5,7 @@ import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 
-interface GraduatePageProps {}
-
-const GraduatePage: React.FC<GraduatePageProps> = () => {
+const GraduatePage: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [

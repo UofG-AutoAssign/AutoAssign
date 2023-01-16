@@ -4,7 +4,6 @@ import LoginCard from "../components/LoginCard";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 
-interface Props {}
 
 const AccountPage: React.FC = () => {
   return (

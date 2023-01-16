@@ -20,7 +20,7 @@ const PickTable: React.FC = () => {
     newList = newList.filter((item) => {
       return item.id !== delete_id;
     });
-    console.log(newList);
+    // console.log(newList);
     setMockData(newList);
   };
 
@@ -28,7 +28,7 @@ const PickTable: React.FC = () => {
     let newList: ItemType[] = [...mockData];
 
     newList.push({id:curId, name: "hi"});
-    console.log(newList);
+    // console.log(newList);
     setMockData(newList);
     setCurId((prev) => prev + 1)
   };

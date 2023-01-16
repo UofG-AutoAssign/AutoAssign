@@ -1,8 +1,6 @@
 import React from 'react'
 
-type NotFoundProps = {}
-
-const NotFoundPage: React.FC<NotFoundProps> = () => {
+const NotFoundPage: React.FC = () => {
   return (
     <div className='text-5xl'>NotFoundPage</div>
   )

@@ -3,7 +3,6 @@ import AvatarBar from "../components/AvatarBar";
 import ForgotPassCard from "../components/ForgotPassCard";
 import Navbar from "../components/Navbar";
 
-interface Props {}
 
 const AccountPage: React.FC = () => {
   return (
