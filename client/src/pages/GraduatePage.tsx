@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 
-interface GraduatePageProps {}
+interface GraduatePageProps { }
 
 const GraduatePage: React.FC<GraduatePageProps> = () => {
   const authContext = useContext(AuthContext);
@@ -22,7 +22,7 @@ const GraduatePage: React.FC<GraduatePageProps> = () => {
       title: "Your Team",
       desc: "View Team.",
       btn_color: "bg-btnColor2",
-      link: "graduate",
+      link: "graduateTeamPage",
       initialState: "Assign Graduate"
     },
     {
