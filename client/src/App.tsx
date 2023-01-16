@@ -4,6 +4,7 @@ import "./App.css";
 import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
 import GraduatePage from "./pages/GraduatePage";
+import GraduateTeamPage from "./pages/GraduateTeamPage";
 import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
@@ -20,10 +21,11 @@ const App: React.FC = () => {
   return (
     <div className="bg-white">
       <AuthContextProvider>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path='/graduate' element={<GraduatePage />}/>
-        {/* <Route
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path='/graduate' element={<GraduatePage />} />
+          <Route path='/graduateTeamPage' element={<GraduateTeamPage />} />
+          {/* <Route
           path="/graduate"
           element={
             <PrivateRoute component={<GraduatePage/>}>
@@ -31,15 +33,15 @@ const App: React.FC = () => {
             </PrivateRoute>
           }
         /> */}
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/hr" element={<HRhomePage/>} />
-        <Route path="/manager" element={<ManagerPage/>} />
-        <Route path="/managerTeam" element={<ManagerTeamPage/>} />
-        <Route path="/*" element={<NotFoundPage />} />
-        <Route path="/forgot_password" element={<ForgotPassPage />} />
-        <Route path="/preference_page" element={<PreferencePage />} />
-        <Route path="/hr_manage" element={<HRManagePage initialState={"Teams"} />} />
-      </Routes>
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/hr" element={<HRhomePage />} />
+          <Route path="/manager" element={<ManagerPage />} />
+          <Route path="/managerTeam" element={<ManagerTeamPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
+          <Route path="/forgot_password" element={<ForgotPassPage />} />
+          <Route path="/preference_page" element={<PreferencePage />} />
+          <Route path="/hr_manage" element={<HRManagePage initialState={"Teams"} />} />
+        </Routes>
       </AuthContextProvider>
     </div>
   );

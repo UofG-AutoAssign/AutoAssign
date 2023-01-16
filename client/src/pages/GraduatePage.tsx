@@ -20,7 +20,7 @@ const GraduatePage: React.FC = () => {
       title: "Your Team",
       desc: "View Team.",
       btn_color: "bg-btnColor2",
-      link: "graduate",
+      link: "graduateTeamPage",
       initialState: "Assign Graduate"
     },
     {

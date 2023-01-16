@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Select from "react-select";
 import PickTable from "../components/PickTable";
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 export const experience_options = [
   { value: 3, label: "Proficient" },
@@ -43,17 +44,24 @@ export interface ItemType {
 }
 
 const PreferencePage: React.FC = () => {
+
+  const navigate = useNavigate();
+
+  const navigateToTeam = () => {
+    navigate('/GraduateTeamPage');
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-y-auto">
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
       <div>
-      <div className="py-5 text-5xl text-center text-blue-900">Team Preference Form</div>
-        
+        <div className="py-5 text-5xl text-center text-blue-900">Team Preference Form</div>
+
       </div>
       <section className="flex flex-row gap-5 py-5">
-        <div className="w-1/4 bg-loginBlue rounded-r-2xl"> 
+        <div className="w-1/4 bg-loginBlue rounded-r-2xl">
           <button
             type="button"
             className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
@@ -61,6 +69,7 @@ const PreferencePage: React.FC = () => {
             Team Preference Form
           </button>
           <button
+            onClick={() => navigateToTeam()}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
@@ -75,8 +84,8 @@ const PreferencePage: React.FC = () => {
         </div>
         <div className="w-3/4 pr-5">
           <div className="w-full bg-white rounded-2xl">
-          <PickTable />
-          
+            <PickTable />
+
           </div>
         </div>
       </section>
