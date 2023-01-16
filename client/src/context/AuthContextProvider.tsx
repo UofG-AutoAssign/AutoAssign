@@ -18,13 +18,14 @@ const AuthContextProvider = ({ children }: any) => {
     };
 
     // @Todo Use Axios Interceptor https://youtu.be/QQYeipc_cik https://youtu.be/2k8NleFjG7I
-    await fetch("http://127.0.0.1:8000/", {
+    // await fetch("http://127.0.0.1:8000/", {
+    await fetch("http://101.200.41.196:8000/", {
       method: "post",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: "Hr@email.com", password: "123456" }),
+      body: JSON.stringify({ username: "Hr@email.com", password: "$2a$10$qwIq0tCUBoPtsad19vfZd.ISDFopI5F4RqVUUDSpNsbKwFMC6wnBS" }),
       // body: JSON.stringify({ username: "Grad@email.com", password: "123456" }),
       // body: JSON.stringify({ username: "Man@email.com", password: "123456" }),
     }).then((response) => {
@@ -45,7 +46,8 @@ const AuthContextProvider = ({ children }: any) => {
     };
 
     // @Todo Use Axios Interceptor
-    await fetch("http://127.0.0.1:8000/home/hr", {
+    // await fetch("http://127.0.0.1:8000/home/hr", {
+    await fetch("http://101.200.41.196:8000/home/hr", {
       method: "get",
       headers: {
         Accept: "application/json",
@@ -55,6 +57,7 @@ const AuthContextProvider = ({ children }: any) => {
     }).then((response) => {
       response.json().then((data: returnType) => {
         const d = data.data;
+        console.log(d);
         setUsername(d.first_name + d.second_name)
       });
     });
@@ -78,7 +81,8 @@ const AuthContextProvider = ({ children }: any) => {
     };
 
     // @Todo Use Axios Interceptor
-    await fetch("http://127.0.0.1:8000/home/hr/creat", {
+    // await fetch("http://127.0.0.1:8000/home/hr/creat", {
+    await fetch("http://101.200.41.196:8000/home/hr/creat", {
       method: "post",
       headers: {
         Accept: "application/json",
