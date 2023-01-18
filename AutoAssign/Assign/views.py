@@ -8,6 +8,8 @@ from ext.per import HrPermission, ManagerPermission, GradPermission
 from Assign import serializers
 from ext.jwt_auth import create_token
 
+from ext.Hash_encryption import hashEncryption
+
 
 # Create your views here.
 
@@ -24,9 +26,13 @@ class LoginView(APIView):
         # print(request.data)
 
         # 2.database validation
-        manger_object = models.Manager.objects.filter(email=user, password=pwd).first()
-        hr_object = models.HR.objects.filter(email=user, password=pwd).first()
-        grad_object = models.Graduate.objects.filter(email=user, password=pwd).first()
+
+        # Hash verification
+        hash_pwd = hashEncryption(pwd)
+
+        manger_object = models.Manager.objects.filter(email=user, password=hash_pwd).first()
+        hr_object = models.HR.objects.filter(email=user, password=hash_pwd).first()
+        grad_object = models.Graduate.objects.filter(email=user, password=hash_pwd).first()
 
         user_object = False
         if manger_object:
@@ -71,6 +77,7 @@ class GradView(APIView):
 
         return Response(context)
 
+
 class ManView(APIView):
     permission_classes = [ManagerPermission, ]
 
@@ -93,6 +100,10 @@ class HrViewCreate(APIView):
 
         if ser_role.is_valid():
             role = ser_role.validated_data["role"]
+
+            # Hashing encryption requires the stored password
+            hash_pwd = hashEncryption(request.data['password'])
+            request.data['password'] = hash_pwd
 
         if role == 1:
             ser = serializers.CreateGraduateSerializer(data=request.data)
