@@ -39,23 +39,33 @@ On some READMEs, you may see small images that convey metadata, such as whether 
 Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
 ## Installation
+A full list of dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
 
-See [requirements.txt](requirements.txt)
+### Automated
+1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
 
-## Setup
-First install all dependancies using:  
-- ``` pip install -r requirements.txt ```
+### Manual
+1) First install all dependancies using: ``` pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
 
-Second, create the database by running the following commands inside /AutoAssign:  
-- ``` python manage.py makemigrations ```  
-- ``` python manage.py migrate ```
+#### Django
+2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
+- ``` python3 manage.py makemigrations ```  
+- ``` python3 manage.py migrate ```
 
-Third, run the backend server with:  
-- ``` python manage.py runserver ```
+#### React
+3) Setup React react using: ``` npm install``` inside [client](client/)
+
 
 ## Usage
+### Automated
+1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
 
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Manual
+1) Start the backend server with: ``` python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
+
+2) Then, start the fronted server with: ``` npm run dev``` inside [client](client/)
+
+3) Finally, open the URL provided by the frontend server, usually [http://localhost:5173](http://localhost:5173)
 
 ## Support
 
