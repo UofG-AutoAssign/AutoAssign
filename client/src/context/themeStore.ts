@@ -1,13 +1,18 @@
 import { makeAutoObservable } from "mobx"; // Add this to where we centralize our data
 
+type themes = "dark" | "light";
+
 class ThemeStore {
-  currentTheme: "dark" | "light" = "light";
+  currentTheme: themes = "light";
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  your_function() {}
+  switchThemes() {
+    if (this.currentTheme === "dark") this.currentTheme = "light";
+    else this.currentTheme = "dark";
+  }
 }
 
 const themeStore = new ThemeStore();
