@@ -16,4 +16,4 @@ class ThemeStore {
 }
 
 const themeStore = new ThemeStore();
-export default ThemeStore;
+export default themeStore;
