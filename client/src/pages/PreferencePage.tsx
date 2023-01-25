@@ -28,13 +28,13 @@ export const tech_options = [
   { value: "cyber_security", label: "Cyber Security" },
 ];
 
-export const MyExperience: React.FC = () => (
+export const MyExperience = (): JSX.Element => (
   <Select className="relative w-3/4 h-10" options={experience_options} />
 );
-export const MyInterest: React.FC = () => (
+export const MyInterest = (): JSX.Element => (
   <Select className="relative w-3/4 h-10" options={interest_options} />
 );
-export const MyTech: React.FC = () => (
+export const MyTech = (): JSX.Element => (
   <Select className="relative w-3/4 h-10" options={tech_options} />
 );
 
