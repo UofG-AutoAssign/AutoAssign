@@ -41,7 +41,7 @@ const GraduatePage: React.FC = () => {
         <div className="text-5xl text-center text-blue-900">Hi! {authContext?.username}</div>
       </div>
       <div className="p-16 flex flex-col gap-5">
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {data.map((e) => {
             return (
               <LandingButtonLink

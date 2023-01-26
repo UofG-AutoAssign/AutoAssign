@@ -53,10 +53,10 @@ const Navbar: FC = observer(() => {
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="navbar bg-white text-black dark:bg-gray-600 dark:text-white px-7 py-3 mb-5 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 ">
+      <div className="navbar bg-gray-200 text-black dark:bg-gray-600 dark:text-white px-7 py-3 mb-5 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
         <div className="gap-5 scale-90 sm:scale-100">
           {backButton()}
-          <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800"/>
+          <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200"/>
           <div className="btn btn-ghost normal-case text-xl">AutoAssign</div>
           <div className="text-xl font-semibold duration-150">{authContext?.userType}</div>
         </div>
