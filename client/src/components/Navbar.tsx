@@ -53,7 +53,7 @@ const Navbar: FC = observer(() => {
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="navbar bg-gray-200 text-black dark:bg-gray-600 dark:text-white px-7 py-3 mb-5 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
+      <div className="navbar bg-gray-100 text-black dark:bg-gray-600 dark:text-white px-7 py-3 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
         <div className="gap-5 scale-90 sm:scale-100">
           {backButton()}
           <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200"/>
