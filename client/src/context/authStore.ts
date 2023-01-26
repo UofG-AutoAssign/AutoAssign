@@ -28,24 +28,24 @@ class AuthStore {
     makeAutoObservable(this);
   }
 
-  setUsername(newUsername: string) {
+  setUsername(newUsername: string): void {
     this.username = newUsername;
   }
 
-  setPassword(newPassword: string) {
+  setPassword(newPassword: string): void {
     this.username = newPassword;
   }
 
-  setAuthToken(newToken: string) {
+  setAuthToken(newToken: string): void {
     this.authToken = newToken;
   }
 
-  setUserType(newUserType: string) {
+  setUserType(newUserType: string): void {
     this.userType = newUserType;
   }
 
   // @Todo Use Axios Interceptor https://youtu.be/QQYeipc_cik https://youtu.be/2k8NleFjG7I
-  async loginUser() {
+  async loginUser(): Promise<void> {
     const requestBody = {
       method: "post",
       headers: {
@@ -73,7 +73,7 @@ class AuthStore {
     });
   }
 
-  async getUserInfo() {
+  async getUserInfo(): Promise<void> {
     const requestBody = {
       method: "get",
       headers: {
@@ -95,7 +95,7 @@ class AuthStore {
     );
   }
 
-  async createAccount() {
+  async createAccount(): Promise<void> {
     const postObject: postType = {
       first_name: "New",
       second_name: "Two",

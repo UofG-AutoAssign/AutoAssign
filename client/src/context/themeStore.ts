@@ -1,17 +1,16 @@
-import { makeAutoObservable } from "mobx"; // Add this to where we centralize our data
+import { makeAutoObservable } from "mobx";
 
-type themes = "dark" | "light";
-
+// Add dark theme to localStorage later
 class ThemeStore {
-  currentTheme: themes = "light";
+  isDarkMode: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  switchThemes() {
-    if (this.currentTheme === "dark") this.currentTheme = "light";
-    else this.currentTheme = "dark";
+  switchThemes(): void {
+    this.isDarkMode = !this.isDarkMode;
+    console.log(this.isDarkMode);
   }
 }
 
