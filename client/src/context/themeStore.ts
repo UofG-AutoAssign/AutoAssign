@@ -6,11 +6,18 @@ class ThemeStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    const storedTheme = localStorage.getItem("isDarkMode");
+    if (storedTheme !== null) {
+      this.isDarkMode = storedTheme === "true" ? true : false;
+    }
   }
 
   switchThemes(): void {
     this.isDarkMode = !this.isDarkMode;
     console.log(this.isDarkMode);
+
+    localStorage.setItem("isDarkMode", this.isDarkMode === true ? "true" : "false");
   }
 }
 
