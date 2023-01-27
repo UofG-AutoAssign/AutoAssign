@@ -8,7 +8,7 @@ import themeStore from "../context/themeStore";
 const AccountPage: FC = observer(() => {
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="flex flex-col min-h-screen bg-white dark:bg-gray-400">
+      <div className="flex flex-col w-full h-screen bg-white dark:bg-gray-400">
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>

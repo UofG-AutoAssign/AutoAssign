@@ -1,9 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
-import AvatarBar from "../components/AvatarBar";
 import LoginCard from "../components/LoginCard";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
 import themeStore from "../context/themeStore";
 
 const AccountPage: React.FC = observer(() => {
