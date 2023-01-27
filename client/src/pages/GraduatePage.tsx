@@ -36,16 +36,16 @@ const GraduatePage: FC = observer(() => {
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="flex flex-col w-full h-screen bg-white dark:bg-gray-400">
+      <div className="page-background dark:bg-gray-400">
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
         <div>
-          <div className="text-5xl text-center text-blue-900 dark:text-white font-semibold mt-3">
+          <div className="hi-text dark:text-white">
             Hi! {authContext?.username}
           </div>
         </div>
-        <div className="p-16 flex flex-col gap-5 ">
+        <div className="p-16 flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {data.map((e) => {
               return (

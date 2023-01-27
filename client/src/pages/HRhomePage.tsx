@@ -2,13 +2,17 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import React, { Fragment, useContext, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
-import LandingButtonLink, { LandingButtonLinkProps } from "../components/LandingButtonLink";
+import LandingButtonLink, {
+  LandingButtonLinkProps,
+} from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
+import themeStore from "../context/themeStore";
+import { observer } from "mobx-react";
 
-const HRhomePage: React.FC = () => {
+const HRhomePage: React.FC = observer(() => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
@@ -17,7 +21,7 @@ const HRhomePage: React.FC = () => {
       desc: "View teams",
       btn_color: "bg-btnColor1",
       link: "hr_manage",
-      initialState: "Teams"
+      initialState: "Teams",
     },
     {
       title: "Remove Graduates",
@@ -31,28 +35,28 @@ const HRhomePage: React.FC = () => {
       desc: "Remove manager profiles from the app",
       btn_color: "bg-btnColor3",
       link: "hr_manage",
-      initialState: "Remove Manager"
+      initialState: "Remove Manager",
     },
     {
       title: "Assign Managers",
       desc: "Manually assign managers to teams based on their form responses",
       btn_color: "bg-btnColor5",
       link: "hr_manage",
-      initialState: "Assign Manager"
+      initialState: "Assign Manager",
     },
     {
       title: "Assign Graduates",
       desc: "Manually assign graduates to teams based on their form responses",
       btn_color: "bg-btnColor4",
       link: "hr_manage",
-      initialState: "Assign Graduate"
+      initialState: "Assign Graduate",
     },
     {
       title: "Create Account",
       desc: "Create a new account for a graduate, manager, or HR employee",
       btn_color: "bg-btnColor7",
       link: "hr",
-      initialState: "Teams"
+      initialState: "Teams",
     },
   ];
 
@@ -150,39 +154,42 @@ const HRhomePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <nav className="sticky top-0 z-50">
-        <Navbar />
-      </nav>
-      <div>
-        <div className="text-5xl text-center text-blue-900 m-5">
-          Hi! {authContext?.username}
+    <div className={themeStore.isDarkMode ? "dark" : ""}>
+      <div className="page-background dark:bg-gray-400">
+        <nav className="sticky top-0 z-50">
+          <Navbar />
+        </nav>
+        <div>
+          <div className="hi-text dark:text-white">
+            Hi! {authContext?.username}
+          </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {data.map((e) => {
-          return (
-            <LandingButtonLink
-              title={e.title}
-              desc={e.desc}
-              btn_color={e.btn_color}
-              link={e.link}
-              initialState={e.initialState}
-              key={e.title}
+        <div className="p-16 flex flex-col gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {data.map((e) => {
+              return (
+                <LandingButtonLink
+                  title={e.title}
+                  desc={e.desc}
+                  btn_color={e.btn_color}
+                  link={e.link}
+                  initialState={e.initialState}
+                  key={e.title}
+                />
+              );
+            })}
+            <LandingButtonModal
+              title="Auto Assign"
+              btn_color="bg-btnColor6"
+              desc="Remove manager profiles from the app"
+              modal={assignGradModal()}
+              modalId={assignGradModalId}
             />
-          );
-        })}
-        <LandingButtonModal
-          title="Auto Assign"
-          btn_color="bg-btnColor6"
-          desc="Remove manager profiles from the app"
-          modal={assignGradModal()}
-          modalId={assignGradModalId}
-        />
-        
+          </div>
+        </div>
       </div>
     </div>
   );
-};
+});
 
 export default HRhomePage;

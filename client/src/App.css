@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 .page-background {
-  /* @apply flex flex-col w-full h-screen bg-white dark:bg-gray-400; */
+  @apply flex flex-col w-full min-h-screen bg-white
+}
+
+.hi-text {
+  @apply text-5xl text-center text-blue-900 font-semibold mt-3
 }
