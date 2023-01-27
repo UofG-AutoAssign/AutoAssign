@@ -15,8 +15,6 @@ class ThemeStore {
 
   switchThemes(): void {
     this.isDarkMode = !this.isDarkMode;
-    console.log(this.isDarkMode);
-
     localStorage.setItem("isDarkMode", this.isDarkMode === true ? "true" : "false");
   }
 }
