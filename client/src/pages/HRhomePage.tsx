@@ -1,18 +1,14 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import React, { Fragment, useContext, useState } from "react";
-import AvatarBar from "../components/AvatarBar";
 import LandingButtonLink, {
   LandingButtonLinkProps,
 } from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
-import themeStore from "../context/themeStore";
-import { observer } from "mobx-react";
 
-const HRhomePage: React.FC = observer(() => {
+const HRhomePage: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
@@ -154,8 +150,7 @@ const HRhomePage: React.FC = observer(() => {
   };
 
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-400">
+      <div>
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
@@ -188,8 +183,7 @@ const HRhomePage: React.FC = observer(() => {
           </div>
         </div>
       </div>
-    </div>
   );
-});
+};
 
 export default HRhomePage;

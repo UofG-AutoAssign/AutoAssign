@@ -1,4 +1,3 @@
-import { observer } from "mobx-react";
 import { FC, useContext } from "react";
 import LandingButtonLink, {
   LandingButtonLinkProps,
@@ -7,7 +6,7 @@ import Navbar from "../components/Navbar";
 import AuthContext from "../context/AuthContext";
 import themeStore from "../context/themeStore";
 
-const GraduatePage: FC = observer(() => {
+const GraduatePage: FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
@@ -63,6 +62,6 @@ const GraduatePage: FC = observer(() => {
       </div>
     </div>
   );
-});
+};
 
 export default GraduatePage;

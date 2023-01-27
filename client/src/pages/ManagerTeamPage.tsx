@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
-import React, { useRef, useState } from "react";
-import PickTable from "../components/PickTable";
+import { FC, useState } from "react";
 import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./PreferencePage";
 import { HiOutlineTrash } from "react-icons/hi";
 export interface ManagerTableType {
@@ -8,7 +7,7 @@ export interface ManagerTableType {
   email: string;
 }
 
-const ManagerTeamPage: React.FC = () => {
+const ManagerTeamPage: FC = () => {
   
   const [currentTab, setCurrentTab] = useState<"Your Team" | "Team Settings">(
     "Your Team"
@@ -163,12 +162,12 @@ const ManagerTeamPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-y-auto">
+    <div>
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
       <div>
-        <div className="py-5 text-5xl text-center text-blue-900">
+        <div className="hi-text dark:text-white">
           Pick Your Team Preference
         </div>
         {currentTab !== 'Your Team' && <div className="flex flex-row items-center justify-center gap-5">

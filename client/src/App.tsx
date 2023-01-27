@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import AccountPage from "./pages/AccountPage";
@@ -15,17 +15,20 @@ import HRManagePage from "./pages/HRManagePage";
 import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerPage";
 import HRhomePage from "./pages/HRhomePage";
+import themeStore from "./context/themeStore";
+import { observer } from "mobx-react";
 
-const App: React.FC = () => {
+const App: FC = observer(() => {
   // Implement routing later
   return (
-    <div className="bg-white">
-      <AuthContextProvider>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path='/graduate' element={<GraduatePage />} />
-          <Route path='/graduateTeamPage' element={<GraduateTeamPage />} />
-          {/* <Route
+    <div className={themeStore.isDarkMode ? "dark" : ""}>
+      <div className="page-background dark:bg-gray-400 overflow-y-auto">
+        <AuthContextProvider>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/graduate" element={<GraduatePage />} />
+            <Route path="/graduateTeamPage" element={<GraduateTeamPage />} />
+            {/* <Route
           path="/graduate"
           element={
             <PrivateRoute component={<GraduatePage/>}>
@@ -33,18 +36,22 @@ const App: React.FC = () => {
             </PrivateRoute>
           }
         /> */}
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/hr" element={<HRhomePage />} />
-          <Route path="/manager" element={<ManagerPage />} />
-          <Route path="/managerTeam" element={<ManagerTeamPage />} />
-          <Route path="/*" element={<NotFoundPage />} />
-          <Route path="/forgot_password" element={<ForgotPassPage />} />
-          <Route path="/preference_page" element={<PreferencePage />} />
-          <Route path="/hr_manage" element={<HRManagePage initialState={"Teams"} />} />
-        </Routes>
-      </AuthContextProvider>
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/hr" element={<HRhomePage />} />
+            <Route path="/manager" element={<ManagerPage />} />
+            <Route path="/managerTeam" element={<ManagerTeamPage />} />
+            <Route path="/*" element={<NotFoundPage />} />
+            <Route path="/forgot_password" element={<ForgotPassPage />} />
+            <Route path="/preference_page" element={<PreferencePage />} />
+            <Route
+              path="/hr_manage"
+              element={<HRManagePage initialState={"Teams"} />}
+            />
+          </Routes>
+        </AuthContextProvider>
+      </div>
     </div>
   );
-};
+});
 
 export default App;

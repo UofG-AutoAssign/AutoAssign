@@ -1,14 +1,11 @@
-import { observer } from "mobx-react";
-import React, { FC } from "react";
+import { FC } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
-import themeStore from "../context/themeStore";
 
-const AccountPage: FC = observer(() => {
+const AccountPage: FC = () => {
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-400">
+      <div>
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
@@ -41,8 +38,7 @@ const AccountPage: FC = observer(() => {
           </div>
         </section>
       </div>
-    </div>
   );
-});
+};
 
 export default AccountPage;

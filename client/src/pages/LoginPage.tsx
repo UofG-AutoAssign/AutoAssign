@@ -1,13 +1,10 @@
-import { observer } from "mobx-react";
-import React from "react";
+import { FC } from "react";
 import LoginCard from "../components/LoginCard";
 import Navbar from "../components/Navbar";
-import themeStore from "../context/themeStore";
 
-const AccountPage: React.FC = observer(() => {
+const AccountPage: FC = () => {
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="flex flex-col min-h-screen">
+      <div>
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
@@ -27,8 +24,7 @@ const AccountPage: React.FC = observer(() => {
           </div>
         </div>
       </div>
-    </div>
   );
-});
+};
 
 export default AccountPage;

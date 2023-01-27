@@ -1,15 +1,11 @@
-import { observer } from "mobx-react";
-import React, { useContext } from "react";
-import AvatarBar from "../components/AvatarBar";
+import { FC, useContext } from "react";
 import LandingButtonLink, {
   LandingButtonLinkProps,
 } from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
 import AuthContext from "../context/AuthContext";
-import themeStore from "../context/themeStore";
 
-const ManagerPage: React.FC = observer(() => {
+const ManagerPage: FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
@@ -37,8 +33,7 @@ const ManagerPage: React.FC = observer(() => {
   ];
 
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-400">
+      <div>
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
@@ -63,8 +58,7 @@ const ManagerPage: React.FC = observer(() => {
           </div>
         </div>
       </div>
-    </div>
   );
-});
+};
 
 export default ManagerPage;
