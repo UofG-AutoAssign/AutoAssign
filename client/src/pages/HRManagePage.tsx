@@ -347,7 +347,7 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-400 ">
+      <div className="page-background dark:bg-gray-800 ">
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
