@@ -1,11 +1,8 @@
-import React from "react";
-import { default as logo } from "../assets/react.svg";
-import { FcSettings, FcPicture } from "react-icons/all";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 
-const ForgotPassCard: React.FC = () => {
+const ForgotPassCard: FC = () => {
   return (
-    <div>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="space-y-4 md:space-y-6 sm:p-8">
           <form className="space-y-4 md:space-y-6" action="#">
@@ -46,7 +43,6 @@ const ForgotPassCard: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
   );
 };
 

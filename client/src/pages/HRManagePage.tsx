@@ -1,10 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { observer } from "mobx-react";
 import { assign } from "mobx/dist/internal";
-import React, { Fragment, useState } from "react";
+import React, { FC, Fragment, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
+import themeStore from "../context/themeStore";
 import { ManagerTableType } from "./ManagerTeamPage";
 
 export type initialComponent =
@@ -19,7 +21,7 @@ interface HRManagePageProps {
   initialState: initialComponent;
 }
 
-const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
+const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
   const [currentTab, setCurrentTab] = useState<
     | "Teams"
     | "Assign Graduate"
@@ -154,10 +156,12 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
     );
   };
 
+  const confirmGraduateToTeamModalId3: string = "confirm-graduate3";
+
   const assignManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black">
+        <div className="mb-7 text-black dark:text-white">
           Type the graduates email and the specific team you want to move them
           to.
         </div>
@@ -195,22 +199,38 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <button
+            <label
+              htmlFor={confirmGraduateToTeamModalId3}
+              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+
+              Assign
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId3}
+              className="modal-toggle"
+            />
+            {/* <button
               type="button"
               className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Assign
-            </button>
+            </button> */}
+            {reassureModal3()}
           </div>
         </form>
       </div>
     );
   };
 
+  const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
+
   const removeManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 ">
-        <div className="mb-7 text-black">
+        <div className="mb-7 text-black dark:text-white">
           Type the managers email and delete their account permanently.
         </div>
         <form>
@@ -228,14 +248,22 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
               placeholder="manager@email.com                         "
               required
             ></input>
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </button>
-            </div>
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor={confirmGraduateToTeamModalId2}
+              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+            >
+              Delete
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId2}
+              className="modal-toggle"
+            />
+
+            {reassureModal()}
+          </div>
           </div>
         </form>
       </div>
@@ -245,7 +273,7 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
   const removeGraduate = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black">
+        <div className="mb-7 text-black dark:text-white">
           Type the graduates email and delete their account permanently.
         </div>
         <form>
@@ -263,14 +291,22 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
               placeholder="graduate@email.com                         "
               required
             ></input>
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </button>
-            </div>
+           <div className="flex flex-col items-center">
+            <label
+              htmlFor={confirmGraduateToTeamModalId2}
+              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+            >
+              Delete
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId2}
+              className="modal-toggle"
+            />
+
+            {reassureModal()}
+          </div>
           </div>
         </form>
       </div>
@@ -282,7 +318,7 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
   const assignGraduate = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black">
+        <div className="mb-7 text-black dark:text-white">
           Type the graduates email and the specific team you want to move them
           to.
         </div>
@@ -321,14 +357,16 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
           </div>
           <div className="flex flex-col items-center">
             <label
-              htmlFor={confirmGraduateToTeamModalId}
+              htmlFor={confirmGraduateToTeamModalId2}
               className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
+
               Submit
             </label>
+
             <input
               type="checkbox"
-              id={confirmGraduateToTeamModalId}
+              id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
             {/* <button
@@ -337,7 +375,7 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
             >
               Assign
             </button> */}
-            {reassureModal()}
+            {reassureModal2()}
           </div>
         </form>
       </div>
@@ -490,11 +528,11 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
     return (
       <>
         <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white">
-            <h3 className="font-bold text-lg text-black">Are you Sure? </h3>
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="py-4 text-black">
+                <span className="py-4 text-black dark:text-white">
                   Are you sure that you want to delete [member]?{" "}
                 </span>
               </label>
@@ -502,13 +540,90 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
 
             <div className="modal-action">
               <label
-                htmlFor={confirmGraduateToTeamModalId}
+                htmlFor={confirmGraduateToTeamModalId2}
                 className="btn bg-gray-200 text-black shadow-lg"
               >
                 Cancel
               </label>
               <label
-                htmlFor={confirmGraduateToTeamModalId}
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-red-700 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const reassureModal2 = (): JSX.Element => {
+    function classNames(...classes: any) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    return (
+      <>
+        <div className="modal z-50 overflow-y-auto">
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="py-4 text-black dark:text-white">
+                  Are you sure that you want to submit [member]?{" "}
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-gray-200 text-black shadow-lg"
+              >
+                Cancel
+              </label>
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-blue-800 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+
+  const reassureModal3 = (): JSX.Element => {
+    function classNames(...classes: any) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    return (
+      <>
+        <div className="modal z-50 overflow-y-auto">
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="py-4 text-black dark:text-white">
+                  Are you sure that you want to Assign [member]?{" "}
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              <label
+                htmlFor={confirmGraduateToTeamModalId3}
+                className="btn bg-gray-200 text-black shadow-lg"
+              >
+                Cancel
+              </label>
+              <label
+                htmlFor={confirmGraduateToTeamModalId3}
                 className="btn bg-blue-800 text-white"
               >
                 Yes, I'm sure
@@ -573,11 +688,50 @@ const HRManagePage: React.FC<HRManagePageProps> = ({ initialState }) => {
             Create Account
           </button>
         </div>
-        {displayComponent()}
-        {reassureModal()}
-      </section>
+        <section className="flex flex-row gap-5 py-5">
+          <div className="w-1/4 bg-loginBlue rounded-r-2xl">
+            <button
+              onClick={() => setCurrentTab("Teams")}
+              type="button"
+              className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            >
+              Manage Teams
+            </button>
+            <button
+              onClick={() => setCurrentTab("Assign Graduate")}
+              type="button"
+              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            >
+              Assign Graduate
+            </button>
+            <button
+              onClick={() => setCurrentTab("Remove Graduate")}
+              type="button"
+              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            >
+              Remove Graduate
+            </button>
+            <button
+              onClick={() => setCurrentTab("Assign Manager")}
+              type="button"
+              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            >
+              Assign Manager
+            </button>
+            <button
+              onClick={() => setCurrentTab("Remove Manager")}
+              type="button"
+              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            >
+              Remove Manager
+            </button>
+          </div>
+          {displayComponent()}
+          {reassureModal()}
+        </section>
+      </div>
     </div>
   );
-};
+});
 
 export default HRManagePage;

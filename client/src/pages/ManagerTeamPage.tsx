@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
-import React, { useRef, useState } from "react";
-import PickTable from "../components/PickTable";
+import { FC, useState } from "react";
 import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./PreferencePage";
 import { HiOutlineTrash } from "react-icons/hi";
 export interface ManagerTableType {
@@ -8,7 +7,7 @@ export interface ManagerTableType {
   email: string;
 }
 
-const ManagerTeamPage: React.FC = () => {
+const ManagerTeamPage: FC = () => {
   
   const [currentTab, setCurrentTab] = useState<"Your Team" | "Team Settings">(
     "Your Team"
@@ -107,7 +106,7 @@ const ManagerTeamPage: React.FC = () => {
                 >
                   <th
                     scope="row"
-                    className="flex flex-row justify-between px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
                   >
                     <MyTech />
                     <button className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150" onClick={() => deleteItem(item.id)}>
@@ -119,7 +118,7 @@ const ManagerTeamPage: React.FC = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center bg-white dark:bg-gray-800">
           <button
             type="button"
             className="mb-10 hover:scale-110 transition-all duration-150 my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -134,7 +133,7 @@ const ManagerTeamPage: React.FC = () => {
 
   const preferenceSlider = (): JSX.Element => {
     return (
-      <div>
+      <div className="bg-white dark:bg-gray-800 text-black dark:text-white">
         <input
           onChange={(e) => setSliderValue(e.target.value)}
           id="minmax-range"
@@ -145,8 +144,8 @@ const ManagerTeamPage: React.FC = () => {
           defaultValue={sliderValue}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         ></input>
-        <div className="flex flex-col justify-between w-full px-2 text-xs text-black bg-white">
-          <div className="flex flex-row justify-between w-full">
+        <div className="flex flex-col justify-between w-full px-2 text-xs bg-white dark:bg-gray-800">
+          <div className="flex flex-row justify-between w-full ">
             <span>|</span>
             <span>|</span>
             <span>|</span>
@@ -163,21 +162,21 @@ const ManagerTeamPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-y-auto">
+    <div>
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
       <div>
-        <div className="py-5 text-5xl text-center text-blue-900">
+        <div className="hi-text dark:text-white">
           Pick Your Team Preference
         </div>
         {currentTab !== 'Your Team' && <div className="flex flex-row items-center justify-center gap-5">
-          <div className="text-black">
+          <div className="hi-text dark:text-white text-xl">
             Choose the what technologies your team would use.
           </div>
           <button
             type="button"
-            className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            className="my-4 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
           >
             Save
           </button>
