@@ -22,7 +22,7 @@ const App: FC = observer(() => {
   // Implement routing later
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-400 overflow-y-auto">
+      <div className="page-background dark:bg-gray-800 overflow-y-auto">
         <AuthContextProvider>
           <Routes>
             <Route path="/" element={<LoginPage />} />
