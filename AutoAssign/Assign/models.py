@@ -45,6 +45,9 @@ class Graduate(models.Model):
 
     role = models.IntegerField(verbose_name="Roles", default=1)
 
+    # Many to Many link to the Form
+    Form = models.ManyToManyField(to="Form", related_name='Skill_name')
+
 
 class Manager(models.Model):
     # man_id = models.BigAutoField(verbose_name="man_id ",
@@ -105,43 +108,12 @@ class Form(models.Model):
     # form_id = models.BigAutoField(verbose_name="department's id ",
     #                               primary_key=True)
 
-    # One to One Link to Graduate
-    grad_id = models.ForeignKey(to="Graduate", on_delete=models.CASCADE)
-
     # Ten positions are preset and inserted if the user selects more
 
-    Skill_One = models.ForeignKey(to="Skill", related_name='skill_One_id', on_delete=models.CASCADE, null=True)
-    Skill_Two = models.ForeignKey(to="Skill", related_name='skill_Two_id', on_delete=models.CASCADE, null=True)
-    Skill_Three = models.ForeignKey(to="Skill", related_name='skill_Three_id', on_delete=models.CASCADE, null=True)
-    Skill_Four = models.ForeignKey(to="Skill", related_name='skill_Four_id', on_delete=models.CASCADE, null=True)
-    Skill_Five = models.ForeignKey(to="Skill", related_name='skill_Five_id', on_delete=models.CASCADE, null=True)
-    Skill_Six = models.ForeignKey(to="Skill", related_name='skill_Six_id', on_delete=models.CASCADE, null=True)
-    Skill_Seven = models.ForeignKey(to="Skill", related_name='skill_Seven_id', on_delete=models.CASCADE, null=True)
-    Skill_Eight = models.ForeignKey(to="Skill", related_name='skill_Eight_id', on_delete=models.CASCADE, null=True)
-    Skill_Nine = models.ForeignKey(to="Skill", related_name='skill_Nine_id', on_delete=models.CASCADE, null=True)
-    Skill_Ten = models.ForeignKey(to="Skill", related_name='skill_Ten_id', on_delete=models.CASCADE, null=True)
+    interest = models.IntegerField(verbose_name="Interest_One", null=True)
 
-    interest_One = models.IntegerField(verbose_name="Interest_One", null=True)
-    interest_Two = models.IntegerField(verbose_name="Interest_Two", null=True)
-    interest_Three = models.IntegerField(verbose_name="Interest_Three", null=True)
-    interest_Four = models.IntegerField(verbose_name="Interest_Four", null=True)
-    interest_Five = models.IntegerField(verbose_name="Interest_Five", null=True)
-    interest_Six = models.IntegerField(verbose_name="Interest_Six", null=True)
-    interest_Seven = models.IntegerField(verbose_name="Interest_Seven", null=True)
-    interest_Eight = models.IntegerField(verbose_name="Interest_Eight", null=True)
-    interest_Nine = models.IntegerField(verbose_name="Interest_Nine", null=True)
-    interest_Ten = models.IntegerField(verbose_name="Interest_Ten", null=True)
-
-    experience_One = models.IntegerField(verbose_name="experience_One", null=True)
-    experience_Two = models.IntegerField(verbose_name="experience_Two", null=True)
-    experience_Three = models.IntegerField(verbose_name="experience_Three", null=True)
-    experience_Four = models.IntegerField(verbose_name="experience_Four", null=True)
-    experience_Five = models.IntegerField(verbose_name="experience_Five", null=True)
-    experience_Six = models.IntegerField(verbose_name="experience_Six", null=True)
-    experience_Seven = models.IntegerField(verbose_name="experience_Seven", null=True)
-    experience_Eight = models.IntegerField(verbose_name="experience_Eight", null=True)
-    experience_Nine = models.IntegerField(verbose_name="experience_Nine", null=True)
-    experience_Ten = models.IntegerField(verbose_name="experience_Ten", null=True)
+    experience = models.IntegerField(verbose_name="experience_One", null=True)
+    Skill_id = models.ForeignKey(to="Skill", related_name='Skill', on_delete=models.CASCADE, null=True)
 
 
 class Team(models.Model):
@@ -158,7 +130,7 @@ class Team(models.Model):
 
     # One to Many Link to Manger
 
-    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,null = True)
+    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE, null=True)
 
     # One to Many Link to Departments
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)
@@ -178,3 +150,4 @@ class Skill(models.Model):
                                   null=False,
                                   unique=True,
                                   )
+
