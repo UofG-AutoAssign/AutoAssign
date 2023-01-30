@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Select from "react-select";
 import PickTable from "../components/PickTable";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 export const experience_options = [
   { value: 3, label: "Proficient" },
@@ -44,11 +44,10 @@ export interface ItemType {
 }
 
 const PreferencePage: React.FC = () => {
-
   const navigate = useNavigate();
 
   const navigateToTeam = () => {
-    navigate('/GraduateTeamPage');
+    navigate("/GraduateTeamPage");
   };
 
   return (
@@ -57,8 +56,9 @@ const PreferencePage: React.FC = () => {
         <Navbar />
       </nav>
       <div>
-        <div className="py-5 text-5xl text-center text-blue-900">Team Preference Form</div>
-
+        <div className="py-5 text-5xl text-center text-blue-900">
+          Team Preference Form
+        </div>
       </div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl">
@@ -85,7 +85,14 @@ const PreferencePage: React.FC = () => {
         <div className="w-3/4 pr-5">
           <div className="w-full bg-white rounded-2xl">
             <PickTable />
-
+            <div className="flex flex-row justify-center">
+            <button
+              type="button"
+              className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            >
+              Save
+            </button>
+            </div>
           </div>
         </div>
       </section>

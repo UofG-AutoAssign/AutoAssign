@@ -34,7 +34,7 @@ const AccountPage: React.FC = () => {
           </button>
         </div>
         <div className="w-3/4 pr-5">
-          <Table />
+          <Table data={["Firstname: ", "Surname", "Email", "Year"]} action={"edit"}  />
         </div>
       </section>
       <section></section>

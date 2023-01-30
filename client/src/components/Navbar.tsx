@@ -36,7 +36,7 @@ const backButton = (): JSX.Element => {
         {/* <DiReact className="text-teal-400 text-5xl hover:animate-spin"/> */}
 
         {/* <button className="btn">Button</button> */}
-        {backButton()}
+        {/*{backButton()}*/}
 
         <img className="max-w-lg hover:animate-spin" src={logo} />
         {/* <Link to="/"> */}
