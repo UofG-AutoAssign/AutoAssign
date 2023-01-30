@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import {MyTech,
+import {
+  MyTech,
   MyExperience,
   MyInterest,
   ItemType,
 } from "../pages/PreferencePage";
 import { ReactSortable } from "react-sortablejs";
+import { HiOutlineTrash } from "react-icons/hi";
 
 const PickTable: React.FC = () => {
   // @Todo prevent duplicate technology picks
@@ -27,10 +29,10 @@ const PickTable: React.FC = () => {
   const addItem = () => {
     let newList: ItemType[] = [...mockData];
 
-    newList.push({id:curId, name: "hi"});
+    newList.push({ id: curId, name: "hi" });
     // console.log(newList);
     setMockData(newList);
-    setCurId((prev) => prev + 1)
+    setCurId((prev) => prev + 1);
   };
 
   return (
@@ -53,16 +55,19 @@ const PickTable: React.FC = () => {
           <tbody>
             {mockData.map((item) => (
               <tr
-                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
                 key={item.id}
               >
                 <th
                   scope="row"
-                  className="flex flex-row py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="flex flex-row py-4 px-6 whitespace-nowrap font-medium"
                 >
                   <MyTech />
-                  <button className="w-1/4" onClick={() => deleteItem(item.id)}>
-                    delete
+                  <button
+                    className="w-1/4 text-2xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 text-center flex flex-row justify-center items-center"
+                    onClick={() => deleteItem(item.id)}
+                  >
+                    <HiOutlineTrash className=""/>
                   </button>
                 </th>
                 <td className="py-4 px-6">
@@ -73,18 +78,17 @@ const PickTable: React.FC = () => {
                 </td>
               </tr>
             ))}
-            
           </tbody>
         </table>
       </div>
-      <div className="flex flex-col items-center">
-      <button
-        type="button"
-        className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={() => addItem()}
-      >
-        Add New Row
-      </button>
+      <div className="flex flex-col items-center bg-white dark:bg-gray-800">
+        <button
+          type="button"
+          className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          onClick={() => addItem()}
+        >
+          Add New Row
+        </button>
       </div>
     </div>
   );

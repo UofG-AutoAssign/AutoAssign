@@ -1,11 +1,9 @@
-import AvatarBar from "../components/AvatarBar";
+
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
-import React, { useState } from "react";
-import { ReactSortable } from "react-sortablejs";
+import { FC } from "react";
 import Select from "react-select";
 import PickTable from "../components/PickTable";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const experience_options = [
   { value: 3, label: "Proficient" },
@@ -28,14 +26,14 @@ export const tech_options = [
   { value: "cyber_security", label: "Cyber Security" },
 ];
 
-export const MyExperience: React.FC = () => (
-  <Select className="relative w-3/4 h-10" options={experience_options} />
+export const MyExperience = (): JSX.Element => (
+  <Select className="relative w-3/4 h-10 text-black" options={experience_options} />
 );
-export const MyInterest: React.FC = () => (
-  <Select className="relative w-3/4 h-10" options={interest_options} />
+export const MyInterest = (): JSX.Element => (
+  <Select className="relative w-3/4 h-10 text-black" options={interest_options} />
 );
-export const MyTech: React.FC = () => (
-  <Select className="relative w-3/4 h-10" options={tech_options} />
+export const MyTech = (): JSX.Element => (
+  <Select className="relative w-3/4 h-10 text-black" options={tech_options} />
 );
 
 export interface ItemType {
@@ -43,22 +41,22 @@ export interface ItemType {
   name: string;
 }
 
-const PreferencePage: React.FC = () => {
-
+const PreferencePage: FC = () => {
   const navigate = useNavigate();
 
   const navigateToTeam = () => {
-    navigate('/GraduateTeamPage');
+    navigate("/GraduateTeamPage");
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-y-auto">
+    <div>
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
       <div>
-        <div className="py-5 text-5xl text-center text-blue-900">Team Preference Form</div>
-
+        <div className="hi-text dark:text-white">
+          Team Preference Form
+        </div>
       </div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl">
@@ -83,9 +81,8 @@ const PreferencePage: React.FC = () => {
           </button>
         </div>
         <div className="w-3/4 pr-5">
-          <div className="w-full bg-white rounded-2xl">
+          <div className="w-full bg-white rounded-2xl font-medium">
             <PickTable />
-
           </div>
         </div>
       </section>
