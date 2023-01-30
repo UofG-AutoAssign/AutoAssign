@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { FC } from "react";
 import Select from "react-select";
 import PickTable from "../components/PickTable";
-import { useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 export const experience_options = [
   { value: 3, label: "Proficient" },
@@ -83,6 +83,14 @@ const PreferencePage: FC = () => {
         <div className="w-3/4 pr-5">
           <div className="w-full bg-white rounded-2xl font-medium">
             <PickTable />
+            <div className="flex flex-row justify-center">
+            <button
+              type="button"
+              className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            >
+              Save
+            </button>
+            </div>
           </div>
         </div>
       </section>

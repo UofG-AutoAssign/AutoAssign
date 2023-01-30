@@ -15,6 +15,7 @@ export type initialComponent =
   | "Remove Graduate"
   | "Assign Manager"
   | "Remove Manager";
+("Create Account");
 
 interface HRManagePageProps {
   initialState: initialComponent;
@@ -27,8 +28,65 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     | "Remove Graduate"
     | "Assign Manager"
     | "Remove Manager"
+    | "Create Account"
   >(initialState);
   // console.log(initialState);
+
+  const [yearOneGrads, setYearOneGrads] = useState<string[]>([
+    "bob@barclays.com",
+    "jack@barclays.com",
+    "johnathon@barclays.com",
+    "hana@barclays.com",
+    "chris@barclays.com",
+    "johny@barclays.com",
+    "michael@barclays.com",
+    "thompson@barclays.com",
+    "joey@barclays.com",
+  ]);
+  const [yearTwoGrads, setYearTwoGrads] = useState<string[]>([
+    "sam@barclays.com",
+    "dequan@barclays.com",
+  ]);
+
+  const swapYear = (gradEmail: string, currentYear: number): void => {
+    if (currentYear === 1) {
+      // remove person from year 1
+      // update year 1 list
+      let yearOneDummy = [...yearOneGrads].filter((grad) => grad !== gradEmail);
+      setYearOneGrads(yearOneDummy);
+      // add person to year 2
+      let yearTwoDummy = [...yearTwoGrads];
+      yearTwoDummy.push(gradEmail);
+      setYearTwoGrads(yearTwoDummy);
+    } else if (currentYear === 2) {
+      // remove person from year 2
+      // update year 2 list
+      let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad !== gradEmail);
+      setYearTwoGrads(yearTwoDummy);
+      // add person to year 1
+      let yearOneDummy = [...yearOneGrads];
+      yearOneDummy.push(gradEmail);
+      setYearOneGrads(yearOneDummy);
+    } else {
+      console.warn("You should not be here");
+    }
+  };
+
+  const shiftYear = (): void => {
+    
+      
+      // add all year 1s to year 2s
+      let yearTwoDummy = [...yearTwoGrads];
+      for (let i=0; i<yearOneGrads.length; i++){
+        yearTwoDummy.push(yearOneGrads[i])
+      }
+      setYearTwoGrads(yearTwoDummy);
+      
+      //remove all year 1s
+      setYearOneGrads([]);
+
+
+  };
 
   const teamTable = (): JSX.Element => {
     return (
@@ -324,6 +382,122 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     );
   };
 
+  const Table = ({
+    gradList,
+    yearNumber,
+  }: {
+    gradList: string[];
+    yearNumber: number;
+  }): JSX.Element => {
+    if (gradList.length === 0) {
+      console.log("yooo");
+    }
+    return (
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg max-h-96 w-96 overflow-y-scroll">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
+          <tbody>
+            {gradList.length === 0 ? (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th
+                  scope="row"
+                  className="py-4 px-6 font-medium text-gray-400 whitespace-nowrap dark:text-white"
+                >
+                  Empty
+                </th>
+                <td className="py-4 px-6 text-right">
+                  <a
+                    href="#"
+                    className="invisible font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >
+                    swap
+                  </a>
+                </td>
+              </tr>
+            ) : (
+              gradList.map((gradName) => {
+                return (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {gradName}
+                    </th>
+                    <td className="py-4 px-6 text-right">
+                      <div
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        onClick={() => swapYear(gradName, yearNumber)}
+                      >
+                        swap
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const createAccount = (): JSX.Element => {
+    return (
+      <div className="w-3/4 pr-5 flex flex-col items-center">
+        <label
+          htmlFor="Type the graduate emails to create their account"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Type the graduate email(s) to create their account
+        </label>
+        <textarea
+          id="message"
+          rows={4}
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="grad1@barclays.com, grad2@barclays.com, ..."
+        ></textarea>
+        <div className="py-8">
+        <button
+              type="button"
+              className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            >
+              Create
+        </button>
+        </div>
+        
+        
+        <div className="flex flex-row gap-5">
+          <div>
+            Year 1
+            <Table gradList={yearOneGrads} yearNumber={1} />
+          </div>
+          <div>
+            Year 2
+            <Table gradList={yearTwoGrads} yearNumber={2} />
+          </div>
+        </div>
+        <div className="py-8">
+        <button
+              type="button"
+              className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+              onClick={shiftYear}
+            >
+              Shift Year 1 Grads to Year 2 Grads
+        </button>
+        
+        </div>
+        <button
+              type="button"
+              className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            >
+              Save
+        </button>
+        
+      </div>
+    );
+  };
+
   const displayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
       return teamTable();
@@ -339,6 +513,9 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     }
     if (currentTab === "Remove Manager") {
       return removeManager();
+    }
+    if (currentTab === "Create Account") {
+      return createAccount();
     }
     return <div>yooo</div>;
   };
@@ -458,16 +635,58 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     );
   };
 
-
-
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-800 ">
-        <nav className="sticky top-0 z-50">
-          <Navbar />
-        </nav>
-        <div className="hi-text dark:text-white">
-          {currentTab}
+    <div className="flex flex-col min-h-screen">
+      <nav className="sticky top-0 z-50">
+        <Navbar />
+      </nav>
+      <div className="text-5xl text-center text-blue-900 py-5">
+        {currentTab}
+      </div>
+      <section className="flex flex-row gap-5 py-5">
+        <div className="w-1/4 bg-loginBlue rounded-r-2xl">
+          <button
+            onClick={() => setCurrentTab("Teams")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Manage Teams
+          </button>
+          <button
+            onClick={() => setCurrentTab("Assign Graduate")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Assign Graduate
+          </button>
+          <button
+            onClick={() => setCurrentTab("Remove Graduate")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Remove Graduate
+          </button>
+          <button
+            onClick={() => setCurrentTab("Assign Manager")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Assign Manager
+          </button>
+          <button
+            onClick={() => setCurrentTab("Remove Manager")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Remove Manager
+          </button>
+          <button
+            onClick={() => setCurrentTab("Create Account")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Create Account
+          </button>
         </div>
         <section className="flex flex-row gap-5 py-5">
           <div className="w-1/4 bg-loginBlue rounded-r-2xl">
