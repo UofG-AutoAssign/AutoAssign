@@ -71,6 +71,37 @@ class CreateHrSerializer(serializers.ModelSerializer):
             "second_name": {"max_length": 30, "write_only": True}
         }
 
+
+class CreateHrSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.HR
+        fields = ["role", "email", "password", "first_name", "second_name"]
+        extra_kwargs = {
+            "email": {"max_length": 100, "write_only": True},
+            "password": {"max_length": 64, "write_only": True},
+            "first_name": {"max_length": 30, "write_only": True},
+            "second_name": {"max_length": 30, "write_only": True}
+        }
+
+
+class FormSerializer(serializers.ModelSerializer):
+    Form_information = serializers.SerializerMethodField()
+
+    def get_Form_information(self, obj):
+        Form = obj.Form.all()
+        return [
+            {"Form_id": i.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest, "Experience": i.experience}
+            for i in Form]
+
+    class Meta:
+        model = models.Form
+        fields = ["id", "Form_information"]
+        list_serializer_class = serializers.ListSerializer
+
+
+
+
+
 # Basic method: hook verification
 # class HrCreatSerializer(serializers.Serializer):
 #     role = serializers.IntegerField(required=True)

@@ -120,3 +120,18 @@ class HrViewCreate(APIView):
             return Response(context)
 
         return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})
+
+
+class FormView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        # Find the corresponding form
+
+        ser = serializers.FormSerializer(instance=request.user)
+
+        # Find the corresponding skill name
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
