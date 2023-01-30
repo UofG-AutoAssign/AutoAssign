@@ -147,3 +147,28 @@ class FormView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+
+class ChangePassword(APIView):
+
+    def put(self, request):
+        pwd = request.data.get("pwd")
+        pwd1 = request.data.get("pwd1")
+        pwd2 = request.data.get("pwd2")
+
+        User = request.user
+        hash_pwd = hashEncryption(pwd)
+
+        if pwd1 != pwd2:
+            return Response({"code": 400, 'error': "Please check whether the passwords entered are consistent"})
+
+        if hash_pwd != User.password:
+            return Response({'status': False, 'error': 'password error'})
+
+        hash_pwd = hashEncryption(pwd1)
+        User.password = hash_pwd
+        User.save()
+
+        context = {"status": True, "data": "Password Changed"}
+
+        return Response(context)

@@ -11,5 +11,6 @@ urlpatterns = [
     path('home/man/', views.ManView.as_view(), name="ManHome"),
     path('home/hr/create', views.HrViewCreate.as_view(), name="HrCreate"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
+    path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
 
 ]
