@@ -99,6 +99,12 @@ class FormSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+class SkillSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Skill
+        fields = ["id", "skill_name"]
+        list_serializer_class = serializers.ListSerializer
 
 
 

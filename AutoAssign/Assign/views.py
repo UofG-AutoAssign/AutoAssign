@@ -122,6 +122,18 @@ class HrViewCreate(APIView):
         return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})
 
 
+class SkillView(APIView):
+
+    def get(self, request):
+        skill_querryset = models.Skill.objects.all()
+        print(skill_querryset)
+
+        ser = serializers.SkillSerializer(instance=skill_querryset, many=True)
+
+        context = {"status": True, "data": ser.data}
+        return Response(context)
+
+
 class FormView(APIView):
     permission_classes = [GradPermission, ]
 
