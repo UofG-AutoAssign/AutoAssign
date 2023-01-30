@@ -98,6 +98,8 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     );
   };
 
+  const confirmGraduateToTeamModalId3: string = "confirm-graduate3";
+
   const assignManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
@@ -139,17 +141,33 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <button
+            <label
+              htmlFor={confirmGraduateToTeamModalId3}
+              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+
+              Assign
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId3}
+              className="modal-toggle"
+            />
+            {/* <button
               type="button"
               className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Assign
-            </button>
+            </button> */}
+            {reassureModal3()}
           </div>
         </form>
       </div>
     );
   };
+
+  const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
 
   const removeManager = (): JSX.Element => {
     return (
@@ -172,14 +190,22 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               placeholder="manager@email.com                         "
               required
             ></input>
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </button>
-            </div>
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor={confirmGraduateToTeamModalId2}
+              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+            >
+              Delete
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId2}
+              className="modal-toggle"
+            />
+
+            {reassureModal()}
+          </div>
           </div>
         </form>
       </div>
@@ -207,14 +233,22 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               placeholder="graduate@email.com                         "
               required
             ></input>
-            <div className="flex flex-col items-center">
-              <button
-                type="button"
-                className="my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </button>
-            </div>
+           <div className="flex flex-col items-center">
+            <label
+              htmlFor={confirmGraduateToTeamModalId2}
+              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+            >
+              Delete
+            </label>
+
+            <input
+              type="checkbox"
+              id={confirmGraduateToTeamModalId2}
+              className="modal-toggle"
+            />
+
+            {reassureModal()}
+          </div>
           </div>
         </form>
       </div>
@@ -265,14 +299,16 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
           </div>
           <div className="flex flex-col items-center">
             <label
-              htmlFor={confirmGraduateToTeamModalId}
+              htmlFor={confirmGraduateToTeamModalId2}
               className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
+
               Submit
             </label>
+
             <input
               type="checkbox"
-              id={confirmGraduateToTeamModalId}
+              id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
             {/* <button
@@ -281,7 +317,7 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
             >
               Assign
             </button> */}
-            {reassureModal()}
+            {reassureModal2()}
           </div>
         </form>
       </div>
@@ -315,11 +351,11 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     return (
       <>
         <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white">
-            <h3 className="font-bold text-lg text-black">Are you Sure? </h3>
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="py-4 text-black">
+                <span className="py-4 text-black dark:text-white">
                   Are you sure that you want to delete [member]?{" "}
                 </span>
               </label>
@@ -327,13 +363,51 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
 
             <div className="modal-action">
               <label
-                htmlFor={confirmGraduateToTeamModalId}
+                htmlFor={confirmGraduateToTeamModalId2}
                 className="btn bg-gray-200 text-black shadow-lg"
               >
                 Cancel
               </label>
               <label
-                htmlFor={confirmGraduateToTeamModalId}
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-red-700 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const reassureModal2 = (): JSX.Element => {
+    function classNames(...classes: any) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    return (
+      <>
+        <div className="modal z-50 overflow-y-auto">
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="py-4 text-black dark:text-white">
+                  Are you sure that you want to submit [member]?{" "}
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-gray-200 text-black shadow-lg"
+              >
+                Cancel
+              </label>
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
                 className="btn bg-blue-800 text-white"
               >
                 Yes, I'm sure
@@ -344,6 +418,47 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
       </>
     );
   };
+
+
+  const reassureModal3 = (): JSX.Element => {
+    function classNames(...classes: any) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    return (
+      <>
+        <div className="modal z-50 overflow-y-auto">
+          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <div className="form-control w-full max-w-xs">
+              <label className="label">
+                <span className="py-4 text-black dark:text-white">
+                  Are you sure that you want to Assign [member]?{" "}
+                </span>
+              </label>
+            </div>
+
+            <div className="modal-action">
+              <label
+                htmlFor={confirmGraduateToTeamModalId3}
+                className="btn bg-gray-200 text-black shadow-lg"
+              >
+                Cancel
+              </label>
+              <label
+                htmlFor={confirmGraduateToTeamModalId3}
+                className="btn bg-blue-800 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
