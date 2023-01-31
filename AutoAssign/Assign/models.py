@@ -46,7 +46,7 @@ class Graduate(models.Model):
     role = models.IntegerField(verbose_name="Roles", default=1)
 
     # Many to Many link to the Form
-    Form = models.ManyToManyField(to="Form", related_name='Skill_name')
+    Form = models.ManyToManyField(to="Form")
 
 
 class Manager(models.Model):
@@ -138,11 +138,7 @@ class Team(models.Model):
     ratio = models.FloatField(verbose_name="Ratio",
                               null=True)
 
-    Skill_One = models.ForeignKey(to="Skill", related_name='Skill_One_id', on_delete=models.CASCADE, null=True)
-    Skill_Two = models.ForeignKey(to="Skill", related_name='Skill_Two_id', on_delete=models.CASCADE, null=True)
-    Skill_Three = models.ForeignKey(to="Skill", related_name='Skill_Three_id', on_delete=models.CASCADE, null=True)
-    Skill_Four = models.ForeignKey(to="Skill", related_name='Skill_Four_id', on_delete=models.CASCADE, null=True)
-    Skill_Five = models.ForeignKey(to="Skill", related_name='Skill_Five_id', on_delete=models.CASCADE, null=True)
+    Skill = models.ManyToManyField(to="Skill")
 
 
 class Skill(models.Model):

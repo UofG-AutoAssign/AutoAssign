@@ -185,9 +185,13 @@ def populate():
         skill_four = Skill.objects.filter(id=int(team['Skill_Four'])).first()
         skill_five = Skill.objects.filter(id=int(team['Skill_Five'])).first()
 
-        new_team = Team.objects.create(team_name=team['team_name'], Skill_One=skill_one,
-                                       Skill_Two=skill_two, Skill_Three=skill_three,
-                                       Skill_Four=skill_four, Skill_Five=skill_five, )
+        new_team = Team.objects.create(team_name=team['team_name'])
+        new_team.Skill.add(skill_one)
+        new_team.Skill.add(skill_two)
+        new_team.Skill.add(skill_three)
+        new_team.Skill.add(skill_four)
+        new_team.Skill.add(skill_five)
+
         new_team.save()
 
 
