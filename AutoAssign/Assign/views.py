@@ -204,7 +204,6 @@ class TeamView(APIView):
 
 
 class TeamSettingView(APIView):
-
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
@@ -219,4 +218,22 @@ class TeamSettingView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+
+class CreateTeamView(APIView):
+    permission_classes = [HrPermission, ]
+
+    # 1.Get initial data
+    def post(self, request):
+
+        # 2 Check data format
+        ser = serializers.CreateTeamSerializer(data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Create": "Team", "Status": "success"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
+
 

@@ -102,7 +102,6 @@ class TeamViewSerializer(serializers.ModelSerializer):
 
 
 class TeamSettingViewSerializer(serializers.ModelSerializer):
-
     Skill_information = serializers.SerializerMethodField()
 
     def get_Skill_information(self, obj):
@@ -115,3 +114,12 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
         model = models.Team
         fields = ["team_name", "ratio", "Skill_information"]
         list_serializer_class = serializers.ListSerializer
+
+
+class CreateTeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "depart_id", "ratio"]
+        extra_kwargs = {
+            "team_name": {"max_length": 100, "write_only": True},
+        }

@@ -6,6 +6,7 @@ app_name = 'Assign'
 urlpatterns = [
     path('', views.LoginView.as_view(), name="Login"),  # CBV Style Login
     path('home/hr/', views.HrView.as_view(), name="HrHome"),
+    path('home/hr/CreateTeam', views.CreateTeamView.as_view(), name="CreateTeam"),
     path('home/grad/', views.GradView.as_view(), name="GradHome"),
     path('home/grad/Form', views.FormView.as_view(), name="FromDisplay"),
     path('home/man/', views.ManView.as_view(), name="ManHome"),
