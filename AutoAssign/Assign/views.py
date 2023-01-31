@@ -203,22 +203,5 @@ class TeamView(APIView):
         return Response({'status': False, 'error': 'This manager has no Team yet'})
 
 
-class TeamSettingView(APIView):
-
-    permission_classes = [ManagerPermission, ]
-
-    def get(self, request):
-        # Find the corresponding form
-        user_obj = request.user
-        team_obj = models.Team.objects.filter(man_id=user_obj).first()
-
-        ser = serializers.TeamSettingViewSerializer(instance=team_obj)
-
-        # Find the corresponding skill name
-
-        context = {"status": True, "data": ser.data}
-
-        return Response(context)
-
 
 
