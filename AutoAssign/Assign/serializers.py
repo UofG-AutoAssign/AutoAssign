@@ -102,7 +102,16 @@ class TeamViewSerializer(serializers.ModelSerializer):
 
 
 class TeamSettingViewSerializer(serializers.ModelSerializer):
+
+    Skill_information = serializers.SerializerMethodField()
+
+    def get_Skill_information(self, obj):
+        Skill = obj.Skill.all()
+        return [
+            {"Skill_id": i.id, "skill_name": i.skill_name, }
+            for i in Skill]
+
     class Meta:
         model = models.Team
-        fields = ["team_name", "ratio", "Skill_One"]
+        fields = ["team_name", "ratio", "Skill_information"]
         list_serializer_class = serializers.ListSerializer
