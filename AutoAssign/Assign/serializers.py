@@ -93,3 +93,11 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = ["id", "skill_name"]
         list_serializer_class = serializers.ListSerializer
 
+
+class TeamViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["email", "first_name", "second_name"]
+        list_serializer_class = serializers.ListSerializer
+
+

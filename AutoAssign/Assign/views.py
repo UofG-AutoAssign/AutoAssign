@@ -125,10 +125,9 @@ class HrViewCreate(APIView):
 class SkillView(APIView):
 
     def get(self, request):
-        skill_querryset = models.Skill.objects.all()
-        print(skill_querryset)
+        skill_QuerySet = models.Skill.objects.all()
 
-        ser = serializers.SkillSerializer(instance=skill_querryset, many=True)
+        ser = serializers.SkillSerializer(instance=skill_QuerySet, many=True)
 
         context = {"status": True, "data": ser.data}
         return Response(context)
@@ -172,3 +171,37 @@ class ChangePassword(APIView):
         context = {"status": True, "data": "Password Changed"}
 
         return Response(context)
+
+
+class FormView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        # Find the corresponding form
+
+        ser = serializers.FormSerializer(instance=request.user)
+
+        # Find the corresponding skill name
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class TeamView(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def get(self, request):
+        user_obj = request.user
+        team_obj = models.Team.objects.filter(man_id=user_obj).first()
+        if team_obj:
+            grad_QuerySet = models.Graduate.objects.filter(team_id=team_obj).all()
+            ser = serializers.TeamViewSerializer(instance=grad_QuerySet, many=True)
+            context = {"status": True, "data": ser.data}
+            return Response(context)
+
+        return Response({'status': False, 'error': 'This manager has no Team yet'})
+
+
+
+

@@ -150,4 +150,3 @@ class Skill(models.Model):
                                   null=False,
                                   unique=True,
                                   )
-
