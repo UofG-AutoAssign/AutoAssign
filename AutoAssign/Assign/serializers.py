@@ -101,3 +101,8 @@ class TeamViewSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+class TeamSettingViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "ratio", "Skill_One"]
+        list_serializer_class = serializers.ListSerializer

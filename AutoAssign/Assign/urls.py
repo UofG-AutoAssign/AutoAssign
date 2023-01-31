@@ -10,6 +10,7 @@ urlpatterns = [
     path('home/grad/Form', views.FormView.as_view(), name="FromDisplay"),
     path('home/man/', views.ManView.as_view(), name="ManHome"),
     path('home/man/Team', views.TeamView.as_view(), name="TeamMemberView"),
+    path('home/man/Team/Setting', views.TeamSettingView.as_view(), name="TeamSettingView"),
     path('home/hr/create', views.HrViewCreate.as_view(), name="HrCreate"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
