@@ -128,9 +128,9 @@ class Team(models.Model):
     team_profile = models.JSONField(verbose_name="team's profile ",
                                     null=True)
 
-    # One to Many Link to Manger
+    # One to One Link to Manger
 
-    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE, null=True)
+    man_id = models.OneToOneField(to="Manager", on_delete=models.CASCADE, null=True)
 
     # One to Many Link to Departments
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)

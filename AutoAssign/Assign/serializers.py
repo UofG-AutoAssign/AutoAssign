@@ -119,7 +119,14 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
 class CreateTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_id", "depart_id", "ratio"]
+        fields = ["team_name", "man_id", "depart_id", "ratio", "Skill"]
         extra_kwargs = {
             "team_name": {"max_length": 100, "write_only": True},
         }
+
+
+class UpdateTeamSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["ratio", "Skill"]
+
