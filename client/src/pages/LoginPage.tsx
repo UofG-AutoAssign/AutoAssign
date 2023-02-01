@@ -18,7 +18,7 @@ const AccountPage: FC = () => {
             </div>
           </div>
           <div className="w-full h-screen basis-1/2 min-h-screen">
-            <div className="bg-gray-200 basis-1/2 rounded-3xl w-3/4 mx-auto p-5 transition-all delay-150">
+            <div className="bg-gray-200 dark:bg-gray-400 basis-1/2 rounded-3xl w-3/4 mx-auto p-5 transition-all delay-150">
               <LoginCard />
             </div>
           </div>

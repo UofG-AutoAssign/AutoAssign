@@ -21,7 +21,7 @@ interface HRManagePageProps {
   initialState: initialComponent;
 }
 
-const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
+const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
   const [currentTab, setCurrentTab] = useState<
     | "Teams"
     | "Assign Graduate"
@@ -73,19 +73,15 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
   };
 
   const shiftYear = (): void => {
-    
-      
-      // add all year 1s to year 2s
-      let yearTwoDummy = [...yearTwoGrads];
-      for (let i=0; i<yearOneGrads.length; i++){
-        yearTwoDummy.push(yearOneGrads[i])
-      }
-      setYearTwoGrads(yearTwoDummy);
-      
-      //remove all year 1s
-      setYearOneGrads([]);
+    // add all year 1s to year 2s
+    let yearTwoDummy = [...yearTwoGrads];
+    for (let i = 0; i < yearOneGrads.length; i++) {
+      yearTwoDummy.push(yearOneGrads[i]);
+    }
+    setYearTwoGrads(yearTwoDummy);
 
-
+    //remove all year 1s
+    setYearOneGrads([]);
   };
 
   const teamTable = (): JSX.Element => {
@@ -203,7 +199,6 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               htmlFor={confirmGraduateToTeamModalId3}
               className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-
               Assign
             </label>
 
@@ -235,12 +230,14 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
         </div>
         <form>
           <div className="flex flex-col justify-center items-center">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Manager email
-            </label>
+            <div className="flex flex-col items-start w-full">
+              <label
+                htmlFor="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Manager email
+              </label>
+            </div>
             <input
               type="text"
               id="first_name"
@@ -248,22 +245,22 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               placeholder="manager@email.com                         "
               required
             ></input>
-          <div className="flex flex-col items-center">
-            <label
-              htmlFor={confirmGraduateToTeamModalId2}
-              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-            >
-              Delete
-            </label>
+            <div className="flex flex-col items-center">
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+              >
+                Delete
+              </label>
 
-            <input
-              type="checkbox"
-              id={confirmGraduateToTeamModalId2}
-              className="modal-toggle"
-            />
+              <input
+                type="checkbox"
+                id={confirmGraduateToTeamModalId2}
+                className="modal-toggle"
+              />
 
-            {reassureModal()}
-          </div>
+              {reassureModal()}
+            </div>
           </div>
         </form>
       </div>
@@ -278,12 +275,14 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
         </div>
         <form>
           <div className="flex flex-col justify-center items-center">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Graduate email
-            </label>
+            <div className="flex flex-col items-start w-full">
+              <label
+                htmlFor="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Graduate email
+              </label>
+            </div>
             <input
               type="text"
               id="first_name"
@@ -291,22 +290,22 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               placeholder="graduate@email.com                         "
               required
             ></input>
-           <div className="flex flex-col items-center">
-            <label
-              htmlFor={confirmGraduateToTeamModalId2}
-              className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-            >
-              Delete
-            </label>
+            <div className="flex flex-col items-center">
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+              >
+                Delete
+              </label>
 
-            <input
-              type="checkbox"
-              id={confirmGraduateToTeamModalId2}
-              className="modal-toggle"
-            />
+              <input
+                type="checkbox"
+                id={confirmGraduateToTeamModalId2}
+                className="modal-toggle"
+              />
 
-            {reassureModal()}
-          </div>
+              {reassureModal()}
+            </div>
           </div>
         </form>
       </div>
@@ -360,7 +359,6 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
               htmlFor={confirmGraduateToTeamModalId2}
               className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-
               Submit
             </label>
 
@@ -389,11 +387,8 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     gradList: string[];
     yearNumber: number;
   }): JSX.Element => {
-    if (gradList.length === 0) {
-      console.log("yooo");
-    }
     return (
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg max-h-96 w-96 overflow-y-scroll">
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
           <tbody>
@@ -458,15 +453,14 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
           placeholder="grad1@barclays.com, grad2@barclays.com, ..."
         ></textarea>
         <div className="py-8">
-        <button
-              type="button"
-              className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-            >
-              Create
-        </button>
+          <button
+            type="button"
+            className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          >
+            Create
+          </button>
         </div>
-        
-        
+
         <div className="flex flex-row gap-5">
           <div>
             Year 1
@@ -478,22 +472,20 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
           </div>
         </div>
         <div className="py-8">
-        <button
-              type="button"
-              className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-              onClick={shiftYear}
-            >
-              Shift Year 1 Grads to Year 2 Grads
-        </button>
-        
+          <button
+            type="button"
+            className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            onClick={shiftYear}
+          >
+            Shift Year 1 Grads to Year 2 Grads
+          </button>
         </div>
         <button
-              type="button"
-              className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-            >
-              Save
+          type="button"
+          className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+        >
+          Save
         </button>
-        
       </div>
     );
   };
@@ -529,7 +521,9 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
       <>
         <div className="modal z-50 overflow-y-auto">
           <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <h3 className="font-bold text-lg text-black dark:text-white">
+              Are you Sure?{" "}
+            </h3>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="py-4 text-black dark:text-white">
@@ -567,7 +561,9 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
       <>
         <div className="modal z-50 overflow-y-auto">
           <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <h3 className="font-bold text-lg text-black dark:text-white">
+              Are you Sure?{" "}
+            </h3>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="py-4 text-black dark:text-white">
@@ -596,7 +592,6 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
     );
   };
 
-
   const reassureModal3 = (): JSX.Element => {
     function classNames(...classes: any) {
       return classes.filter(Boolean).join(" ");
@@ -606,7 +601,9 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
       <>
         <div className="modal z-50 overflow-y-auto">
           <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">Are you Sure? </h3>
+            <h3 className="font-bold text-lg text-black dark:text-white">
+              Are you Sure?{" "}
+            </h3>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="py-4 text-black dark:text-white">
@@ -640,9 +637,7 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
-      <div className="text-5xl text-center text-blue-900 py-5">
-        {currentTab}
-      </div>
+      <div className="hi-text dark:text-white">{currentTab}</div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl">
           <button
@@ -688,50 +683,11 @@ const HRManagePage: FC<HRManagePageProps> = observer(({ initialState }) => {
             Create Account
           </button>
         </div>
-        <section className="flex flex-row gap-5 py-5">
-          <div className="w-1/4 bg-loginBlue rounded-r-2xl">
-            <button
-              onClick={() => setCurrentTab("Teams")}
-              type="button"
-              className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-            >
-              Manage Teams
-            </button>
-            <button
-              onClick={() => setCurrentTab("Assign Graduate")}
-              type="button"
-              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-            >
-              Assign Graduate
-            </button>
-            <button
-              onClick={() => setCurrentTab("Remove Graduate")}
-              type="button"
-              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-            >
-              Remove Graduate
-            </button>
-            <button
-              onClick={() => setCurrentTab("Assign Manager")}
-              type="button"
-              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-            >
-              Assign Manager
-            </button>
-            <button
-              onClick={() => setCurrentTab("Remove Manager")}
-              type="button"
-              className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-            >
-              Remove Manager
-            </button>
-          </div>
-          {displayComponent()}
-          {reassureModal()}
-        </section>
-      </div>
+        {displayComponent()}
+        {reassureModal()}
+      </section>
     </div>
   );
-});
+};
 
 export default HRManagePage;
