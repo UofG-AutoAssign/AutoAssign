@@ -47,7 +47,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
     "sam@barclays.com",
     "dequan@barclays.com",
   ]);
-
+  
   const swapYear = (gradEmail: string, currentYear: number): void => {
     if (currentYear === 1) {
       // remove person from year 1

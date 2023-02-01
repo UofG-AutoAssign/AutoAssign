@@ -1,10 +1,52 @@
 import Navbar from "../components/Navbar";
 import { FC, useState } from "react";
-import { ItemType } from "./PreferencePage";
-import { useNavigate } from "react-router-dom";
+import PickTable from "../components/PickTable";
+import Select from "react-select";
 export interface ManagerTableType {
   name: string;
   email: string;
+}
+
+export const experience_options = [
+  { value: 3, label: "Proficient" },
+  { value: 2, label: "Intermediate" },
+  { value: 1, label: "Basic" },
+  { value: 0, label: "None" },
+];
+
+export const interest_options = [
+  { value: 3, label: "Very Interested" },
+  { value: 2, label: "Interested" },
+  { value: 1, label: "Somewhat Interested" },
+  { value: 0, label: "Not Interested" },
+];
+
+export const tech_options = [
+  { value: "full_stack_development", label: "Full Stack Development" },
+  { value: "ui_ux_development", label: "UI/UX Development" },
+  { value: "machine_learning", label: "Machine Learning" },
+  { value: "cyber_security", label: "Cyber Security" },
+];
+
+export const MyExperience = (): JSX.Element => (
+  <Select
+    className="relative w-3/4 h-10 text-black"
+    options={experience_options}
+  />
+);
+export const MyInterest = (): JSX.Element => (
+  <Select
+    className="relative w-3/4 h-10 text-black"
+    options={interest_options}
+  />
+);
+export const MyTech = (): JSX.Element => (
+  <Select className="relative w-3/4 h-10 text-black" options={tech_options} />
+);
+
+export interface ItemType {
+  id: number;
+  name: string;
 }
 
 const GraduateTeamPage: FC = () => {
@@ -26,35 +68,6 @@ const GraduateTeamPage: FC = () => {
   const [techList, setTechList] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
   ]);
-
-  const [curId, setCurId] = useState<number>(1);
-
-  const deleteItem = (delete_id: number) => {
-    let newList: ItemType[] = [...techList];
-
-    newList = newList.filter((item) => {
-      return item.id !== delete_id;
-    });
-    console.log(newList);
-    setTechList(newList);
-  };
-
-  const addItem = () => {
-    let newList: ItemType[] = [...techList];
-
-    newList.push({ id: curId, name: "hi" });
-    console.log(newList);
-    setTechList(newList);
-    setCurId((prev) => prev + 1);
-  };
-
-  const [sliderValue, setSliderValue] = useState("50");
-
-  const navigate = useNavigate();
-
-  const navigateToPreference = () => {
-    navigate("/Preference_page");
-  };
 
   const teamTable = (): JSX.Element => {
     return (
@@ -91,6 +104,22 @@ const GraduateTeamPage: FC = () => {
     );
   };
 
+  const preferenceTable = (): JSX.Element => {
+    return (
+      <div className="w-full bg-white rounded-2xl font-medium">
+        <PickTable />
+        <div className="flex flex-row justify-center bg-white dark:bg-gray-800">
+          <button
+            type="button"
+            className="my-5 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   const technologiesTable = (): JSX.Element => {
     return (
       <div>
@@ -122,6 +151,20 @@ const GraduateTeamPage: FC = () => {
     );
   };
 
+  const displayComponent = (): JSX.Element => {
+    if (currentTab === "Your Team") {
+      return teamTable();
+    }
+
+    else if (currentTab === "Preference Form") {
+      return preferenceTable();
+    }
+
+    else {
+      return technologiesTable();
+    }
+  }
+
   return (
     <div>
       <nav className="sticky top-0 z-50">
@@ -138,27 +181,17 @@ const GraduateTeamPage: FC = () => {
             Your Team
           </button>
           <button
-            onClick={() => navigateToPreference()}
+            onClick={() => setCurrentTab("Preference Form")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Preference Form
           </button>
-          <button
-            onClick={() => setCurrentTab("Roles")}
-            type="button"
-            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
-          >
-            Roles
-          </button>
+          
         </div>
 
         <div className="w-3/4 pr-5">
-          {currentTab === "Your Team" ? (
-            teamTable()
-          ) : (
-            <div className="">{technologiesTable()}</div>
-          )}
+          {displayComponent()}
         </div>
       </section>
     </div>

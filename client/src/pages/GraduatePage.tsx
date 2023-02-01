@@ -14,21 +14,14 @@ const GraduatePage: FC = () => {
       title: "Form",
       desc: "Submit this form to learn more about team preferences.",
       btn_color: "bg-btnColor1",
-      link: "preference_page",
+      link: "graduate/team",
       initialState: "Assign Graduate",
     },
     {
       title: "Your Team",
       desc: "View Team.",
       btn_color: "bg-btnColor2",
-      link: "graduateTeamPage",
-      initialState: "Assign Graduate",
-    },
-    {
-      title: "Roles",
-      desc: "Learn more about the roles in general.",
-      btn_color: "bg-btnColor3",
-      link: "graduate",
+      link: "graduate/team",
       initialState: "Assign Graduate",
     },
   ];

@@ -13,23 +13,16 @@ const ManagerPage: FC = () => {
       title: "Team Settings",
       desc: "Weight how much you value each technology.",
       btn_color: "bg-btnColor1",
-      link: "managerTeam",
+      link: "manager/team",
       initialState: "Teams",
     },
     {
       title: "Your Team",
       desc: "View your Team",
       btn_color: "bg-btnColor2",
-      link: "managerTeam",
+      link: "manager/team",
       initialState: "Teams",
-    },
-    {
-      title: "Roles",
-      desc: "Learn more about roles here at {company_name}",
-      btn_color: "bg-btnColor3",
-      link: "manager",
-      initialState: "Teams",
-    },
+    }
   ];
 
   return (

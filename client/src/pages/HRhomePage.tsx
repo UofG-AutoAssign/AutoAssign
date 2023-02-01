@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
 
-const HRhomePage: React.FC = () => {
+const HRHomePage: React.FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
@@ -16,35 +16,35 @@ const HRhomePage: React.FC = () => {
       title: "Manage Team",
       desc: "View teams",
       btn_color: "bg-btnColor1",
-      link: "hr_manage",
+      link: "hr/manage",
       initialState: "Teams",
     },
     {
       title: "Remove Graduates",
       desc: "Remove graduate profiles from the app",
       btn_color: "bg-btnColor2",
-      link: "hr_manage",
+      link: "hr/manage",
       initialState: "Remove Graduate",
     },
     {
       title: "Remove Managers",
       desc: "Remove manager profiles from the app",
       btn_color: "bg-btnColor3",
-      link: "hr_manage",
+      link: "hr/manage",
       initialState: "Remove Manager",
     },
     {
       title: "Assign Managers",
       desc: "Manually assign managers to teams based on their form responses",
       btn_color: "bg-btnColor5",
-      link: "hr_manage",
+      link: "hr/manage",
       initialState: "Assign Manager",
     },
     {
       title: "Assign Graduates",
       desc: "Manually assign graduates to teams based on their form responses",
       btn_color: "bg-btnColor4",
-      link: "hr_manage",
+      link: "hr/manage",
       initialState: "Assign Graduate",
     },
     {
@@ -186,4 +186,4 @@ const HRhomePage: React.FC = () => {
   );
 };
 
-export default HRhomePage;
+export default HRHomePage;

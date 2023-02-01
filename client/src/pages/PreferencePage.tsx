@@ -5,47 +5,12 @@ import Select from "react-select";
 import PickTable from "../components/PickTable";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
-export const experience_options = [
-  { value: 3, label: "Proficient" },
-  { value: 2, label: "Intermediate" },
-  { value: 1, label: "Basic" },
-  { value: 0, label: "None" },
-];
-
-export const interest_options = [
-  { value: 3, label: "Very Interested" },
-  { value: 2, label: "Interested" },
-  { value: 1, label: "Somewhat Interested" },
-  { value: 0, label: "Not Interested" },
-];
-
-export const tech_options = [
-  { value: "full_stack_development", label: "Full Stack Development" },
-  { value: "ui_ux_development", label: "UI/UX Development" },
-  { value: "machine_learning", label: "Machine Learning" },
-  { value: "cyber_security", label: "Cyber Security" },
-];
-
-export const MyExperience = (): JSX.Element => (
-  <Select className="relative w-3/4 h-10 text-black" options={experience_options} />
-);
-export const MyInterest = (): JSX.Element => (
-  <Select className="relative w-3/4 h-10 text-black" options={interest_options} />
-);
-export const MyTech = (): JSX.Element => (
-  <Select className="relative w-3/4 h-10 text-black" options={tech_options} />
-);
-
-export interface ItemType {
-  id: number;
-  name: string;
-}
 
 const PreferencePage: FC = () => {
   const navigate = useNavigate();
 
   const navigateToTeam = () => {
-    navigate("/GraduateTeamPage");
+    navigate("/graduate/team");
   };
 
   return (
