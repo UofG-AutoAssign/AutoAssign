@@ -230,12 +230,14 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
         </div>
         <form>
           <div className="flex flex-col justify-center items-center">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Manager email
-            </label>
+            <div className="flex flex-col items-start w-full">
+              <label
+                htmlFor="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Manager email
+              </label>
+            </div>
             <input
               type="text"
               id="first_name"
@@ -273,12 +275,14 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
         </div>
         <form>
           <div className="flex flex-col justify-center items-center">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Graduate email
-            </label>
+            <div className="flex flex-col items-start w-full">
+              <label
+                htmlFor="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Graduate email
+              </label>
+            </div>
             <input
               type="text"
               id="first_name"
@@ -383,7 +387,6 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
     gradList: string[];
     yearNumber: number;
   }): JSX.Element => {
-
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -634,9 +637,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
-      <div className="hi-text dark:text-white">
-        {currentTab}
-      </div>
+      <div className="hi-text dark:text-white">{currentTab}</div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl">
           <button
