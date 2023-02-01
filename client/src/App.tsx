@@ -17,6 +17,7 @@ import ManagerPage from "./pages/ManagerPage";
 import HRhomePage from "./pages/HRhomePage";
 import themeStore from "./context/themeStore";
 import { observer } from "mobx-react";
+import SignUpPage from "./pages/SignUpPage";
 
 const App: FC = observer(() => {
   // Implement routing later
@@ -43,6 +44,7 @@ const App: FC = observer(() => {
             <Route path="/*" element={<NotFoundPage />} />
             <Route path="/forgot_password" element={<ForgotPassPage />} />
             <Route path="/preference_page" element={<PreferencePage />} />
+            <Route path="/sign_up" element={<SignUpPage />} />
             <Route
               path="/hr_manage"
               element={<HRManagePage initialState={"Teams"} />}
