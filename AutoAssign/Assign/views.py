@@ -66,6 +66,16 @@ class HrView(APIView):
 
         return Response(context)
 
+    def put(self, request):
+        ser = serializers.HrSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Hr_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+
 
 class GradView(APIView):
     permission_classes = [GradPermission, ]
@@ -77,6 +87,16 @@ class GradView(APIView):
 
         return Response(context)
 
+    def put(self, request):
+        ser = serializers.GradSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Grad_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+
 
 class ManView(APIView):
     permission_classes = [ManagerPermission, ]
@@ -87,6 +107,16 @@ class ManView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+    def put(self, request):
+        ser = serializers.ManSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Man_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
 
 
 class HrViewCreate(APIView):
@@ -177,11 +207,7 @@ class FormView(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-        # Find the corresponding form
-
         ser = serializers.FormSerializer(instance=request.user)
-
-        # Find the corresponding skill name
 
         context = {"status": True, "data": ser.data}
 

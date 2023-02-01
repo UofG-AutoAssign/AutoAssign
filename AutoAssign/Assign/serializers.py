@@ -129,4 +129,3 @@ class UpdateTeamSettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["ratio", "Skill"]
-
