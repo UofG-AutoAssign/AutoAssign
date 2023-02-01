@@ -4,7 +4,7 @@ import {
   MyExperience,
   MyInterest,
   ItemType,
-} from "../pages/PreferencePage";
+} from "../pages/GraduateTeamPage";
 import { ReactSortable } from "react-sortablejs";
 import { HiOutlineTrash } from "react-icons/hi";
 

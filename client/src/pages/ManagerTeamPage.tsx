@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import { FC, useState } from "react";
-import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./PreferencePage";
+import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 export interface ManagerTableType {
   name: string;
@@ -183,7 +183,7 @@ const ManagerTeamPage: FC = () => {
         </div>}
       </div>
       <section className="flex flex-row gap-5 py-5">
-        <div className="w-1/4 bg-loginBlue rounded-r-2xl">
+        <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
             onClick={() => setCurrentTab("Your Team")}
             type="button"

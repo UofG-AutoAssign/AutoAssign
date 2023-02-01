@@ -4,31 +4,29 @@ import LandingButtonLink, {
 } from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import AuthContext from "../context/AuthContext";
-import themeStore from "../context/themeStore";
 
-const GraduatePage: FC = () => {
+const ManagerPage: FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
     {
-      title: "Form",
-      desc: "Submit this form to learn more about team preferences.",
+      title: "Team Settings",
+      desc: "Weight how much you value each technology.",
       btn_color: "bg-btnColor1",
-      link: "graduate/team",
-      initialState: "Assign Graduate",
+      link: "manager/team",
+      initialState: "Teams",
     },
     {
       title: "Your Team",
-      desc: "View Team.",
+      desc: "View your Team",
       btn_color: "bg-btnColor2",
-      link: "graduate/team",
-      initialState: "Assign Graduate",
-    },
+      link: "manager/team",
+      initialState: "Teams",
+    }
   ];
 
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="page-background dark:bg-gray-800">
+      <div>
         <nav className="sticky top-0 z-50">
           <Navbar />
         </nav>
@@ -53,8 +51,7 @@ const GraduatePage: FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default GraduatePage;
+export default ManagerPage;
