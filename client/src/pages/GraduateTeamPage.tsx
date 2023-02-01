@@ -129,7 +129,7 @@ const GraduateTeamPage: FC = () => {
         <div className="hi-text dark:text-white">My Team</div>
       </nav>
       <section className="flex flex-row gap-5 py-5">
-        <div className="w-1/4 bg-loginBlue rounded-r-2xl">
+        <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
             onClick={() => setCurrentTab("Your Team")}
             type="button"
