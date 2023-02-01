@@ -359,7 +359,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
               htmlFor={confirmGraduateToTeamModalId2}
               className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-              Submit
+              Assign
             </label>
 
             <input
@@ -567,7 +567,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="py-4 text-black dark:text-white">
-                  Are you sure that you want to submit [member]?{" "}
+                  Are you sure that you want to assign [member]?{" "}
                 </span>
               </label>
             </div>
