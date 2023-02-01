@@ -10,6 +10,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineSwitchAccount } from "react-icons/md";
 import themeStore from "../context/themeStore";
 import { observer } from "mobx-react";
+import Avatar from "react-avatar";
 
 const Navbar: FC = observer(() => {
   const authContext = useContext(AuthContext);
@@ -56,17 +57,23 @@ const Navbar: FC = observer(() => {
       <div className="navbar bg-gray-100 text-black dark:bg-gray-600 dark:text-white px-7 py-3 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
         <div className="gap-5 scale-90 sm:scale-100">
           {backButton()}
-          <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200"/>
+          <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200" />
           <div className="btn btn-ghost normal-case text-xl">AutoAssign</div>
-          <div className="text-xl font-semibold duration-150">{authContext?.userType}</div>
+          <div className="text-xl font-semibold duration-150">
+            {authContext?.userType}
+          </div>
         </div>
         {/* <div className="gap-10 text-3xl invisible sm:visible absolute sm:relative"> */}
         <div className="gap-10 text-3xl">
           {themeToggleButton()}
           <Link to="/account">
-            <MdOutlineSwitchAccount className="hover:scale-125 transition-all duration-150"/>
+            <MdOutlineSwitchAccount className="hover:scale-125 transition-all duration-150" />
           </Link>
-          <AiOutlineSetting className="hover:scale-125 transition-all duration-150"/>
+          <Link to="/account">
+            <div className="text-xs">
+              <Avatar name="Johnny Johnson" size={"50"} round={true} />
+            </div>
+          </Link>
           <Link to="/">
             <button className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-full sm:w-auto">
               Sign Out

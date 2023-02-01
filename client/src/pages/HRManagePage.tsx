@@ -86,7 +86,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
 
   const teamTable = (): JSX.Element => {
     return (
-      <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-full">
+      <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-3/4">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -639,7 +639,7 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
       </nav>
       <div className="hi-text dark:text-white">{currentTab}</div>
       <section className="flex flex-row gap-5 py-5">
-        <div className="w-1/4 bg-loginBlue rounded-r-2xl">
+        <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
             onClick={() => setCurrentTab("Teams")}
             type="button"
