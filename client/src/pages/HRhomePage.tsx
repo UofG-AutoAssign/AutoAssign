@@ -68,21 +68,21 @@ const HRhomePage: React.FC = () => {
 
     return (
       <div className="modal overflow-y-clip">
-        <div className="modal-box flex flex-col bg-white">
-          <h3 className="font-bold text-lg text-black">Assign Graduates</h3>
+        <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
+          <h3 className="font-bold text-lg text-black dark:text-white">Assign Graduates</h3>
           <div className="flex flex-row gap-2 justify-between">
             <div className="form-control max-w-xs w-full ">
               <input
                 type="text"
                 placeholder="Select Year"
-                className="input input-bordered w-full max-w-xs bg-gray-50 text-black"
+                className="input input-bordered w-full max-w-xs bg-gray-50 dark:bg-gray-400 text-black dark:text-white "
                 value={selectedYear}
               />
               <label className="label"></label>
             </div>
             <Menu as="div" className="relative inline-block text-left h-1 ">
               <div>
-                <Menu.Button className="inline-flex w-full  justify-center rounded-md border  border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                <Menu.Button className="inline-flex w-full  justify-center rounded-md border  border-gray-300 bg-white  px-4 py-2 text-sm font-medium text-gray-700  shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
                   Select Year
                   <ChevronDownIcon
                     className="-mr-1 ml-2 h-5 w-5"
@@ -126,9 +126,9 @@ const HRhomePage: React.FC = () => {
               </Transition>
             </Menu>
           </div>
-          <div className="flex flex-row gap-3">
-            <input type="checkbox" className="checkbox bg-gray-200" />
-            <div className="text-black">All Years</div>
+          <div className="flex flex-row gap-3 ">
+            <input type="checkbox" className="checkbox bg-gray-200 " />
+            <div className="text-black dark:text-white ">All Years</div>
           </div>
           <div className="modal-action">
             <label
