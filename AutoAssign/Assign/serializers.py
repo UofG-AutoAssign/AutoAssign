@@ -149,10 +149,17 @@ class AllTeamViewSerializer(serializers.ModelSerializer):
             Message = {"Man_id": "NULL", "first_name": "NULL", "second_name": "NULL", "Dep_id": Dep.id,
                        "Dep_name": Dep.depart_name}
         else:
-            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,", "Dep_name": "Null"}
+            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,",
+                       "Dep_name": "Null"}
 
         return Message
 
     class Meta:
         model = models.Team
         fields = ["team_name", "man_id", "information"]
+
+
+class AllGradSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
