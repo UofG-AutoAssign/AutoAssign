@@ -17,6 +17,7 @@ urlpatterns = [
     path('home/hr/TeamView', views.AllTeamView.as_view(), name="AllTeam"),
     path('home/hr/GradView', views.AllGradView.as_view(), name="AllGrad"),
     path('home/hr/ManView', views.AllManView.as_view(), name="AllMan"),
+    path('home/hr/DeleteMan', views.DeleteMan.as_view(), name="DeleteManger"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
 

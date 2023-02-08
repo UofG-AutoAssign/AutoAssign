@@ -322,3 +322,19 @@ class AllManView(APIView):
         return Response(context)
 
 
+class DeleteMan(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Man_id = data['id']
+
+        Man_obj = models.Manager.objects.filter(id=Man_id).first()
+
+        context = {"status": False, "detail": "Fail to delete"}
+
+        if Man_obj:
+            Man_obj.delete()
+            context = {"status": True, "detail": "Has been deleted"}
+
+        return Response(context)
