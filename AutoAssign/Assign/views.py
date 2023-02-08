@@ -66,6 +66,16 @@ class HrView(APIView):
 
         return Response(context)
 
+    def put(self, request):
+        ser = serializers.HrSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Hr_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+
 
 class GradView(APIView):
     permission_classes = [GradPermission, ]
@@ -77,6 +87,16 @@ class GradView(APIView):
 
         return Response(context)
 
+    def put(self, request):
+        ser = serializers.GradSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Grad_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+
 
 class ManView(APIView):
     permission_classes = [ManagerPermission, ]
@@ -87,6 +107,16 @@ class ManView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+    def put(self, request):
+        ser = serializers.ManSerializer(instance=request.user, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Man_id": request.user.id, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
 
 
 class HrViewCreate(APIView):
@@ -120,3 +150,134 @@ class HrViewCreate(APIView):
             return Response(context)
 
         return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})
+
+
+class SkillView(APIView):
+
+    def get(self, request):
+        skill_QuerySet = models.Skill.objects.all()
+
+        ser = serializers.SkillSerializer(instance=skill_QuerySet, many=True)
+
+        context = {"status": True, "data": ser.data}
+        return Response(context)
+
+
+class FormView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        # Find the corresponding form
+
+        ser = serializers.FormSerializer(instance=request.user)
+
+        # Find the corresponding skill name
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class ChangePassword(APIView):
+
+    def put(self, request):
+        pwd = request.data.get("pwd")
+        pwd1 = request.data.get("pwd1")
+        pwd2 = request.data.get("pwd2")
+
+        User = request.user
+        hash_pwd = hashEncryption(pwd)
+
+        if pwd1 != pwd2:
+            return Response({"code": 400, 'error': "Please check whether the passwords entered are consistent"})
+
+        if hash_pwd != User.password:
+            return Response({'status': False, 'error': 'password error'})
+
+        hash_pwd = hashEncryption(pwd1)
+        User.password = hash_pwd
+        User.save()
+
+        context = {"status": True, "data": "Password Changed"}
+
+        return Response(context)
+
+
+class FormView(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        ser = serializers.FormSerializer(instance=request.user)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class TeamView(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def get(self, request):
+        user_obj = request.user
+        team_obj = models.Team.objects.filter(man_id=user_obj).first()
+        if team_obj:
+            grad_QuerySet = models.Graduate.objects.filter(team_id=team_obj).all()
+            ser = serializers.TeamViewSerializer(instance=grad_QuerySet, many=True)
+            context = {"status": True, "data": ser.data}
+            return Response(context)
+
+        return Response({'status': False, 'error': 'This manager has no Team yet'})
+
+
+class TeamSettingView(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def get(self, request):
+        # Find the corresponding form
+        user_obj = request.user
+        team_obj = models.Team.objects.filter(man_id=user_obj).first()
+
+        ser = serializers.TeamSettingViewSerializer(instance=team_obj)
+
+        # Find the corresponding skill name
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class CreateTeamView(APIView):
+    permission_classes = [HrPermission, ]
+
+    # 1.Get initial data
+    def post(self, request):
+        # 2 Check data format
+        ser = serializers.CreateTeamSerializer(data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Create": "Team", "Status": "success"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
+
+
+class UpdateTeamSetting(APIView):
+    permission_classes = [ManagerPermission, ]
+
+    def put(self, request):
+        Man_Obj = request.user
+        Team_Obj = models.Team.objects.filter(man_id=Man_Obj).first()
+
+        if not Team_Obj:
+            return Response(
+                {"code": 1001, 'error': "Update Team failed", "detail": "This Manager dont have a team yet"})
+
+        ser = serializers.UpdateTeamSettingSerializer(instance=Team_Obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Team_id": Team_Obj.id, "detail": "Updated"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
