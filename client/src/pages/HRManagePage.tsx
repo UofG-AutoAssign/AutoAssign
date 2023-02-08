@@ -14,8 +14,8 @@ export type initialComponent =
   | "Assign Graduate"
   | "Remove Graduate"
   | "Assign Manager"
-  | "Remove Manager";
-("Create Account");
+  | "Remove Manager"
+  | "Create Account";
 
 interface HRManagePageProps {
   initialState: initialComponent;
