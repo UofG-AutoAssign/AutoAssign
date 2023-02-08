@@ -78,7 +78,8 @@ class FormSerializer(serializers.ModelSerializer):
     def get_Form_information(self, obj):
         Form = obj.Form.all()
         return [
-            {"Form_id": i.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest, "Experience": i.experience}
+            {"Form_id": i.id, "Skill_id": i.Skill_id.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest,
+             "Experience": i.experience}
             for i in Form]
 
     class Meta:
@@ -129,3 +130,19 @@ class UpdateTeamSettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["ratio", "Skill"]
+
+
+class AllTeamViewSerializer(serializers.ModelSerializer):
+    Man_information = serializers.SerializerMethodField()
+
+    def get_Man_information(self, obj):
+        Man = obj.man_id
+        print(Man)
+        if Man:
+            print(Man)
+            return {"first_name": Man.first_name, "second_name": Man.second_name}
+        return {"first_name": "Null", "second_name": "Null"}
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "Man_information", "depart_id"]

@@ -214,7 +214,7 @@ class FormView(APIView):
         return Response(context)
 
 
-class TeamView(APIView):
+class TeamMemberView(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
@@ -281,3 +281,16 @@ class UpdateTeamSetting(APIView):
             return Response(context)
 
         return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
+
+
+class AllTeamView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Team.objects.filter().all()
+
+        ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
