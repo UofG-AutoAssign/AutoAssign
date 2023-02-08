@@ -9,7 +9,7 @@ import Table from "../components/Table";
 import themeStore from "../context/themeStore";
 import { ManagerTableType } from "./ManagerTeamPage";
 
-export type initialComponent =
+export type initialComponentHR =
   | "Teams"
   | "Assign Graduate"
   | "Remove Graduate"
@@ -17,20 +17,8 @@ export type initialComponent =
   | "Remove Manager"
   | "Create Account";
 
-interface HRManagePageProps {
-  initialState: initialComponent;
-}
-
-const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
-  const [currentTab, setCurrentTab] = useState<
-    | "Teams"
-    | "Assign Graduate"
-    | "Remove Graduate"
-    | "Assign Manager"
-    | "Remove Manager"
-    | "Create Account"
-  >(initialState);
-  // console.log(initialState);
+const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }) => {
+  const [currentTab, setCurrentTab] = useState<initialComponentHR>(initialState);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",

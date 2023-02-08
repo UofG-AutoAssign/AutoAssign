@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { initialComponent } from "../pages/HRManagePage";
+import { initialComponentHR } from "../pages/HRManagePage";
 
 export interface LandingButtonLinkProps {
   title: string;
   desc: string;
   btn_color: string;
   link: string | null;
-  initialState: initialComponent;
+  initialState: initialComponentHR;
 }
 
 const LandingButtonLink: React.FC<LandingButtonLinkProps> = ({

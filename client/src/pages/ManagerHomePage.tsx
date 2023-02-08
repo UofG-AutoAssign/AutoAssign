@@ -13,14 +13,14 @@ const ManagerPage: FC = () => {
       title: "Team Settings",
       desc: "Weight how much you value each technology.",
       btn_color: "bg-btnColor1",
-      link: "manager/team",
+      link: "manager/team/team_preference",
       initialState: "Teams",
     },
     {
       title: "Your Team",
       desc: "View your Team",
       btn_color: "bg-btnColor2",
-      link: "manager/team",
+      link: "manager/team/view_team",
       initialState: "Teams",
     }
   ];

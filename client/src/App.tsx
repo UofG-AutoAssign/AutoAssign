@@ -63,7 +63,18 @@ const App: FC = observer(() => {
               element={<HRManagePage initialState={"Create Account"} />}
             />
             <Route path="manager" element={<ManagerPage />} />
-            <Route path="manager/team" element={<ManagerTeamPage />} />
+            <Route
+              path="manager/team/"
+              element={<ManagerTeamPage initialState={"Your Team"} />}
+            />
+            <Route
+              path="manager/team/view_team"
+              element={<ManagerTeamPage initialState={"Your Team"} />}
+            />
+            <Route
+              path="manager/team/team_preference"
+              element={<ManagerTeamPage initialState={"Team Preference"} />}
+            />
             <Route path="forgot_password" element={<ForgotPassPage />} />
             <Route path="/sign_up" element={<SignUpPage />} />
             <Route path="*" element={<NotFoundPage />} />

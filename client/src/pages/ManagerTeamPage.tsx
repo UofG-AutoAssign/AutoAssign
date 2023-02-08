@@ -1,16 +1,27 @@
 import Navbar from "../components/Navbar";
 import { FC, useState } from "react";
-import { ItemType, MyExperience, MyInterest, MyTech, tech_options } from "./GraduateTeamPage";
+import {
+  ItemType,
+  MyExperience,
+  MyInterest,
+  MyTech,
+  tech_options,
+} from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 export interface ManagerTableType {
   name: string;
   email: string;
 }
 
-const ManagerTeamPage: FC = () => {
-  
-  const [currentTab, setCurrentTab] = useState<"Your Team" | "Team Settings">(
-    "Your Team"
+export type initialComponentManager =
+  | "Your Team"
+  | "Team Preference";
+
+const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
+  initialState,
+}) => {
+  const [currentTab, setCurrentTab] = useState<initialComponentManager>(
+    initialState
   );
 
   const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
@@ -23,7 +34,7 @@ const ManagerTeamPage: FC = () => {
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
-  
+
   const [techList, setTechList] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
   ]);
@@ -43,14 +54,14 @@ const ManagerTeamPage: FC = () => {
   const addItem = () => {
     let newList: ItemType[] = [...techList];
 
-    newList.push({id:curId, name: "hi"});
+    newList.push({ id: curId, name: "hi" });
     // console.log(newList);
     setTechList(newList);
-    setCurId((prev) => prev + 1)
+    setCurId((prev) => prev + 1);
   };
 
   const [sliderValue, setSliderValue] = useState("50");
-  
+
   const teamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
@@ -85,7 +96,7 @@ const ManagerTeamPage: FC = () => {
       </div>
     );
   };
-  
+
   const settingsTable = (): JSX.Element => {
     return (
       <div>
@@ -109,7 +120,10 @@ const ManagerTeamPage: FC = () => {
                     className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
                   >
                     <MyTech />
-                    <button className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150" onClick={() => deleteItem(item.id)}>
+                    <button
+                      className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150"
+                      onClick={() => deleteItem(item.id)}
+                    >
                       <HiOutlineTrash />
                     </button>
                   </th>
@@ -167,20 +181,20 @@ const ManagerTeamPage: FC = () => {
         <Navbar />
       </nav>
       <div>
-        <div className="hi-text dark:text-white">
-          Pick Your Team Preference
-        </div>
-        {currentTab !== 'Your Team' && <div className="flex flex-row items-center justify-center gap-5">
-          <div className="hi-text dark:text-white text-xl">
-            Choose the what technologies your team would use.
+        <div className="hi-text dark:text-white">Pick Your Team Preference</div>
+        {currentTab !== "Your Team" && (
+          <div className="flex flex-row items-center justify-center gap-5">
+            <div className="hi-text dark:text-white text-xl">
+              Choose the what technologies your team would use.
+            </div>
+            <button
+              type="button"
+              className="my-4 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+            >
+              Save
+            </button>
           </div>
-          <button
-            type="button"
-            className="my-4 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-          >
-            Save
-          </button>
-        </div>}
+        )}
       </div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
@@ -192,7 +206,7 @@ const ManagerTeamPage: FC = () => {
             Your Team
           </button>
           <button
-            onClick={() => setCurrentTab("Team Settings")}
+            onClick={() => setCurrentTab("Team Preference")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
