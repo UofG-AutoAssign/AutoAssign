@@ -163,3 +163,11 @@ class AllGradSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
         fields = ["id", "email", "first_name", "second_name"]
+
+
+class AllManSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
+
+

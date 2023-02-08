@@ -307,3 +307,18 @@ class AllGradView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+
+class AllManView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Manager.objects.filter().all()
+
+        ser = serializers.AllManSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
