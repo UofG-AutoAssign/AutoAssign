@@ -133,16 +133,26 @@ class UpdateTeamSettingSerializer(serializers.ModelSerializer):
 
 
 class AllTeamViewSerializer(serializers.ModelSerializer):
-    Man_information = serializers.SerializerMethodField()
+    information = serializers.SerializerMethodField()
 
-    def get_Man_information(self, obj):
+    def get_information(self, obj):
         Man = obj.man_id
-        print(Man)
-        if Man:
-            print(Man)
-            return {"first_name": Man.first_name, "second_name": Man.second_name}
-        return {"first_name": "Null", "second_name": "Null"}
+        Dep = obj.depart_id
+
+        if Man and Dep:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        elif Man:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": "NULL",
+                       "Dep_name": "NULL"}
+        elif Dep:
+            Message = {"Man_id": "NULL", "first_name": "NULL", "second_name": "NULL", "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        else:
+            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,", "Dep_name": "Null"}
+
+        return Message
 
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_id", "Man_information", "depart_id"]
+        fields = ["team_name", "man_id", "information"]

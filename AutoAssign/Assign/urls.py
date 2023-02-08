@@ -15,6 +15,7 @@ urlpatterns = [
     path('home/man/Team/UpdateSetting', views.UpdateTeamSetting.as_view(), name="UpdateTeamSetting"),
     path('home/hr/create', views.HrViewCreate.as_view(), name="HrCreate"),
     path('home/hr/TeamView', views.AllTeamView.as_view(), name="AllTeam"),
+    path('home/hr/ManView', views.AllTeamView.as_view(), name="AllManTeam"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
 

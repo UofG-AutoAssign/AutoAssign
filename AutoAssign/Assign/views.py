@@ -294,3 +294,15 @@ class AllTeamView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+class AllManView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Team.objects.filter().all()
+
+        ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
