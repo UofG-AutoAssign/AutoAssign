@@ -338,3 +338,21 @@ class DeleteMan(APIView):
             context = {"status": True, "detail": "Has been deleted"}
 
         return Response(context)
+
+
+class DeleteGrad(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Grad_id = data['id']
+
+        Grad_obj = models.Graduate.objects.filter(id=Grad_id).first()
+
+        context = {"status": False, "detail": "Fail to delete"}
+
+        if Grad_obj:
+            Grad_obj.delete()
+            context = {"status": True, "detail": "Has been deleted"}
+
+        return Response(context)
