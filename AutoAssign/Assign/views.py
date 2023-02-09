@@ -275,6 +275,23 @@ class TeamSettingView(APIView):
 
         return Response(context)
 
+    def put(self, request):
+        Man_Obj = request.user
+        Team_Obj = models.Team.objects.filter(man_id=Man_Obj).first()
+
+        if not Team_Obj:
+            return Response(
+                {"code": 1001, 'error': "Update Team failed", "detail": "This Manager dont have a team yet"})
+
+        ser = serializers.UpdateTeamSettingSerializer(instance=Team_Obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+
+            return self.get(request)
+
+        return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
+
 
 class CreateTeamView(APIView):
     permission_classes = [HrPermission, ]
@@ -290,28 +307,6 @@ class CreateTeamView(APIView):
             return Response(context)
 
         return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
-
-
-class UpdateTeamSetting(APIView):
-    permission_classes = [ManagerPermission, ]
-
-    def put(self, request):
-        Man_Obj = request.user
-        Team_Obj = models.Team.objects.filter(man_id=Man_Obj).first()
-
-        if not Team_Obj:
-            return Response(
-                {"code": 1001, 'error': "Update Team failed", "detail": "This Manager dont have a team yet"})
-
-        ser = serializers.UpdateTeamSettingSerializer(instance=Team_Obj, data=request.data)
-
-        if ser.is_valid():
-            ser.save()
-            context = {"status": True, "Team_id": Team_Obj.id, "detail": "Updated"}
-            return Response(context)
-
-        return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
-
 
 class AllTeamView(APIView):
     permission_classes = [HrPermission, ]
