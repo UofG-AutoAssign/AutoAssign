@@ -30,18 +30,18 @@ export const tech_options = [
 
 export const MyExperience = (): JSX.Element => (
   <Select
-    className="relative w-3/4 h-10 text-black"
+    className="min-w-[200px] relative w-full h-10 text-black"
     options={experience_options}
   />
 );
 export const MyInterest = (): JSX.Element => (
   <Select
-    className="relative w-3/4 h-10 text-black"
+    className="min-w-[200px] relative w-full h-10 text-black"
     options={interest_options}
   />
 );
 export const MyTech = (): JSX.Element => (
-  <Select className="relative w-3/4 h-10 text-black" options={tech_options} />
+  <Select className="min-w-[200px] relative w-full h-10 text-black" options={tech_options} />
 );
 
 export interface ItemType {
@@ -71,7 +71,7 @@ const GraduateTeamPage: FC = () => {
 
   const teamTable = (): JSX.Element => {
     return (
-      <div className="relative flex overflow-x-visible shadow-lg wrap rounded-lg">
+      <div className="relative flex overflow-x-visible shadow-lg rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

@@ -14,7 +14,7 @@ const LoginCard: FC = () => {
 
   return (
     <div>
-      <div className="w-full bg-white rounded-lg dark:border md:mt-0 min-w-full xl:p-0 dark:bg-gray-800 dark:border-gray-700 shadow-lg">
+      <div className="w-full bg-white rounded-lg dark:border md:mt-0 min-w-full xl:p-0 dark:bg-gray-800 dark:border-gray-700 shadow-lg p-5">
         <div className="space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Sign in to your account
