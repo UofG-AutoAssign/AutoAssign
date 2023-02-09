@@ -1,9 +1,9 @@
-import React from "react";
+import { FC } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
 
-const AccountPage: React.FC = () => {
+const AccountPage: FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <nav className="sticky top-0 z-50">

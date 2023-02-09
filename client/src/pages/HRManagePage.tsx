@@ -1,36 +1,17 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { observer } from "mobx-react";
-import { assign } from "mobx/dist/internal";
-import React, { FC, Fragment, useState } from "react";
-import AvatarBar from "../components/AvatarBar";
+import { FC, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
-import themeStore from "../context/themeStore";
-import { ManagerTableType } from "./ManagerTeamPage";
 
-export type initialComponent =
+export type initialComponentHR =
   | "Teams"
   | "Assign Graduate"
   | "Remove Graduate"
   | "Assign Manager"
-  | "Remove Manager";
-("Create Account");
+  | "Remove Manager"
+  | "Create Account";
 
-interface HRManagePageProps {
-  initialState: initialComponent;
-}
-
-const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
-  const [currentTab, setCurrentTab] = useState<
-    | "Teams"
-    | "Assign Graduate"
-    | "Remove Graduate"
-    | "Assign Manager"
-    | "Remove Manager"
-    | "Create Account"
-  >(initialState);
-  // console.log(initialState);
+const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }) => {
+  const [currentTab, setCurrentTab] = useState<initialComponentHR>(initialState);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -632,6 +613,23 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
     );
   };
 
+  const navigate = useNavigate();
+  let location = useLocation();
+
+  useEffect(() => {
+    const query = location.pathname.split("/").at(-1);
+
+    if (query === "view_team") setCurrentTab("Teams")
+    else if (query === "assign_graduate") setCurrentTab("Assign Graduate")
+    else if (query === "remove_graduate") setCurrentTab("Remove Graduate")
+    else if (query === "assign_manager") setCurrentTab("Assign Manager")
+    else if (query === "remove_manager") setCurrentTab("Remove Manager")
+    else if (query === "create_account") setCurrentTab("Create Account");
+    else setCurrentTab("Teams");
+
+    () => {}
+  }, [location])
+
   return (
     <div className="flex flex-col min-h-screen">
       <nav className="sticky top-0 z-50">
@@ -641,42 +639,42 @@ const HRManagePage: FC<HRManagePageProps> = ({ initialState }) => {
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
-            onClick={() => setCurrentTab("Teams")}
+            onClick={() => navigate("/hr/manage/manage_team")}
             type="button"
             className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Manage Teams
           </button>
           <button
-            onClick={() => setCurrentTab("Assign Graduate")}
+            onClick={() => navigate("/hr/manage/assign_graduate")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Assign Graduate
           </button>
           <button
-            onClick={() => setCurrentTab("Remove Graduate")}
+            onClick={() => navigate("/hr/manage/remove_graduate")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Remove Graduate
           </button>
           <button
-            onClick={() => setCurrentTab("Assign Manager")}
+            onClick={() => navigate("/hr/manage/assign_manager")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Assign Manager
           </button>
           <button
-            onClick={() => setCurrentTab("Remove Manager")}
+            onClick={() => navigate("/hr/manage/remove_manager")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Remove Manager
           </button>
           <button
-            onClick={() => setCurrentTab("Create Account")}
+            onClick={() => navigate("/hr/manage/create_account")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >

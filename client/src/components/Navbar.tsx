@@ -6,7 +6,6 @@ import AuthContext from "../context/AuthContext";
 import { RiReactjsFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlineSetting } from "react-icons/ai";
 import { MdOutlineSwitchAccount } from "react-icons/md";
 import themeStore from "../context/themeStore";
 import { observer } from "mobx-react";

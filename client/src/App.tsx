@@ -1,5 +1,4 @@
-import { FC, useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { FC } from "react";
 import "./App.css";
 import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
@@ -15,7 +14,6 @@ import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
 import { observer } from "mobx-react";
-import Navbar from "./components/Navbar";
 import SignUpPage from "./pages/SignUpPage";
 import HRHomePage from "./pages/HRHomePage";
 
@@ -35,11 +33,46 @@ const App: FC = observer(() => {
             <Route path="account" element={<AccountPage />} />
             <Route path="hr" element={<HRHomePage />} />
             <Route
-              path="hr/manage"
+              path="hr/manage/"
               element={<HRManagePage initialState={"Teams"} />}
             />
+            <Route
+              path="hr/manage/manage_team"
+              element={<HRManagePage initialState={"Teams"} />}
+            />
+            <Route
+              path="hr/manage/assign_graduate"
+              element={<HRManagePage initialState={"Assign Graduate"} />}
+            />
+            <Route
+              path="hr/manage/remove_graduate"
+              element={<HRManagePage initialState={"Remove Graduate"} />}
+            />
+            <Route
+              path="hr/manage/assign_manager"
+              element={<HRManagePage initialState={"Assign Manager"} />}
+            />
+            <Route
+              path="hr/manage/remove_manager"
+              element={<HRManagePage initialState={"Remove Manager"} />}
+            />
+            <Route
+              path="hr/manage/create_account"
+              element={<HRManagePage initialState={"Create Account"} />}
+            />
             <Route path="manager" element={<ManagerPage />} />
-            <Route path="manager/team" element={<ManagerTeamPage />} />
+            <Route
+              path="manager/team/"
+              element={<ManagerTeamPage initialState={"Your Team"} />}
+            />
+            <Route
+              path="manager/team/view_team"
+              element={<ManagerTeamPage initialState={"Your Team"} />}
+            />
+            <Route
+              path="manager/team/team_preference"
+              element={<ManagerTeamPage initialState={"Team Preference"} />}
+            />
             <Route path="forgot_password" element={<ForgotPassPage />} />
             <Route path="/sign_up" element={<SignUpPage />} />
             <Route path="*" element={<NotFoundPage />} />

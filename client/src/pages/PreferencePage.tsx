@@ -1,9 +1,8 @@
 
 import Navbar from "../components/Navbar";
 import { FC } from "react";
-import Select from "react-select";
 import PickTable from "../components/PickTable";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 
 const PreferencePage: FC = () => {

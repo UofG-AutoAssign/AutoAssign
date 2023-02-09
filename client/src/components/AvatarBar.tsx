@@ -1,9 +1,7 @@
-import React from "react";
+import { FC } from "react";
 import Avatar from "react-avatar";
 
-interface Props {}
-
-const AvatarBar: React.FC<Props> = () => {
+const AvatarBar: FC = () => {
   return (
     <div className="w-full flex flex-col md:flex-row md:justify-center gap-5 p-5 align-middle">
       <div className="avatar placeholder">
