@@ -15,7 +15,7 @@ import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
 import { observer } from "mobx-react";
 import SignUpPage from "./pages/SignUpPage";
-import HRHomePage from "./pages/HRHomePage";
+import HRHomePage from "./pages/HRhomePage";
 
 const App: FC = observer(() => {
   // Implement routing later

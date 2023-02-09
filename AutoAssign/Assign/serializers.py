@@ -71,40 +71,127 @@ class CreateHrSerializer(serializers.ModelSerializer):
             "second_name": {"max_length": 30, "write_only": True}
         }
 
-# Basic method: hook verification
-# class HrCreatSerializer(serializers.Serializer):
-#     role = serializers.IntegerField(required=True)
-#
-#     email = serializers.CharField(required=True, max_length=100)
-#
-#     password = serializers.CharField(required=True, max_length=64)
-#
-#     first_name = serializers.CharField(required=True, max_length=30)
-#
-#     second_name = serializers.CharField(required=True, max_length=30)
-#
-#     # Hook check
-#     def validate_email(self, value):
-#         if len(value) > 100:
-#             raise exceptions.ValidationError("Field hook validation failed")
-#         return value
-#
-#     def validate_role(self, value):
-#         if value < 1 or value > 3:
-#             raise exceptions.ValidationError("Field hook validation failed")
-#         return value
-#
-#     def validate_password(self, value):
-#         if len(value) > 64:
-#             raise exceptions.ValidationError("Field hook validation failed")
-#         return value
-#
-#     def validate_first_name(self, value):
-#         if len(value) > 30:
-#             raise exceptions.ValidationError("Field hook validation failed")
-#         return value
-#
-#     def validate_second_name(self, value):
-#         if len(value) > 30:
-#             raise exceptions.ValidationError("Field hook validation failed")
-#         return value
+
+class FormSerializer(serializers.ModelSerializer):
+    Form_information = serializers.SerializerMethodField()
+
+    def get_Form_information(self, obj):
+        Form = obj.Form.all()
+        return [
+            {"Form_id": i.id, "Skill_id": i.Skill_id.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest,
+             "Experience": i.experience}
+            for i in Form]
+
+    class Meta:
+        model = models.Form
+        fields = ["id", "Form_information"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class UpdateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Form
+        fields = ["id", "interest", "experience", "Skill_id"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class AddGraduateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["Form"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Skill
+        fields = ["id", "skill_name"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class TeamViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["email", "first_name", "second_name"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class TeamSettingViewSerializer(serializers.ModelSerializer):
+    Skill_information = serializers.SerializerMethodField()
+
+    def get_Skill_information(self, obj):
+        Skill = obj.Skill.all()
+        return [
+            {"Skill_id": i.id, "skill_name": i.skill_name, }
+            for i in Skill]
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "ratio", "Skill_information"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class CreateTeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "depart_id", "ratio", "Skill"]
+        extra_kwargs = {
+            "team_name": {"max_length": 100, "write_only": True},
+        }
+
+
+class UpdateTeamSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["ratio", "Skill"]
+
+
+class AllTeamViewSerializer(serializers.ModelSerializer):
+    information = serializers.SerializerMethodField()
+
+    def get_information(self, obj):
+        Man = obj.man_id
+        Dep = obj.depart_id
+
+        if Man and Dep:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        elif Man:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": "NULL",
+                       "Dep_name": "NULL"}
+        elif Dep:
+            Message = {"Man_id": "NULL", "first_name": "NULL", "second_name": "NULL", "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        else:
+            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,",
+                       "Dep_name": "Null"}
+
+        return Message
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "information"]
+
+
+class AllGradSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
+
+
+class AllManSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
+
+
+class AssignGraduate(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["team_id"]
+
+
+class AssignManger(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["man_id"]
