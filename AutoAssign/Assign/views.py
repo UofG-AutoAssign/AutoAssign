@@ -163,21 +163,6 @@ class SkillView(APIView):
         return Response(context)
 
 
-class FormView(APIView):
-    permission_classes = [GradPermission, ]
-
-    def get(self, request):
-        # Find the corresponding form
-
-        ser = serializers.FormSerializer(instance=request.user)
-
-        # Find the corresponding skill name
-
-        context = {"status": True, "data": ser.data}
-
-        return Response(context)
-
-
 class ChangePassword(APIView):
 
     def put(self, request):
@@ -212,6 +197,51 @@ class FormView(APIView):
         context = {"status": True, "data": ser.data}
 
         return Response(context)
+
+    def post(self, request):
+
+        ser = serializers.UpdateFormSerializer(data=request.data, many=True)
+
+        if ser.is_valid():
+            ser.save()
+            data = ser.data
+            for i in data:
+                Form_id = i["id"]
+                id_list = [Form_id]
+                d = {'Form': id_list}
+                new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
+                if not new_ser.is_valid():
+                    for j in data:
+                        Form_id = j["id"]
+                        Form_obj = models.Form.objects.filter(id=Form_id).first()
+                        Form_obj.delete()
+
+                    return Response({"code": 1001, 'error': "Create Team failed", "detail": new_ser.errors})
+
+            Grad_obj = request.user
+            From_obj = Grad_obj.Form.all()
+            From_obj.delete()
+
+            id_list = []
+
+            for i in data:
+                Form_id = i["id"]
+                Form_id = [Form_id]
+                id_list = id_list + Form_id
+
+            d = {'Form': id_list}
+
+            new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
+
+            if new_ser.is_valid():
+                new_ser.save()
+
+            return self.get(request)
+
+            # context = {"status": True, "Create": "Team", "Status": "success"}
+            # return Response(context)
+
+        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
 
 
 class TeamMemberView(APIView):

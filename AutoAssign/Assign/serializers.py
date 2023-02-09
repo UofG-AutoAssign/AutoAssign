@@ -88,6 +88,20 @@ class FormSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+class UpdateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Form
+        fields = ["id", "interest", "experience", "Skill_id"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class AddGraduateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["Form"]
+        list_serializer_class = serializers.ListSerializer
+
+
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Skill
