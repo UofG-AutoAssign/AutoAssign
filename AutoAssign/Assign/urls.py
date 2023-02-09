@@ -20,6 +20,7 @@ urlpatterns = [
     path('home/hr/ManView', views.AllManView.as_view(), name="AllMan"),
     path('home/hr/DeleteMan', views.DeleteMan.as_view(), name="DeleteManger"),
     path('home/hr/AssignGrad', views.AssignGradToTeam.as_view(), name="AssignGrad"),
+    path('home/hr/AssignMan', views.AssignManToTeam.as_view(), name="AssignMan"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
 

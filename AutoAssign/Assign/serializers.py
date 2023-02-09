@@ -175,3 +175,9 @@ class AssignGraduate(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
         fields = ["team_id"]
+
+
+class AssignManger(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["man_id"]

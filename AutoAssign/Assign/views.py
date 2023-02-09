@@ -361,20 +361,6 @@ class DeleteGrad(APIView):
 class AssignGradToTeam(APIView):
     permission_classes = [HrPermission, ]
 
-    def post(self, request):
-        data = request.data
-        Grad_id = data['id']
-
-        Grad_obj = models.Graduate.objects.filter(id=Grad_id).first()
-
-        context = {"status": False, "detail": "Fail to delete"}
-
-        if Grad_obj:
-            Grad_obj.delete()
-            context = {"status": True, "detail": "Has been deleted"}
-
-        return Response(context)
-
     def put(self, request):
 
         data = request.data
@@ -398,6 +384,37 @@ class AssignGradToTeam(APIView):
         if ser.is_valid():
             ser.save()
             context = {"status": True, "Grad_id": Grad_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
+
+
+class AssignManToTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def put(self, request):
+
+        data = request.data
+        Man_id = data['man_id']
+
+        Man_obj = models.Graduate.objects.filter(id=Man_id).first()
+
+        Team_id = data['team_id']
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        if not Man_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Grad failed", "detail": "Please Check Manger"})
+
+        if not Team_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Team failed", "detail": "Please Check Team"})
+
+        ser = serializers.AssignManger(instance=Team_obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Man_id": Man_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
             return Response(context)
 
         return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
