@@ -1,5 +1,4 @@
-import { FC, useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { FC } from "react";
 import "./App.css";
 import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
@@ -15,9 +14,8 @@ import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
 import { observer } from "mobx-react";
-import Navbar from "./components/Navbar";
 import SignUpPage from "./pages/SignUpPage";
-import HRHomePage from "./pages/HRhomePage";
+import HRHomePage from "./pages/HRHomePage";
 
 const App: FC = observer(() => {
   // Implement routing later

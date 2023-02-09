@@ -1,13 +1,11 @@
 import Navbar from "../components/Navbar";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   ItemType,
-  MyExperience,
-  MyInterest,
   MyTech,
-  tech_options,
 } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
+import { useLocation, useNavigate } from "react-router-dom";
 export interface ManagerTableType {
   name: string;
   email: string;
@@ -23,6 +21,9 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   const [currentTab, setCurrentTab] = useState<initialComponentManager>(
     initialState
   );
+
+  const navigate = useNavigate();
+  let location = useLocation();
 
   const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
@@ -175,6 +176,16 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     );
   };
 
+  useEffect(() => {
+    const query = location.pathname.split("/").at(-1);
+
+    if (query === "view_team") setCurrentTab("Your Team")
+    else if (query === "team_preference") setCurrentTab("Team Preference")
+    else setCurrentTab("Your Team");
+
+    () => {}
+  }, [location])
+
   return (
     <div>
       <nav className="sticky top-0 z-50">
@@ -199,14 +210,18 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
-            onClick={() => setCurrentTab("Your Team")}
+            onClick={() => {
+              navigate("/manager/team/view_team");
+            }}
             type="button"
             className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Your Team
           </button>
           <button
-            onClick={() => setCurrentTab("Team Preference")}
+            onClick={() => {
+              navigate("/manager/team/team_preference");
+            }}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
