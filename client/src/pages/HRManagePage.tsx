@@ -442,7 +442,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }
           </button>
         </div>
 
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
             <Table gradList={yearOneGrads} yearNumber={1} />

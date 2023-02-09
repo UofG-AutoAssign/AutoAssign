@@ -55,22 +55,21 @@ const PickTable: FC = () => {
                 className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
                 key={item.id}
               >
-                <th
-                  scope="row"
-                  className="flex flex-row py-4 px-6 whitespace-nowrap font-medium"
+                <td
+                  className="w-full flex flex-row font-medium py-4 px-6"
                 >
                   <MyTech />
                   <button
-                    className="w-1/4 text-2xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 text-center flex flex-row justify-center items-center"
+                    className="ml-6 w-full text-2xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 text-center flex flex-row justify-between items-center"
                     onClick={() => deleteItem(item.id)}
                   >
                     <HiOutlineTrash className=""/>
                   </button>
-                </th>
-                <td className="py-4 px-6">
+                </td>
+                <td className="w-1/3 py-4 px-6">
                   <MyExperience />
                 </td>
-                <td className="py-4 px-6">
+                <td className="w-1/3 py-4 px-6">
                   <MyInterest />
                 </td>
               </tr>
