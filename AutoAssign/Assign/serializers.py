@@ -171,3 +171,7 @@ class AllManSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "first_name", "second_name"]
 
 
+class AssignGraduate(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["team_id"]
