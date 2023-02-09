@@ -25,7 +25,10 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   const navigate = useNavigate();
   let location = useLocation();
 
-  const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
+  const [mockTeamList, setMockTeamList] = useState<{
+    name: string;
+    email: string;
+  }[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },

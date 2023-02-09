@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import React, { Fragment, useContext, useState } from "react";
+import { FC, Fragment, useContext, useState } from "react";
 import LandingButtonLink, {
   LandingButtonLinkProps,
 } from "../components/LandingButtonLink";
@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
 
-const HRHomePage: React.FC = () => {
+const HRHomePage: FC = () => {
   const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [

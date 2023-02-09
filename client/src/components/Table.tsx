@@ -1,13 +1,11 @@
-import React from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { FC } from "react";
 
-interface TableProps {
+
+const Table: FC<{
   data: string[];
   action: "swap" | "edit";
   auxiliaryFunction?: () => void;
-}
-
-const Table: React.FC<TableProps> = ({ data, action, auxiliaryFunction }) => {
+}> = ({ data, action, auxiliaryFunction }) => {
   return (
     <div className="overflow-x-auto relative shadow-md sm:rounded-lg max-h-96 overflow-y-scroll">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

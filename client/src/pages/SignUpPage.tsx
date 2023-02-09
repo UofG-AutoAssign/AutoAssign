@@ -1,5 +1,4 @@
 import { FC } from "react";
-
 import Navbar from "../components/Navbar";
 import SignUpCard from "../components/SignUpCard";
 

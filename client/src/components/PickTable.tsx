@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import {
   MyTech,
   MyExperience,
   MyInterest,
   ItemType,
 } from "../pages/GraduateTeamPage";
-import { ReactSortable } from "react-sortablejs";
 import { HiOutlineTrash } from "react-icons/hi";
 
-const PickTable: React.FC = () => {
+const PickTable: FC = () => {
   // @Todo prevent duplicate technology picks
   const [mockData, setMockData] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
@@ -22,7 +21,6 @@ const PickTable: React.FC = () => {
     newList = newList.filter((item) => {
       return item.id !== delete_id;
     });
-    // console.log(newList);
     setMockData(newList);
   };
 
@@ -30,7 +28,6 @@ const PickTable: React.FC = () => {
     let newList: ItemType[] = [...mockData];
 
     newList.push({ id: curId, name: "hi" });
-    // console.log(newList);
     setMockData(newList);
     setCurId((prev) => prev + 1);
   };

@@ -1,14 +1,12 @@
-import React, { useContext, MouseEvent } from "react";
-import { default as logo } from "../assets/react.svg";
-import { FcSettings, FcPicture } from "react-icons/all";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, MouseEvent, FC } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
-const SignUpCard: React.FC = () => {
+const SignUpCard: FC = () => {
   const authContext = useContext(AuthContext);
   const routerNavigator = useNavigate();
 
-  const delayAndGo = (e: MouseEvent<any>, path: string): void => {
+  const delayAndGo = (e: MouseEvent, path: string): void => {
     e.preventDefault();
     authContext?.loginUser();
     setTimeout(() => routerNavigator(path), 1000);

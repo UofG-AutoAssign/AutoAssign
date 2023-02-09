@@ -1,14 +1,6 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { observer } from "mobx-react";
-import { assign } from "mobx/dist/internal";
-import React, { FC, Fragment, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
-import themeStore from "../context/themeStore";
-import { ManagerTableType } from "./ManagerTeamPage";
 
 export type initialComponentHR =
   | "Teams"

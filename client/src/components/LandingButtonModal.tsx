@@ -1,25 +1,18 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
+import { FC } from "react";
 
-export interface LandingButtonModalProps {
+const LandingButtonModal: FC<{
   title: string;
   desc: string;
   btn_color: string;
   modal: JSX.Element;
   modalId: string;
-}
-
-const LandingButtonModal: React.FC<LandingButtonModalProps> = ({
+}> = ({
   title,
   desc,
   btn_color,
   modal,
   modalId,
 }) => {
-  function classNames(...classes: any) {
-    return classes.filter(Boolean).join(" ");
-  }
 
   return (
     <>
