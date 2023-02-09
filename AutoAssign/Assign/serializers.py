@@ -78,12 +78,27 @@ class FormSerializer(serializers.ModelSerializer):
     def get_Form_information(self, obj):
         Form = obj.Form.all()
         return [
-            {"Form_id": i.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest, "Experience": i.experience}
+            {"Form_id": i.id, "Skill_id": i.Skill_id.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest,
+             "Experience": i.experience}
             for i in Form]
 
     class Meta:
         model = models.Form
         fields = ["id", "Form_information"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class UpdateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Form
+        fields = ["id", "interest", "experience", "Skill_id"]
+        list_serializer_class = serializers.ListSerializer
+
+
+class AddGraduateFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["Form"]
         list_serializer_class = serializers.ListSerializer
 
 
@@ -129,3 +144,54 @@ class UpdateTeamSettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["ratio", "Skill"]
+
+
+class AllTeamViewSerializer(serializers.ModelSerializer):
+    information = serializers.SerializerMethodField()
+
+    def get_information(self, obj):
+        Man = obj.man_id
+        Dep = obj.depart_id
+
+        if Man and Dep:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        elif Man:
+            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": "NULL",
+                       "Dep_name": "NULL"}
+        elif Dep:
+            Message = {"Man_id": "NULL", "first_name": "NULL", "second_name": "NULL", "Dep_id": Dep.id,
+                       "Dep_name": Dep.depart_name}
+        else:
+            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,",
+                       "Dep_name": "Null"}
+
+        return Message
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "information"]
+
+
+class AllGradSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
+
+
+class AllManSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "email", "first_name", "second_name"]
+
+
+class AssignGraduate(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["team_id"]
+
+
+class AssignManger(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["man_id"]

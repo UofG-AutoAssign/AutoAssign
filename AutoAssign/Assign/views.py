@@ -163,21 +163,6 @@ class SkillView(APIView):
         return Response(context)
 
 
-class FormView(APIView):
-    permission_classes = [GradPermission, ]
-
-    def get(self, request):
-        # Find the corresponding form
-
-        ser = serializers.FormSerializer(instance=request.user)
-
-        # Find the corresponding skill name
-
-        context = {"status": True, "data": ser.data}
-
-        return Response(context)
-
-
 class ChangePassword(APIView):
 
     def put(self, request):
@@ -213,8 +198,53 @@ class FormView(APIView):
 
         return Response(context)
 
+    def post(self, request):
 
-class TeamView(APIView):
+        ser = serializers.UpdateFormSerializer(data=request.data, many=True)
+
+        if ser.is_valid():
+            ser.save()
+            data = ser.data
+            for i in data:
+                Form_id = i["id"]
+                id_list = [Form_id]
+                d = {'Form': id_list}
+                new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
+                if not new_ser.is_valid():
+                    for j in data:
+                        Form_id = j["id"]
+                        Form_obj = models.Form.objects.filter(id=Form_id).first()
+                        Form_obj.delete()
+
+                    return Response({"code": 1001, 'error': "Create Team failed", "detail": new_ser.errors})
+
+            Grad_obj = request.user
+            From_obj = Grad_obj.Form.all()
+            From_obj.delete()
+
+            id_list = []
+
+            for i in data:
+                Form_id = i["id"]
+                Form_id = [Form_id]
+                id_list = id_list + Form_id
+
+            d = {'Form': id_list}
+
+            new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
+
+            if new_ser.is_valid():
+                new_ser.save()
+
+            return self.get(request)
+
+            # context = {"status": True, "Create": "Team", "Status": "success"}
+            # return Response(context)
+
+        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
+
+
+class TeamMemberView(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
@@ -281,3 +311,140 @@ class UpdateTeamSetting(APIView):
             return Response(context)
 
         return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
+
+
+class AllTeamView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Team.objects.filter().all()
+
+        ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AllGradView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Graduate.objects.filter().all()
+
+        ser = serializers.AllGradSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AllManView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        team_obj = models.Manager.objects.filter().all()
+
+        ser = serializers.AllManSerializer(instance=team_obj, many=True)
+
+        context = {"status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class DeleteMan(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Man_id = data['id']
+
+        Man_obj = models.Manager.objects.filter(id=Man_id).first()
+
+        context = {"status": False, "detail": "Fail to delete"}
+
+        if Man_obj:
+            Man_obj.delete()
+            context = {"status": True, "detail": "Has been deleted"}
+
+        return Response(context)
+
+
+class DeleteGrad(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Grad_id = data['id']
+
+        Grad_obj = models.Graduate.objects.filter(id=Grad_id).first()
+
+        context = {"status": False, "detail": "Fail to delete"}
+
+        if Grad_obj:
+            Grad_obj.delete()
+            context = {"status": True, "detail": "Has been deleted"}
+
+        return Response(context)
+
+
+class AssignGradToTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def put(self, request):
+
+        data = request.data
+        Grad_id = data['Grad_id']
+
+        Grad_obj = models.Graduate.objects.filter(id=Grad_id).first()
+
+        Team_id = data['team_id']
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        if not Grad_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Grad failed", "detail": "Please Check Graduate"})
+
+        if not Team_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Team failed", "detail": "Please Check Team"})
+
+        ser = serializers.AssignGraduate(instance=Grad_obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Grad_id": Grad_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
+
+
+class AssignManToTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def put(self, request):
+
+        data = request.data
+        Man_id = data['man_id']
+
+        Man_obj = models.Graduate.objects.filter(id=Man_id).first()
+
+        Team_id = data['team_id']
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        if not Man_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Grad failed", "detail": "Please Check Manger"})
+
+        if not Team_obj:
+            return Response(
+                {"code": 1001, 'error': "Assign Team failed", "detail": "Please Check Team"})
+
+        ser = serializers.AssignManger(instance=Team_obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"status": True, "Man_id": Man_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
+            return Response(context)
+
+        return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
