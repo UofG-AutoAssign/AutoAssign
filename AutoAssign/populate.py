@@ -3,6 +3,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoAssign.settings')
 
 import django
+import random
 
 django.setup()
 
@@ -24,6 +25,41 @@ def populate():
          'second_name': "Two",
          'password': "5fa5f62fe937033750ed096d66c866be",
          'role': 1,
+         },
+        {'email': 'Graduate3@email.com',
+         'depart_id': 0,
+         'first_name': "Graduate",
+         'second_name': "3",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 1,
+         },
+        {'email': 'Graduate4@email.com',
+         'depart_id': 0,
+         'first_name': "Graduate",
+         'second_name': "4",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 1,
+         },
+        {'email': 'Graduate5@email.com',
+         'depart_id': 0,
+         'first_name': "Graduate",
+         'second_name': "5",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 1,
+         },
+        {'email': 'Graduate6@email.com',
+         'depart_id': 0,
+         'first_name': "Graduate",
+         'second_name': "6",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 1,
+         },
+        {'email': 'Graduate7@email.com',
+         'depart_id': 0,
+         'first_name': "Graduate",
+         'second_name': "7",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 1,
          }
     ]
 
@@ -40,8 +76,65 @@ def populate():
          'first_name': "Manger",
          'second_name': "Two",
          'password': "5fa5f62fe937033750ed096d66c866be",
-         'role': 1,
-         }
+         'role': 2,
+         },
+        {'email': 'Manger3@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "3",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger4@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "4",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger5@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "5",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger6@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "6",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger7@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "7",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger8@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "8",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger9@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "9",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+        {'email': 'Manger10@email.com',
+         'depart_id': 0,
+         'first_name': "Manger",
+         'second_name': "10",
+         'password': "5fa5f62fe937033750ed096d66c866be",
+         'role': 2,
+         },
+
 
     ]
 
@@ -100,15 +193,25 @@ def populate():
     ]
 
     DepartmentList = [
-        {'depart_name': 'Technology',
-         },
-        {'depart_name': 'Analytics',
-         },
-        {'depart_name': 'Compliance',
+        {'depart_name': 'Human Resources',
          },
         {'depart_name': 'Finance',
          },
-        {'depart_name': 'Internal Audit',
+        {'depart_name': 'Marketing',
+         },
+        {'depart_name': 'Sales',
+         },
+        {'depart_name': 'Technology',
+         },
+        {'depart_name': 'Research & Development',
+         },
+        {'depart_name': 'Customer Service',
+         },
+        {'depart_name': 'Production',
+         },
+        {'depart_name': 'Procurement',
+         },
+        {'depart_name': 'Administration',
          },
     ]
 
@@ -154,22 +257,6 @@ def populate():
 
     ]
 
-    for Hr in HRList:
-        new_hr = HR.objects.create(email=Hr['email'], first_name=Hr['first_name'], second_name=Hr['second_name'],
-                                   password=Hr['password'], role=Hr['role'])
-        new_hr.save()
-
-    for Man in ManagerList:
-        new_man = Manager.objects.create(email=Man['email'], first_name=Man['first_name'],
-                                         second_name=Man['second_name'], password=Man['password'], role=Man['role'])
-        new_man.save()
-
-    for Grad in GraduateList:
-        new_grad = Graduate.objects.create(email=Grad['email'], first_name=Grad['first_name'],
-                                           second_name=Grad['second_name'], password=Grad['password'],
-                                           role=Grad['role'])
-        new_grad.save()
-
     for s in SkillList:
         new_skill = Skill.objects.create(skill_name=s['skill_name'])
         new_skill.save()
@@ -178,21 +265,56 @@ def populate():
         new_de = Department.objects.create(depart_name=de['depart_name'])
         new_de.save()
 
+    for Man in ManagerList:
+        new_man = Manager.objects.create(email=Man['email'], first_name=Man['first_name'],
+                                         second_name=Man['second_name'], password=Man['password'], role=Man['role'])
+        new_man.save()
+
+    i = 1
     for team in TeamList:
+
         skill_one = Skill.objects.filter(id=int(team['Skill_One'])).first()
         skill_two = Skill.objects.filter(id=int(team['Skill_Two'])).first()
         skill_three = Skill.objects.filter(id=int(team['Skill_Three'])).first()
         skill_four = Skill.objects.filter(id=int(team['Skill_Four'])).first()
         skill_five = Skill.objects.filter(id=int(team['Skill_Five'])).first()
 
-        new_team = Team.objects.create(team_name=team['team_name'])
+        Man_obj = Manager.objects.filter(id=i).first()
+        Depart_obj = Department.objects.filter(id=i).first()
+
+        new_team = Team.objects.create(team_name=team['team_name'], man_id=Man_obj, depart_id=Depart_obj)
         new_team.Skill.add(skill_one)
         new_team.Skill.add(skill_two)
         new_team.Skill.add(skill_three)
         new_team.Skill.add(skill_four)
         new_team.Skill.add(skill_five)
 
+        i = i + 1
         new_team.save()
+
+    for Hr in HRList:
+        new_hr = HR.objects.create(email=Hr['email'], first_name=Hr['first_name'], second_name=Hr['second_name'],
+                                   password=Hr['password'], role=Hr['role'])
+        new_hr.save()
+
+    for Grad in GraduateList:
+
+        i = random.randint(0, 5)
+        j = random.randint(0, 5)
+
+        new_grad = Graduate.objects.create(email=Grad['email'], first_name=Grad['first_name'],
+                                           second_name=Grad['second_name'], password=Grad['password'],
+                                           role=Grad['role'])
+
+        for i in range(5):
+            L1 = random.randint(0, 42)
+
+            Skill_obj = Skill.objects.filter(id=L1).first()
+            new_Form = Form.objects.create(interest=i, experience=j, Skill_id=Skill_obj)
+            new_Form.save()
+            new_grad.Form.add(new_Form)
+
+        new_grad.save()
 
 
 if __name__ == '__main__':
