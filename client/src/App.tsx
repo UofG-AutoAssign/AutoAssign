@@ -7,15 +7,14 @@ import GraduateTeamPage from "./pages/GraduateTeamPage";
 import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
-import PrivateRoute from "./utility/PrivateRoute";
 import AuthContextProvider from "./context/AuthContextProvider";
 import HRManagePage from "./pages/HRManagePage";
 import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
-import { observer } from "mobx-react";
 import SignUpPage from "./pages/SignUpPage";
 import HRHomePage from "./pages/HRhomePage";
+import { observer } from "mobx-react";
 
 const App: FC = observer(() => {
   // Implement routing later
@@ -29,7 +28,9 @@ const App: FC = observer(() => {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="graduate" element={<GraduatePage />} />
-            <Route path="graduate/team" element={<GraduateTeamPage />} />
+            <Route path="graduate/team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
+            <Route path="graduate/team/view_team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
+            <Route path="graduate/team/preference_form" element={<GraduateTeamPage initialComponent="Preference Form"/>} />
             <Route path="account" element={<AccountPage />} />
             <Route path="hr" element={<HRHomePage />} />
             <Route

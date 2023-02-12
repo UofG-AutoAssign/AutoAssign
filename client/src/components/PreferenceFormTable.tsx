@@ -7,7 +7,7 @@ import {
 } from "../pages/GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 
-const PickTable: FC = () => {
+const PreferenceFormTable: FC = () => {
   // @Todo prevent duplicate technology picks
   const [mockData, setMockData] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
@@ -55,16 +55,12 @@ const PickTable: FC = () => {
                 className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
                 key={item.id}
               >
-                <td
-                  className="w-full flex flex-row font-medium py-4 px-6"
-                >
+                <td className="w-full flex flex-row font-medium py-4 px-6">
                   <MyTech />
-                  <button
-                    className="ml-6 w-full text-2xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 text-center flex flex-row justify-between items-center"
+                  <HiOutlineTrash
+                    className="ml-6 text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 my-auto hover:cursor-pointer"
                     onClick={() => deleteItem(item.id)}
-                  >
-                    <HiOutlineTrash className=""/>
-                  </button>
+                  />
                 </td>
                 <td className="w-1/3 py-4 px-6">
                   <MyExperience />
@@ -90,4 +86,4 @@ const PickTable: FC = () => {
   );
 };
 
-export default PickTable;
+export default PreferenceFormTable;
