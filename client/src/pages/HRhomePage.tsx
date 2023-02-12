@@ -135,7 +135,7 @@ const HRHomePage: FC = () => {
               htmlFor={assignGradModalId}
               className="btn bg-gray-200 text-black"
             >
-              59/79 response
+              Cancel
             </label>
             <label
               htmlFor={assignGradModalId}

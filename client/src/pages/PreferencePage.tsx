@@ -1,7 +1,7 @@
 
 import Navbar from "../components/Navbar";
 import { FC } from "react";
-import PickTable from "../components/PickTable";
+import PickTable from "../components/PreferenceFormTable";
 import {  useNavigate } from "react-router-dom";
 
 

@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbar";
-import { FC, useState } from "react";
-import PickTable from "../components/PickTable";
+import { FC, useEffect, useState } from "react";
 import Select from "react-select";
+import { useLocation, useNavigate } from "react-router-dom";
+import PreferenceFormTable from "../components/PreferenceFormTable";
 export interface ManagerTableType {
   name: string;
   email: string;
@@ -49,10 +50,12 @@ export interface ItemType {
   name: string;
 }
 
-const GraduateTeamPage: FC = () => {
+type initialComponentGraduate = "Your Team" | "Preference Form"
+
+const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ initialComponent }) => {
   const [currentTab, setCurrentTab] = useState<
-    "Your Team" | "Preference Form" | "Roles"
-  >("Your Team");
+    initialComponentGraduate
+  >(initialComponent);
 
   const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
@@ -107,7 +110,7 @@ const GraduateTeamPage: FC = () => {
   const preferenceTable = (): JSX.Element => {
     return (
       <div className="w-full bg-white rounded-2xl font-medium">
-        <PickTable />
+        <PreferenceFormTable />
         <div className="flex flex-row justify-center bg-white dark:bg-gray-800">
           <button
             type="button"
@@ -165,6 +168,18 @@ const GraduateTeamPage: FC = () => {
     }
   }
 
+  const navigate = useNavigate();
+  let location = useLocation();
+
+  useEffect(() => {
+    const query = location.pathname.split("/").at(-1);
+
+    if (query === "view_team") setCurrentTab("Your Team")
+    else setCurrentTab("Preference Form");
+
+    () => {}
+  }, [location])
+
   return (
     <div>
       <nav className="sticky top-0 z-50">
@@ -174,14 +189,14 @@ const GraduateTeamPage: FC = () => {
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
           <button
-            onClick={() => setCurrentTab("Your Team")}
+            onClick={() => navigate("/graduate/team/view_team")}
             type="button"
             className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Your Team
           </button>
           <button
-            onClick={() => setCurrentTab("Preference Form")}
+            onClick={() => navigate("/graduate/team/preference_form")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
