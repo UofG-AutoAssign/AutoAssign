@@ -18,12 +18,13 @@ class HrTestCase(TestCase):
         self.assertEqual(models.HR.objects.count(), 1)
         self.assertEqual(models.HR.objects.get().email, "Hr@email.com")
 
+
 class ManagerTestCase(TestCase):
 
     def setUp(self):
         models.Manager.objects.create(email='Manager@email.com',
-                                 first_name='Manager', second_name='Test',
-                                 password='123456', role='2')
+                                      first_name='Manager', second_name='Test',
+                                      password='123456', role='2')
 
     def test_my_model(self):
         # Ensure the my_model object has been created in the cache database
