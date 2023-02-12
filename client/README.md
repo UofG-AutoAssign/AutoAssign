@@ -73,3 +73,9 @@ module.exports = {
 - `Path Intellisense`
 - `Live Share`
 - `Live Server`
+
+### Deployment Notes
+- `npm run build`
+- `ntl deploy`
+- `ntl deploy --prod`
+- Make a new file under /public called `_redirects` with `/* /index.html 200` inside it
