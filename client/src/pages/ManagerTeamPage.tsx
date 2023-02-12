@@ -1,9 +1,6 @@
 import Navbar from "../components/Navbar";
 import { FC, useEffect, useState } from "react";
-import {
-  ItemType,
-  MyTech,
-} from "./GraduateTeamPage";
+import { ItemType, MyTech } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 export interface ManagerTableType {
@@ -11,24 +8,23 @@ export interface ManagerTableType {
   email: string;
 }
 
-export type initialComponentManager =
-  | "Your Team"
-  | "Team Preference";
+export type initialComponentManager = "Your Team" | "Team Preference";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
 }) => {
-  const [currentTab, setCurrentTab] = useState<initialComponentManager>(
-    initialState
-  );
+  const [currentTab, setCurrentTab] =
+    useState<initialComponentManager>(initialState);
 
   const navigate = useNavigate();
   let location = useLocation();
 
-  const [mockTeamList, setMockTeamList] = useState<{
-    name: string;
-    email: string;
-  }[]>([
+  const [mockTeamList, setMockTeamList] = useState<
+    {
+      name: string;
+      email: string;
+    }[]
+  >([
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
@@ -124,12 +120,10 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
                     className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
                   >
                     <MyTech />
-                    <button
-                      className="text-xl text-red-500 duration-150 hover:text-red-700 hover:scale-150"
+                    <HiOutlineTrash
+                      className="text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-150 my-auto mx-5 hover:cursor-pointer"
                       onClick={() => deleteItem(item.id)}
-                    >
-                      <HiOutlineTrash />
-                    </button>
+                    />
                   </th>
                 </tr>
               ))}
@@ -182,12 +176,12 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   useEffect(() => {
     const query = location.pathname.split("/").at(-1);
 
-    if (query === "view_team") setCurrentTab("Your Team")
-    else if (query === "team_preference") setCurrentTab("Team Preference")
+    if (query === "view_team") setCurrentTab("Your Team");
+    else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
 
-    () => {}
-  }, [location])
+    () => {};
+  }, [location]);
 
   return (
     <div>
