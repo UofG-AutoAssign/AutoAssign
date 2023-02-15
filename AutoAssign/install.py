@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 
 def install():
@@ -7,11 +8,12 @@ def install():
     back_make_com = [sys.executable, 'manage.py', 'makemigrations']
     back_mig_com = [sys.executable, 'manage.py', 'migrate']
     front_com = ['npm', 'install']
+    file = os.path.dirname(os.path.realpath(__file__))
 
-    subprocess.check_call(pip_com)
-    subprocess.check_call(back_make_com)
-    subprocess.check_call(back_mig_com)
-    subprocess.check_call(front_com, cwd='../client/')
+    subprocess.check_call(pip_com, cwd=file)
+    subprocess.check_call(back_make_com, cwd=file)
+    subprocess.check_call(back_mig_com, cwd=file)
+    subprocess.check_call(front_com, cwd=os.path.abspath('../client'))
 
 
 if __name__ == '__main__':
