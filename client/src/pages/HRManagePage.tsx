@@ -10,8 +10,11 @@ export type initialComponentHR =
   | "Remove Manager"
   | "Create Account";
 
-const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }) => {
-  const [currentTab, setCurrentTab] = useState<initialComponentHR>(initialState);
+const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
+  initialState,
+}) => {
+  const [currentTab, setCurrentTab] =
+    useState<initialComponentHR>(initialState);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -28,7 +31,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }
     "sam@barclays.com",
     "dequan@barclays.com",
   ]);
-  
+
   const swapYear = (gradEmail: string, currentYear: number): void => {
     if (currentYear === 1) {
       // remove person from year 1
@@ -368,8 +371,23 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }
     gradList: string[];
     yearNumber: number;
   }): JSX.Element => {
+    const [query, setQuery] = useState<string>("");
+
+    const filteredPeople =
+      query === ""
+        ? gradList
+        : gradList.filter((gradName) => {
+            return gradName.toLowerCase().includes(query.toLowerCase());
+          });
+
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
+        <input
+          className="w-full border-none my-2 pl-5 pr-10 font-semibold text-left text-sm leading-5 text-black dark:text-white focus:ring-0 bg-gray-100 dark:bg-gray-700"
+          type={"text"}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={"Search Names"}
+        />
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
           <tbody>
@@ -391,7 +409,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }
                 </td>
               </tr>
             ) : (
-              gradList.map((gradName) => {
+              filteredPeople.map((gradName) => {
                 return (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
@@ -619,16 +637,16 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({ initialState }
   useEffect(() => {
     const query = location.pathname.split("/").at(-1);
 
-    if (query === "view_team") setCurrentTab("Teams")
-    else if (query === "assign_graduate") setCurrentTab("Assign Graduate")
-    else if (query === "remove_graduate") setCurrentTab("Remove Graduate")
-    else if (query === "assign_manager") setCurrentTab("Assign Manager")
-    else if (query === "remove_manager") setCurrentTab("Remove Manager")
+    if (query === "view_team") setCurrentTab("Teams");
+    else if (query === "assign_graduate") setCurrentTab("Assign Graduate");
+    else if (query === "remove_graduate") setCurrentTab("Remove Graduate");
+    else if (query === "assign_manager") setCurrentTab("Assign Manager");
+    else if (query === "remove_manager") setCurrentTab("Remove Manager");
     else if (query === "create_account") setCurrentTab("Create Account");
     else setCurrentTab("Teams");
 
-    () => {}
-  }, [location])
+    () => {};
+  }, [location]);
 
   return (
     <div className="flex flex-col min-h-screen">
