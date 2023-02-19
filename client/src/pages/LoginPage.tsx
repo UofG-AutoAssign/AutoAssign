@@ -6,7 +6,7 @@ const AccountPage: FC = () => {
   return (
       <div>
         <nav className="sticky top-0 z-50">
-          <Navbar />
+          <Navbar hideLogoutButton={true}/>
         </nav>
         <div className="flex flex-col md:flex-row justify-between bg-white dark:bg-gray-700 min-h-screen py-12 transition-all delay-100">
           <div className="w-full bg-loginBlue basis-1/2 rounded-r-3xl flex flex-col justify-center shadow-lg py-5">
