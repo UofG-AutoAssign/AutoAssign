@@ -81,11 +81,11 @@ const Navbar: FC<{ hideLogoutButton?: boolean }> = observer(
             <Link to="/account">
               <MdOutlineSwitchAccount className="hover:scale-125 transition-all duration-150" />
             </Link>
-            <Link to="/account">
+            {/* <Link to="/account">
               <div className="text-xs">
                 <Avatar name="Johnny Johnson" size={"50"} round={true} />
               </div>
-            </Link>
+            </Link> */}
             {hideLogoutButton === true ? null : (
               <Link to="/">
                 <button className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-full sm:w-auto">
