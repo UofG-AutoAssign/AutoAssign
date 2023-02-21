@@ -283,11 +283,11 @@ def populate():
         Depart_obj = Department.objects.filter(id=i).first()
 
         new_team = Team.objects.create(team_name=team['team_name'], man_id=Man_obj, depart_id=Depart_obj)
-        new_team.Skill.add(skill_one)
-        new_team.Skill.add(skill_two)
-        new_team.Skill.add(skill_three)
-        new_team.Skill.add(skill_four)
-        new_team.Skill.add(skill_five)
+        new_team.skill.add(skill_one)
+        new_team.skill.add(skill_two)
+        new_team.skill.add(skill_three)
+        new_team.skill.add(skill_four)
+        new_team.skill.add(skill_five)
 
         i = i + 1
         new_team.save()
@@ -309,10 +309,9 @@ def populate():
         for i in range(5):
             L1 = random.randint(0, 42)
 
-            Skill_obj = Skill.objects.filter(id=L1).first()
-            new_Form = Form.objects.create(interest=i, experience=j, Skill_id=Skill_obj)
+            skill_obj = Skill.objects.filter(id=L1).first()
+            new_Form = Form.objects.create(interest=i, experience=j, skill_id=skill_obj, graduate=new_grad)
             new_Form.save()
-            new_grad.Form.add(new_Form)
 
         new_grad.save()
 

@@ -16,10 +16,10 @@ class Graduate(models.Model):
                              )
 
     # One to Many Link to Manger
-
-    man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,
-                               null=True,
-                               )
+    # VAUGHN: Why do we need this? there is already a link to managers via the team table
+    # man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,
+    #                            null=True,
+    #                            )
 
     # One to Many Link to team
 
@@ -30,9 +30,10 @@ class Graduate(models.Model):
     # One to Many Link to Departments
     # If we delete a department ,The department id for Graduate will be set to NULL
 
-    depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE,
-                                  null=True,
-                                  )
+    # VAUGHN: Why do we need this? there is already a link to department via the team table
+    # depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE,
+    #                               null=True,
+    #                               )
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)
@@ -45,8 +46,7 @@ class Graduate(models.Model):
 
     role = models.IntegerField(verbose_name="Roles", default=1)
 
-    # Many to Many link to the Form
-    Form = models.ManyToManyField(to="Form")
+    year = models.IntegerField(default=1)
 
 
 class Manager(models.Model):
@@ -113,7 +113,8 @@ class Form(models.Model):
     interest = models.IntegerField(verbose_name="Interest_One", null=True)
 
     experience = models.IntegerField(verbose_name="experience_One", null=True)
-    Skill_id = models.ForeignKey(to="Skill", related_name='Skill', on_delete=models.CASCADE, null=True)
+    skill_id = models.ForeignKey(to="Skill", related_name='Skill', on_delete=models.CASCADE, null=True)
+    graduate = models.ForeignKey(to="Graduate", on_delete=models.CASCADE, null=True)
 
 
 class Team(models.Model):
@@ -138,7 +139,9 @@ class Team(models.Model):
     ratio = models.FloatField(verbose_name="Ratio",
                               null=True)
 
-    Skill = models.ManyToManyField(to="Skill")
+    skill = models.ManyToManyField(to="Skill")
+
+    num_positions = models.IntegerField(default=0)
 
 
 class Skill(models.Model):
