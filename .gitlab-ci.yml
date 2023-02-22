@@ -1,19 +1,21 @@
-image: node
-
+image: node:16.5.0
 pages:
   stage: deploy
   cache:
+    key:
+      files:
+        - client/package-lock.json
+      prefix: npm
     paths:
-      - node_modules/
+      - client/node_modules/
   script:
+    - cd "client"
     - npm install
     - npm run build
-    - rm -rf public
-    - cp build/index.html build/404.html
-    - mv build public
+    - cp -a dist/. ../public/
+    - cd ..
   artifacts:
     paths:
       - public
-  only:
-    - main
-
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
