@@ -4,14 +4,16 @@ pages:
   cache:
     key:
       files:
-        - package-lock.json
+        - client/package-lock.json
       prefix: npm
     paths:
-      - node_modules/
+      - client/node_modules/
   script:
+    - cd "mockup-frontend"
     - npm install
     - npm run build
-    - cp -a dist/. public/
+    - cp -a dist/. ../public/
+    - cd ..
   artifacts:
     paths:
       - public
