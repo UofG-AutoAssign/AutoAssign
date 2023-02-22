@@ -9,7 +9,7 @@ pages:
     paths:
       - client/node_modules/
   script:
-    - cd "mockup-frontend"
+    - cd "client"
     - npm install
     - npm run build
     - cp -a dist/. ../public/
