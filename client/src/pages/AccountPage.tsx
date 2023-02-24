@@ -1,29 +1,29 @@
 import { FC, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
-import Table from "../components/Table";
+import AccountTable from "../components/AccountTable";
 
 const AccountPage: FC = () => {
   const [currentTab, setCurrentTab] = useState<"Settings" | "Password">(
     "Settings"
   );
 
+  // Conditionally display the component depending on the active tab
   const displayComponent = (): JSX.Element => {
-    if (currentTab === "Password") return PasswordSetting();
+    if (currentTab === "Settings") return (<AccountTable data={["Firstname: ", "Surname", "Email", "Year"]} />)
     else {
-      return (<Table data={["Firstname: ", "Surname", "Email", "Year"]} action={"edit"}  />)
+      return passwordSetting();
     }
   };
 
   const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
-  const PasswordSetting = (): JSX.Element => {
+  const passwordSetting = (): JSX.Element => {
     return (
       <div className="w-full pr-5">
         <div className="mb-7 text-black dark:text-white">
           Input your current and your new password twice.
         </div>
         <form>
-          {/* <div className="grid gap-6 mb-6 md:grid-cols-2"> */}
           <div className="flex flex-col gap-5">
             <div>
               <label
@@ -85,12 +85,6 @@ const AccountPage: FC = () => {
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            {/* <button
-              type="button"
-              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </button> */}
             {reassureModal2()}
           </div>
         </form>
@@ -98,6 +92,7 @@ const AccountPage: FC = () => {
     );
   };
 
+  // Displays pop-up if user is sure of changing their password
   const reassureModal2 = (): JSX.Element => {
     function classNames(...classes: any) {
       return classes.filter(Boolean).join(" ");

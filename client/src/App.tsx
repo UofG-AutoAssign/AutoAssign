@@ -13,7 +13,7 @@ import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
 import SignUpPage from "./pages/SignUpPage";
-import HRHomePage from "./pages/HRhomePage";
+import HRHomePage from "./pages/HRHomePage";
 import { observer } from "mobx-react";
 
 const App: FC = observer(() => {

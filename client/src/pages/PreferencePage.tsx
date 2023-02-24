@@ -4,7 +4,6 @@ import { FC } from "react";
 import PickTable from "../components/PreferenceFormTable";
 import {  useNavigate } from "react-router-dom";
 
-
 const PreferencePage: FC = () => {
   const navigate = useNavigate();
 

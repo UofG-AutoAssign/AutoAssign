@@ -2,7 +2,7 @@ import { FC } from "react";
 import ForgotPassCard from "../components/ForgotPassCard";
 import Navbar from "../components/Navbar";
 
-const AccountPage: FC = () => {
+const ForgotPassPage: FC = () => {
   return (
     <div>
       <nav className="sticky top-0 z-50">
@@ -30,4 +30,4 @@ const AccountPage: FC = () => {
   );
 };
 
-export default AccountPage;
+export default ForgotPassPage;

@@ -1,8 +1,7 @@
 import { FC, useContext } from "react";
-import LandingButtonLink, {
-  LandingButtonLinkProps,
-} from "../components/LandingButtonLink";
+import LandingButtonLink from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
+import { LandingButtonLinkProps } from "../constants/Interfaces";
 import AuthContext from "../context/AuthContext";
 
 const ManagerPage: FC = () => {

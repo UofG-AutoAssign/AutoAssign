@@ -1,14 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-
-export type initialComponentHR =
-  | "Teams"
-  | "Assign Graduate"
-  | "Remove Graduate"
-  | "Assign Manager"
-  | "Remove Manager"
-  | "Create Account";
+import { initialComponentHR } from "../constants/Types";
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
@@ -32,32 +25,32 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     "dequan@barclays.com",
   ]);
 
+  // Swaps the graduate to the other year table
   const swapYear = (gradEmail: string, currentYear: number): void => {
+    
     if (currentYear === 1) {
-      // remove person from year 1
-      // update year 1 list
       let yearOneDummy = [...yearOneGrads].filter((grad) => grad !== gradEmail);
       setYearOneGrads(yearOneDummy);
-      // add person to year 2
+
       let yearTwoDummy = [...yearTwoGrads];
       yearTwoDummy.push(gradEmail);
       setYearTwoGrads(yearTwoDummy);
+
     } else if (currentYear === 2) {
-      // remove person from year 2
-      // update year 2 list
       let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad !== gradEmail);
       setYearTwoGrads(yearTwoDummy);
-      // add person to year 1
+
       let yearOneDummy = [...yearOneGrads];
       yearOneDummy.push(gradEmail);
       setYearOneGrads(yearOneDummy);
+      
     } else {
       console.warn("You should not be here");
     }
   };
 
+  // add all year 1s to year 2s
   const shiftYear = (): void => {
-    // add all year 1s to year 2s
     let yearTwoDummy = [...yearTwoGrads];
     for (let i = 0; i < yearOneGrads.length; i++) {
       yearTwoDummy.push(yearOneGrads[i]);
@@ -67,8 +60,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     //remove all year 1s
     setYearOneGrads([]);
   };
-
-  const teamTable = (): JSX.Element => {
+  
+  // Displays the managers team members
+  const TeamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-3/4">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -135,10 +129,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       </div>
     );
   };
-
+  
   const confirmGraduateToTeamModalId3: string = "confirm-graduate3";
 
-  const assignManager = (): JSX.Element => {
+  const AssignManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
         <div className="mb-7 text-black dark:text-white">
@@ -191,12 +185,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
               id={confirmGraduateToTeamModalId3}
               className="modal-toggle"
             />
-            {/* <button
-              type="button"
-              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </button> */}
             {reassureModal3()}
           </div>
         </form>
@@ -206,7 +194,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
 
-  const removeManager = (): JSX.Element => {
+  const RemoveManager = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 ">
         <div className="mb-7 text-black dark:text-white">
@@ -251,7 +239,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const removeGraduate = (): JSX.Element => {
+  const RemoveGraduate = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
         <div className="mb-7 text-black dark:text-white">
@@ -298,7 +286,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const confirmGraduateToTeamModalId: string = "confirm-graduate";
 
-  const assignGraduate = (): JSX.Element => {
+  const AssignGraduate = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5">
         <div className="mb-7 text-black dark:text-white">
@@ -351,12 +339,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            {/* <button
-              type="button"
-              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </button> */}
             {reassureModal2()}
           </div>
         </form>
@@ -364,7 +346,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const Table = ({
+  const GradListTable = ({
     gradList,
     yearNumber,
   }: {
@@ -436,7 +418,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const createAccount = (): JSX.Element => {
+  const CreateAccount = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
         <label
@@ -463,11 +445,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
-            <Table gradList={yearOneGrads} yearNumber={1} />
+            <GradListTable gradList={yearOneGrads} yearNumber={1} />
           </div>
           <div>
             Year 2
-            <Table gradList={yearTwoGrads} yearNumber={2} />
+            <GradListTable gradList={yearTwoGrads} yearNumber={2} />
           </div>
         </div>
         <div className="py-8">
@@ -489,24 +471,24 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const displayComponent = (): JSX.Element => {
+  const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return teamTable();
+      return TeamTable();
     }
     if (currentTab === "Assign Graduate") {
-      return assignGraduate();
+      return AssignGraduate();
     }
     if (currentTab === "Remove Graduate") {
-      return removeGraduate();
+      return RemoveGraduate();
     }
     if (currentTab === "Assign Manager") {
-      return assignManager();
+      return AssignManager();
     }
     if (currentTab === "Remove Manager") {
-      return removeManager();
+      return RemoveManager();
     }
     if (currentTab === "Create Account") {
-      return createAccount();
+      return CreateAccount();
     }
     return <div>yooo</div>;
   };
@@ -699,7 +681,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             Create Account
           </button>
         </div>
-        {displayComponent()}
+        {DisplayComponent()}
         {reassureModal()}
       </section>
     </div>

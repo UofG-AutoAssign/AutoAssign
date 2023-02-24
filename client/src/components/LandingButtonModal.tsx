@@ -6,14 +6,7 @@ const LandingButtonModal: FC<{
   btn_color: string;
   modal: JSX.Element;
   modalId: string;
-}> = ({
-  title,
-  desc,
-  btn_color,
-  modal,
-  modalId,
-}) => {
-
+}> = ({ title, desc, btn_color, modal, modalId }) => {
   return (
     <>
       <label

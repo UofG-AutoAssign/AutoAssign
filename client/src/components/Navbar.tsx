@@ -1,5 +1,5 @@
 import { useContext, useEffect, FC } from "react";
-import { BsFillSunFill, BsFillMoonStarsFill, BsSun } from "react-icons/all";
+import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import { RiReactjsFill } from "react-icons/ri";
@@ -8,7 +8,6 @@ import { IoIosArrowBack } from "react-icons/io";
 import { MdOutlineSwitchAccount } from "react-icons/md";
 import themeStore from "../context/themeStore";
 import { observer } from "mobx-react";
-import Avatar from "react-avatar";
 
 const Navbar: FC<{ hideLogoutButton?: boolean }> = observer(
   ({ hideLogoutButton }) => {
@@ -42,18 +41,6 @@ const Navbar: FC<{ hideLogoutButton?: boolean }> = observer(
           <BsFillMoonStarsFill className="swap-on fill-current w-9 h-9" />
         </label>
       );
-      // return (
-      //   <label className="relative inline-flex items-center cursor-pointer">
-      //     <input
-      //       type="checkbox"
-      //       value=""
-      //       className="sr-only peer"
-      //       checked={themeStore.isDarkMode}
-      //       onClick={() => themeStore.switchThemes()}
-      //     />
-      //     <div className="w-11 h-6 bg-gray-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-800" />
-      //   </label>
-      // );
     };
 
     useEffect(() => {
@@ -75,17 +62,11 @@ const Navbar: FC<{ hideLogoutButton?: boolean }> = observer(
               {authContext?.userType}
             </div>
           </div>
-          {/* <div className="gap-10 text-3xl invisible sm:visible absolute sm:relative"> */}
           <div className="gap-10 text-3xl">
             {themeToggleButton()}
             <Link to="/account">
               <MdOutlineSwitchAccount className="hover:scale-125 transition-all duration-150" />
             </Link>
-            {/* <Link to="/account">
-              <div className="text-xs">
-                <Avatar name="Johnny Johnson" size={"50"} round={true} />
-              </div>
-            </Link> */}
             {hideLogoutButton === true ? null : (
               <Link to="/">
                 <button className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-full sm:w-auto">

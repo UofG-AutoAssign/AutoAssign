@@ -1,11 +1,8 @@
 import { FC } from "react";
 
-
-const Table: FC<{
+const AccountTable: FC<{
   data: string[];
-  action: "swap" | "edit";
-  auxiliaryFunction?: () => void;
-}> = ({ data, action, auxiliaryFunction }) => {
+}> = ({ data }) => {
   return (
     <div className="overflow-x-auto relative shadow-md sm:rounded-lg max-h-96 overflow-y-scroll">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -24,11 +21,8 @@ const Table: FC<{
                   <a
                     href="#"
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    onClick={() => {
-                      if (auxiliaryFunction !== undefined) auxiliaryFunction();
-                    }}
                   >
-                    {action}
+                    edit
                   </a>
                 </td>
               </tr>
@@ -40,4 +34,4 @@ const Table: FC<{
   );
 };
 
-export default Table;
+export default AccountTable;

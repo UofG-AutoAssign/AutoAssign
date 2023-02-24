@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const ForgotPassCard: FC = () => {
   return (
-      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700 p-5">
-        <div className="space-y-4 ">
+      <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700 p-5">
+        <div className="space-y-4">
           <form className="space-y-4 md:space-y-6" action="#">
             <div>
               <label
