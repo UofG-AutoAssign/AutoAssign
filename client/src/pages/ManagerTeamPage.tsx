@@ -4,7 +4,7 @@ import { TechnologyDropdown } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ItemType } from "../constants/Interfaces";
-import { initialComponentManager } from "../constants/types";
+import { initialComponentManager } from "../constants/Types";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,

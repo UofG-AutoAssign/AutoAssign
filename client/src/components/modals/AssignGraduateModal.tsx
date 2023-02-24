@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { confirmGraduateToTeamModalId3 } from "../../constants/ModalIDs";
+import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 
-const AssignManagerModal: FC = () => {
+const AssignGraduateModal: FC = () => {
   return (
     <>
       <div className="modal z-50 overflow-y-auto">
@@ -12,20 +12,20 @@ const AssignManagerModal: FC = () => {
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="py-4 text-black dark:text-white">
-                Are you sure that you want to assign [manager]?{" "}
+                Are you sure that you want to assign [graduate]?{" "}
               </span>
             </label>
           </div>
 
           <div className="modal-action">
             <label
-              htmlFor={confirmGraduateToTeamModalId3}
+              htmlFor={confirmGraduateToTeamModalId2}
               className="btn bg-gray-200 text-black shadow-lg"
             >
               Cancel
             </label>
             <label
-              htmlFor={confirmGraduateToTeamModalId3}
+              htmlFor={confirmGraduateToTeamModalId2}
               className="btn bg-blue-800 text-white"
             >
               Yes, I'm sure
@@ -37,4 +37,4 @@ const AssignManagerModal: FC = () => {
   );
 };
 
-export default AssignManagerModal;
+export default AssignGraduateModal;

@@ -1,7 +1,12 @@
 import { FC } from "react";
-import { confirmGraduateToTeamModalId3 } from "../../constants/ModalIDs";
+import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 
-const AssignManagerModal: FC = () => {
+// This union type is for modularizing/refactoring reusable modals into just one file
+// type RemoveModalType =
+//   | { type: "Remove-manager"; managerName: string }
+//   | { type: "Remove-graduate"; graduateName: string };
+
+const RemoveGraduateModal: FC = () => {
   return (
     <>
       <div className="modal z-50 overflow-y-auto">
@@ -12,21 +17,21 @@ const AssignManagerModal: FC = () => {
           <div className="form-control w-full max-w-xs">
             <label className="label">
               <span className="py-4 text-black dark:text-white">
-                Are you sure that you want to assign [manager]?{" "}
+                Are you sure that you want to delete [graduate]?{" "}
               </span>
             </label>
           </div>
 
           <div className="modal-action">
             <label
-              htmlFor={confirmGraduateToTeamModalId3}
+              htmlFor={confirmGraduateToTeamModalId2}
               className="btn bg-gray-200 text-black shadow-lg"
             >
               Cancel
             </label>
             <label
-              htmlFor={confirmGraduateToTeamModalId3}
-              className="btn bg-blue-800 text-white"
+              htmlFor={confirmGraduateToTeamModalId2}
+              className="btn bg-red-700 text-white"
             >
               Yes, I'm sure
             </label>
@@ -37,4 +42,4 @@ const AssignManagerModal: FC = () => {
   );
 };
 
-export default AssignManagerModal;
+export default RemoveGraduateModal;

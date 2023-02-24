@@ -94,10 +94,6 @@ const AccountPage: FC = () => {
 
   // Displays pop-up if user is sure of changing their password
   const reassureModal2 = (): JSX.Element => {
-    function classNames(...classes: any) {
-      return classes.filter(Boolean).join(" ");
-    }
-
     return (
       <>
         <div className="modal z-50 overflow-y-auto">
