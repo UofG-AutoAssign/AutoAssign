@@ -33,7 +33,7 @@ const SignUpCard: FC = () => {
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Firstname"
-                // required
+                required
               />
             </div>
             <div>
@@ -49,7 +49,7 @@ const SignUpCard: FC = () => {
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Lastname"
-                // required
+                required
               />
             </div>
             <div>
@@ -65,7 +65,7 @@ const SignUpCard: FC = () => {
                 id="password"
                 placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                // required
+                required
               />
             </div>
             <div>
@@ -81,11 +81,9 @@ const SignUpCard: FC = () => {
                 id="password"
                 placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                // required
+                required
               />
             </div>
-            
-            {/* <Link to="/hr"> */}
             <button
               onClick={(e) => delayAndGo(e, "/hr")}
               type="submit"
@@ -93,17 +91,6 @@ const SignUpCard: FC = () => {
             >
               Sign Up
             </button>
-            {/* </Link> */}
-
-            {/* <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?{" "}
-              <a
-                href="#"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >
-                Contact your manager
-              </a>
-            </p> */}
           </form>
         </div>
       </div>

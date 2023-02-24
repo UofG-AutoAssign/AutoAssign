@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 
-const NotFoundPage: React.FC = () => {
+const NotFoundPage: FC = () => {
   return (
     <div className="text-7xl flex flex-col justify-center h-screen w-full items-center text-black dark:text-white font-medium">
       <div>📸🤨</div>

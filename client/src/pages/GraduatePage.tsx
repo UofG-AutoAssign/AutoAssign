@@ -1,11 +1,11 @@
 import { FC, useContext } from "react";
-import LandingButtonLink, {
-  LandingButtonLinkProps,
-} from "../components/LandingButtonLink";
+import LandingButtonLink from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
+import { LandingButtonLinkProps } from "../constants/Interfaces";
 import AuthContext from "../context/AuthContext";
 import themeStore from "../context/themeStore";
 
+// Graduate Home Page that Displays landing buttons for the Preference Form and Your Team pages
 const GraduatePage: FC = () => {
   const authContext = useContext(AuthContext);
 

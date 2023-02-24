@@ -2,7 +2,7 @@ import { FC } from "react";
 import LoginCard from "../components/LoginCard";
 import Navbar from "../components/Navbar";
 
-const AccountPage: FC = () => {
+const LoginPage: FC = () => {
   return (
       <div>
         <nav className="sticky top-0 z-50">
@@ -27,4 +27,4 @@ const AccountPage: FC = () => {
   );
 };
 
-export default AccountPage;
+export default LoginPage;

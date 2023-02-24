@@ -1,16 +1,16 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { FC, Fragment, useContext, useState } from "react";
-import LandingButtonLink, {
-  LandingButtonLinkProps,
-} from "../components/LandingButtonLink";
+import LandingButtonLink from "../components/LandingButtonLink";
+import { LandingButtonLinkProps } from "../constants/Interfaces";
 import Navbar from "../components/Navbar";
 import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
 
 const HRHomePage: FC = () => {
   const authContext = useContext(AuthContext);
-
+  
+  // Used for the Landing buttons for the following pages
   const data: LandingButtonLinkProps[] = [
     {
       title: "Manage Team",
@@ -55,10 +55,11 @@ const HRHomePage: FC = () => {
       initialState: "Teams",
     },
   ];
-
+  
+  //Displays the Auto Assign Pop-up to for HR to assign all teams using the algorithm
   const assignGradModalId: string = "assign-grad";
 
-  const assignGradModal = (): JSX.Element => {
+  const AssignGradModal = (): JSX.Element => {
     const listOfYears: string[] = ["2020", "2021", "2022"];
     const [selectedYear, setSelectedYear] = useState<string>("Select Year");
 
@@ -69,7 +70,9 @@ const HRHomePage: FC = () => {
     return (
       <div className="modal overflow-y-clip">
         <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-          <h3 className="font-bold text-lg text-black dark:text-white">Assign Graduates</h3>
+          <h3 className="font-bold text-lg text-black dark:text-white">
+            Assign Graduates
+          </h3>
           <div className="flex flex-row gap-2 justify-between">
             <div className="form-control max-w-xs w-full ">
               <input
@@ -150,39 +153,43 @@ const HRHomePage: FC = () => {
   };
 
   return (
+    <div>
+      <nav className="sticky top-0 z-50">
+        <Navbar />
+      </nav>
       <div>
-        <nav className="sticky top-0 z-50">
-          <Navbar />
-        </nav>
-        <div>
-          <div className="hi-text dark:text-white">
-            Hi! {authContext?.username}
-          </div>
-        </div>
-        <div className="p-16 flex flex-col gap-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {data.map((e) => {
-              return (
-                <LandingButtonLink
-                  title={e.title}
-                  desc={e.desc}
-                  btn_color={e.btn_color}
-                  link={e.link}
-                  initialState={e.initialState}
-                  key={e.title}
-                />
-              );
-            })}
-            <LandingButtonModal
-              title="Auto Assign"
-              btn_color="bg-btnColor6"
-              desc="Remove manager profiles from the app"
-              modal={assignGradModal()}
-              modalId={assignGradModalId}
-            />
-          </div>
+        <div className="hi-text dark:text-white">
+          Hi! {authContext?.username}
         </div>
       </div>
+      <div className="p-16 flex flex-col gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          {/* Displays all the landing buttons to take you to its respective HR page */}
+          {data.map((event) => {
+            return (
+              <LandingButtonLink
+                title={event.title}
+                desc={event.desc}
+                btn_color={event.btn_color}
+                link={event.link}
+                initialState={event.initialState}
+                key={event.title}
+              />
+            );
+          })}
+          
+          {/* Auto Assign button to display the pop-up within the HR home page */}
+          <LandingButtonModal
+            title="Auto Assign"
+            btn_color="bg-btnColor6"
+            desc="Remove manager profiles from the app"
+            modal={AssignGradModal()}
+            modalId={assignGradModalId}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

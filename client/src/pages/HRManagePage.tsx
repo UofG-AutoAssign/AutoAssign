@@ -1,14 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AssignGraduate from "../components/HRManage/AssignGraduate";
+import AssignManager from "../components/HRManage/AssignManager";
+import RemoveGraduate from "../components/HRManage/RemoveGraduate";
+import RemoveManager from "../components/HRManage/RemoveManager";
 import Navbar from "../components/Navbar";
-
-export type initialComponentHR =
-  | "Teams"
-  | "Assign Graduate"
-  | "Remove Graduate"
-  | "Assign Manager"
-  | "Remove Manager"
-  | "Create Account";
+import { initialComponentHR } from "../constants/Types";
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
@@ -32,22 +29,19 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     "dequan@barclays.com",
   ]);
 
+  // Swaps the graduate to the other year table
   const swapYear = (gradEmail: string, currentYear: number): void => {
     if (currentYear === 1) {
-      // remove person from year 1
-      // update year 1 list
       let yearOneDummy = [...yearOneGrads].filter((grad) => grad !== gradEmail);
       setYearOneGrads(yearOneDummy);
-      // add person to year 2
+
       let yearTwoDummy = [...yearTwoGrads];
       yearTwoDummy.push(gradEmail);
       setYearTwoGrads(yearTwoDummy);
     } else if (currentYear === 2) {
-      // remove person from year 2
-      // update year 2 list
       let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad !== gradEmail);
       setYearTwoGrads(yearTwoDummy);
-      // add person to year 1
+
       let yearOneDummy = [...yearOneGrads];
       yearOneDummy.push(gradEmail);
       setYearOneGrads(yearOneDummy);
@@ -56,11 +50,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     }
   };
 
+  // add all year 1s to year 2s
   const shiftYear = (): void => {
-    // add all year 1s to year 2s
     let yearTwoDummy = [...yearTwoGrads];
-    for (let i = 0; i < yearOneGrads.length; i++) {
-      yearTwoDummy.push(yearOneGrads[i]);
+    for (let idx = 0; idx < yearOneGrads.length; idx++) {
+      yearTwoDummy.push(yearOneGrads[idx]);
     }
     setYearTwoGrads(yearTwoDummy);
 
@@ -68,7 +62,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     setYearOneGrads([]);
   };
 
-  const teamTable = (): JSX.Element => {
+  // Displays the managers team members
+  const TeamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-3/4">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -135,236 +130,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       </div>
     );
   };
-
-  const confirmGraduateToTeamModalId3: string = "confirm-graduate3";
-
-  const assignManager = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black dark:text-white">
-          Type the graduates email and the specific team you want to move them
-          to.
-        </div>
-        <form>
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Graduate email
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="graduate@email.com"
-                required
-              ></input>
-            </div>
-            <div>
-              <label
-                htmlFor="last_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Team & Department
-              </label>
-              <input
-                type="text"
-                id="last_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. Cyber Security"
-                required
-              ></input>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <label
-              htmlFor={confirmGraduateToTeamModalId3}
-              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </label>
-
-            <input
-              type="checkbox"
-              id={confirmGraduateToTeamModalId3}
-              className="modal-toggle"
-            />
-            {/* <button
-              type="button"
-              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </button> */}
-            {reassureModal3()}
-          </div>
-        </form>
-      </div>
-    );
-  };
-
-  const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
-
-  const removeManager = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5 ">
-        <div className="mb-7 text-black dark:text-white">
-          Type the managers email and delete their account permanently.
-        </div>
-        <form>
-          <div className="flex flex-col justify-center items-center">
-            <div className="flex flex-col items-start w-full">
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Manager email
-              </label>
-            </div>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="manager@email.com                         "
-              required
-            ></input>
-            <div className="flex flex-col items-center">
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </label>
-
-              <input
-                type="checkbox"
-                id={confirmGraduateToTeamModalId2}
-                className="modal-toggle"
-              />
-
-              {reassureModal()}
-            </div>
-          </div>
-        </form>
-      </div>
-    );
-  };
-
-  const removeGraduate = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black dark:text-white">
-          Type the graduates email and delete their account permanently.
-        </div>
-        <form>
-          <div className="flex flex-col justify-center items-center">
-            <div className="flex flex-col items-start w-full">
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Graduate email
-              </label>
-            </div>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="graduate@email.com                         "
-              required
-            ></input>
-            <div className="flex flex-col items-center">
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn my-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-              >
-                Delete
-              </label>
-
-              <input
-                type="checkbox"
-                id={confirmGraduateToTeamModalId2}
-                className="modal-toggle"
-              />
-
-              {reassureModal()}
-            </div>
-          </div>
-        </form>
-      </div>
-    );
-  };
-
-  const confirmGraduateToTeamModalId: string = "confirm-graduate";
-
-  const assignGraduate = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black dark:text-white">
-          Type the graduates email and the specific team you want to move them
-          to.
-        </div>
-        <form>
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Graduate email
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="graduate@email.com"
-                required
-              ></input>
-            </div>
-            <div>
-              <label
-                htmlFor="last_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Team & Department
-              </label>
-              <input
-                type="text"
-                id="last_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. Cyber Security"
-                required
-              ></input>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <label
-              htmlFor={confirmGraduateToTeamModalId2}
-              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </label>
-
-            <input
-              type="checkbox"
-              id={confirmGraduateToTeamModalId2}
-              className="modal-toggle"
-            />
-            {/* <button
-              type="button"
-              className="my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </button> */}
-            {reassureModal2()}
-          </div>
-        </form>
-      </div>
-    );
-  };
-
-  const Table = ({
+  
+  // Creates a table of graduates in a specific year
+  const GradListTable = ({
     gradList,
     yearNumber,
   }: {
@@ -436,7 +204,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const createAccount = (): JSX.Element => {
+  // Displays the year 1 and 2 graduates in tables, a button to shift all years, and save
+  const CreateAccount = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
         <label
@@ -463,11 +232,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
-            <Table gradList={yearOneGrads} yearNumber={1} />
+            <GradListTable gradList={yearOneGrads} yearNumber={1} />
           </div>
           <div>
             Year 2
-            <Table gradList={yearTwoGrads} yearNumber={2} />
+            <GradListTable gradList={yearTwoGrads} yearNumber={2} />
           </div>
         </div>
         <div className="py-8">
@@ -489,146 +258,26 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const displayComponent = (): JSX.Element => {
+  const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return teamTable();
+      return <TeamTable />;
     }
     if (currentTab === "Assign Graduate") {
-      return assignGraduate();
+      return <AssignGraduate />;
     }
     if (currentTab === "Remove Graduate") {
-      return removeGraduate();
+      return <RemoveGraduate />;
     }
     if (currentTab === "Assign Manager") {
-      return assignManager();
+      return <AssignManager />;
     }
     if (currentTab === "Remove Manager") {
-      return removeManager();
+      return <RemoveManager />;
     }
     if (currentTab === "Create Account") {
-      return createAccount();
+      return <CreateAccount />;
     }
-    return <div>yooo</div>;
-  };
-
-  const reassureModal = (): JSX.Element => {
-    function classNames(...classes: any) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    return (
-      <>
-        <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">
-              Are you Sure?{" "}
-            </h3>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="py-4 text-black dark:text-white">
-                  Are you sure that you want to delete [member]?{" "}
-                </span>
-              </label>
-            </div>
-
-            <div className="modal-action">
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn bg-gray-200 text-black shadow-lg"
-              >
-                Cancel
-              </label>
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn bg-red-700 text-white"
-              >
-                Yes, I'm sure
-              </label>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  const reassureModal2 = (): JSX.Element => {
-    function classNames(...classes: any) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    return (
-      <>
-        <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">
-              Are you Sure?{" "}
-            </h3>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="py-4 text-black dark:text-white">
-                  Are you sure that you want to assign [member]?{" "}
-                </span>
-              </label>
-            </div>
-
-            <div className="modal-action">
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn bg-gray-200 text-black shadow-lg"
-              >
-                Cancel
-              </label>
-              <label
-                htmlFor={confirmGraduateToTeamModalId2}
-                className="btn bg-blue-800 text-white"
-              >
-                Yes, I'm sure
-              </label>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  const reassureModal3 = (): JSX.Element => {
-    function classNames(...classes: any) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    return (
-      <>
-        <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">
-              Are you Sure?{" "}
-            </h3>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="py-4 text-black dark:text-white">
-                  Are you sure that you want to Assign [member]?{" "}
-                </span>
-              </label>
-            </div>
-
-            <div className="modal-action">
-              <label
-                htmlFor={confirmGraduateToTeamModalId3}
-                className="btn bg-gray-200 text-black shadow-lg"
-              >
-                Cancel
-              </label>
-              <label
-                htmlFor={confirmGraduateToTeamModalId3}
-                className="btn bg-blue-800 text-white"
-              >
-                Yes, I'm sure
-              </label>
-            </div>
-          </div>
-        </div>
-      </>
-    );
+    return <div>This component shouldn't be returned 💀</div>;
   };
 
   const navigate = useNavigate();
@@ -699,8 +348,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             Create Account
           </button>
         </div>
-        {displayComponent()}
-        {reassureModal()}
+        <DisplayComponent />
       </section>
     </div>
   );

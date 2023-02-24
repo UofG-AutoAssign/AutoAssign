@@ -1,14 +1,10 @@
 import Navbar from "../components/Navbar";
 import { FC, useEffect, useState } from "react";
-import { ItemType, MyTech } from "./GraduateTeamPage";
+import { TechnologyDropdown } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
-export interface ManagerTableType {
-  name: string;
-  email: string;
-}
-
-export type initialComponentManager = "Your Team" | "Team Preference";
+import { ItemType } from "../constants/Interfaces";
+import { initialComponentManager } from "../constants/Types";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
@@ -41,7 +37,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
   const [curId, setCurId] = useState<number>(1);
 
-  const deleteItem = (delete_id: number) => {
+  const deleteItem = (delete_id: number): void => {
     let newList: ItemType[] = [...techList];
 
     newList = newList.filter((item) => {
@@ -51,7 +47,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     setTechList(newList);
   };
 
-  const addItem = () => {
+  const addItem = (): void => {
     let newList: ItemType[] = [...techList];
 
     newList.push({ id: curId, name: "hi" });
@@ -119,7 +115,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
                     scope="row"
                     className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
                   >
-                    <MyTech />
+                    <TechnologyDropdown />
                     <HiOutlineTrash
                       className="text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-150 my-auto mx-5 hover:cursor-pointer"
                       onClick={() => deleteItem(item.id)}

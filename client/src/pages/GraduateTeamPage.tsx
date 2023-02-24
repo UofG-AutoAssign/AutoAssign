@@ -3,60 +3,33 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import { useLocation, useNavigate } from "react-router-dom";
 import PreferenceFormTable from "../components/PreferenceFormTable";
-export interface ManagerTableType {
-  name: string;
-  email: string;
-}
+import { ItemType } from "../constants/Interfaces";
+import { initialComponentGraduate } from "../constants/Types";
+import { ManagerTableType } from "../constants/Interfaces";
+import { experienceOptions, interestOptions, techOptions } from "../constants/Options";
 
-export const experience_options = [
-  { value: 3, label: "Proficient" },
-  { value: 2, label: "Intermediate" },
-  { value: 1, label: "Basic" },
-  { value: 0, label: "None" },
-];
-
-export const interest_options = [
-  { value: 3, label: "Very Interested" },
-  { value: 2, label: "Interested" },
-  { value: 1, label: "Somewhat Interested" },
-  { value: 0, label: "Not Interested" },
-];
-
-export const tech_options = [
-  { value: "full_stack_development", label: "Full Stack Development" },
-  { value: "ui_ux_development", label: "UI/UX Development" },
-  { value: "machine_learning", label: "Machine Learning" },
-  { value: "cyber_security", label: "Cyber Security" },
-];
-
-export const MyExperience = (): JSX.Element => (
+export const ExperienceDropdown = (): JSX.Element => (
   <Select
     className="min-w-[200px] relative w-full h-10 text-black"
-    options={experience_options}
+    options={experienceOptions}
   />
 );
-export const MyInterest = (): JSX.Element => (
+export const InterestDropdown = (): JSX.Element => (
   <Select
     className="min-w-[200px] relative w-full h-10 text-black"
-    options={interest_options}
+    options={interestOptions}
   />
 );
-export const MyTech = (): JSX.Element => (
-  <Select className="min-w-[200px] relative w-full h-10 text-black" options={tech_options} />
+export const TechnologyDropdown = (): JSX.Element => (
+  <Select className="min-w-[200px] relative w-full h-10 text-black" options={techOptions} />
 );
-
-export interface ItemType {
-  id: number;
-  name: string;
-}
-
-type initialComponentGraduate = "Your Team" | "Preference Form"
 
 const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ initialComponent }) => {
   const [currentTab, setCurrentTab] = useState<
     initialComponentGraduate
   >(initialComponent);
 
+  // List of team members
   const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
@@ -68,11 +41,13 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
 
+  // Constant data for sending to backend
   const [techList, setTechList] = useState<ItemType[]>([
     { id: 0, name: "Full-Stack Development" },
   ]);
-
-  const teamTable = (): JSX.Element => {
+  
+  // Displays the table for the graduate to view their team
+  const YourTeamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible shadow-lg rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -106,8 +81,9 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
       </div>
     );
   };
-
-  const preferenceTable = (): JSX.Element => {
+  
+  // Displays the Preference Form Table as well as a save button
+  const PreferenceTable = (): JSX.Element => {
     return (
       <div className="w-full bg-white rounded-2xl font-medium">
         <PreferenceFormTable />
@@ -123,49 +99,10 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
     );
   };
 
-  const technologiesTable = (): JSX.Element => {
-    return (
-      <div>
-        <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Technology
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {techList.map((item) => (
-                <tr
-                  className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={item.id}
-                >
-                  <th
-                    scope="row"
-                    className="flex flex-row justify-between px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  ></th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  };
-
-  const displayComponent = (): JSX.Element => {
-    if (currentTab === "Your Team") {
-      return teamTable();
-    }
-
-    else if (currentTab === "Preference Form") {
-      return preferenceTable();
-    }
-
-    else {
-      return technologiesTable();
-    }
+  // Display page corresponding to the active tab
+  const DisplayComponent = (): JSX.Element => {
+    if (currentTab === "Your Team") return <YourTeamTable />
+    else return <PreferenceTable />
   }
 
   const navigate = useNavigate();
@@ -206,7 +143,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
         </div>
 
         <div className="w-3/4 pr-5">
-          {displayComponent()}
+          <DisplayComponent />
         </div>
       </section>
     </div>

@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import {
-  MyTech,
-  MyExperience,
-  MyInterest,
-  ItemType,
+  TechnologyDropdown,
+  ExperienceDropdown,
+  InterestDropdown,
 } from "../pages/GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
+import { ItemType } from "../constants/Interfaces";
 
 const PreferenceFormTable: FC = () => {
   // @Todo prevent duplicate technology picks
@@ -15,7 +15,7 @@ const PreferenceFormTable: FC = () => {
 
   const [curId, setCurId] = useState<number>(1);
 
-  const deleteItem = (delete_id: number) => {
+  const deleteItem = (delete_id: number): void => {
     let newList: ItemType[] = [...mockData];
 
     newList = newList.filter((item) => {
@@ -24,7 +24,7 @@ const PreferenceFormTable: FC = () => {
     setMockData(newList);
   };
 
-  const addItem = () => {
+  const addItem = (): void => {
     let newList: ItemType[] = [...mockData];
 
     newList.push({ id: curId, name: "hi" });
@@ -56,17 +56,17 @@ const PreferenceFormTable: FC = () => {
                 key={item.id}
               >
                 <td className="w-full flex flex-row font-medium py-4 px-6">
-                  <MyTech />
+                  <TechnologyDropdown />
                   <HiOutlineTrash
                     className="ml-6 text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 my-auto hover:cursor-pointer"
                     onClick={() => deleteItem(item.id)}
                   />
                 </td>
                 <td className="w-1/3 py-4 px-6">
-                  <MyExperience />
+                  <ExperienceDropdown />
                 </td>
                 <td className="w-1/3 py-4 px-6">
-                  <MyInterest />
+                  <InterestDropdown />
                 </td>
               </tr>
             ))}
