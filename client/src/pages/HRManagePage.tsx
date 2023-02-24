@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AssignManager from "../components/HRManage/AssignManager";
 import Navbar from "../components/Navbar";
 import { initialComponentHR } from "../constants/Types";
 
@@ -126,68 +127,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             ))}
           </tbody>
         </table>
-      </div>
-    );
-  };
-  
-  const confirmGraduateToTeamModalId3: string = "confirm-graduate3";
-
-  const AssignManager = (): JSX.Element => {
-    return (
-      <div className="w-3/4 pr-5">
-        <div className="mb-7 text-black dark:text-white">
-          Type the graduates email and the specific team you want to move them
-          to.
-        </div>
-        <form>
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Graduate email
-              </label>
-              <input
-                type="text"
-                id="first_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="graduate@email.com"
-                required
-              ></input>
-            </div>
-            <div>
-              <label
-                htmlFor="last_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Team & Department
-              </label>
-              <input
-                type="text"
-                id="last_name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. Cyber Security"
-                required
-              ></input>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <label
-              htmlFor={confirmGraduateToTeamModalId3}
-              className="btn my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
-              Assign
-            </label>
-
-            <input
-              type="checkbox"
-              id={confirmGraduateToTeamModalId3}
-              className="modal-toggle"
-            />
-            {reassureModal3()}
-          </div>
-        </form>
       </div>
     );
   };
@@ -482,7 +421,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       return RemoveGraduate();
     }
     if (currentTab === "Assign Manager") {
-      return AssignManager();
+      return <AssignManager />
     }
     if (currentTab === "Remove Manager") {
       return RemoveManager();
@@ -562,46 +501,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
               </label>
               <label
                 htmlFor={confirmGraduateToTeamModalId2}
-                className="btn bg-blue-800 text-white"
-              >
-                Yes, I'm sure
-              </label>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  const reassureModal3 = (): JSX.Element => {
-    function classNames(...classes: any) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    return (
-      <>
-        <div className="modal z-50 overflow-y-auto">
-          <div className="modal-box flex flex-col bg-white dark:bg-gray-600">
-            <h3 className="font-bold text-lg text-black dark:text-white">
-              Are you Sure?{" "}
-            </h3>
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                <span className="py-4 text-black dark:text-white">
-                  Are you sure that you want to Assign [member]?{" "}
-                </span>
-              </label>
-            </div>
-
-            <div className="modal-action">
-              <label
-                htmlFor={confirmGraduateToTeamModalId3}
-                className="btn bg-gray-200 text-black shadow-lg"
-              >
-                Cancel
-              </label>
-              <label
-                htmlFor={confirmGraduateToTeamModalId3}
                 className="btn bg-blue-800 text-white"
               >
                 Yes, I'm sure
