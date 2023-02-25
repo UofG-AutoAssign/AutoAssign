@@ -13,7 +13,7 @@ import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
 import SignUpPage from "./pages/SignUpPage";
-import HRHomePage from "./pages/HRHomePage";
+import HRHomePage from "./pages/HRhomePage";
 import { observer } from "mobx-react";
 
 const App: FC = observer(() => {
@@ -58,8 +58,12 @@ const App: FC = observer(() => {
               element={<HRManagePage initialState={"Remove Manager"} />}
             />
             <Route
-              path="hr/manage/create_account"
-              element={<HRManagePage initialState={"Create Account"} />}
+              path="hr/manage/create_graduate_account"
+              element={<HRManagePage initialState={"Create Graduate Account"} />}
+            />
+            <Route
+              path="hr/manage/create_manager_account"
+              element={<HRManagePage initialState={"Create Manager Account"} />}
             />
             <Route path="manager" element={<ManagerPage />} />
             <Route

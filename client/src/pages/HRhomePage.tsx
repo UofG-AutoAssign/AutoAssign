@@ -48,10 +48,17 @@ const HRHomePage: FC = () => {
       initialState: "Assign Graduate",
     },
     {
-      title: "Create Account",
+      title: "Create Graduate Accounts",
       desc: "Create a new account for a graduate, manager, or HR employee",
       btn_color: "bg-btnColor7",
-      link: "hr/manage/create_account",
+      link: "hr/manage/create_graduate_account",
+      initialState: "Teams",
+    },
+    {
+      title: "Create Manager Accounts",
+      desc: "Create a new account for a manager, manager, or HR employee",
+      btn_color: "bg-btnColor7",
+      link: "hr/manage/create_manager_account",
       initialState: "Teams",
     },
   ];

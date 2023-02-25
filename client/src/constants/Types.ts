@@ -6,6 +6,7 @@ export type initialComponentHR =
   | "Remove Graduate"
   | "Assign Manager"
   | "Remove Manager"
-  | "Create Account";
+  | "Create Graduate Account"
+  | "Create Manager Account";
 
 export type initialComponentManager = "Your Team" | "Team Preference";

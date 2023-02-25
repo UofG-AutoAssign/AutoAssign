@@ -28,6 +28,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     "sam@barclays.com",
     "dequan@barclays.com",
   ]);
+  const [managers, setManagers] = useState<string[]>([
+    "joey-manager@barclays.com",
+    "tyson-manager@barclays.com",
+  ]);
 
   // Swaps the graduate to the other year table
   const swapYear = (gradEmail: string, currentYear: number): void => {
@@ -130,7 +134,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       </div>
     );
   };
-  
+
   // Creates a table of graduates in a specific year
   const GradListTable = ({
     gradList,
@@ -204,13 +208,71 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
+  const ManagerListTable = ({
+    managerList,
+  }: {
+    managerList: string[];
+  }): JSX.Element => {
+    const [query, setQuery] = useState<string>("");
+
+    const filteredPeople =
+      query === ""
+        ? managerList
+        : managerList.filter((managerName) => {
+            return managerName.toLowerCase().includes(query.toLowerCase());
+          });
+
+
+          return (
+            <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
+              <input
+                className="w-full border-none my-2 pl-5 pr-10 font-semibold text-left text-sm leading-5 text-black dark:text-white focus:ring-0 bg-gray-100 dark:bg-gray-700"
+                type={"text"}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={"Search Names"}
+              />
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
+                <tbody>
+                  {managerList.length === 0 ? (
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-400 whitespace-nowrap dark:text-white"
+                      >
+                        Empty
+                      </th>
+                      <td className="py-4 px-6 text-right">
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredPeople.map((managerName) => {
+                      return (
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                          <th
+                            scope="row"
+                            className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          >
+                            {managerName}
+                          </th>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          );
+      
+        }
+
   // Displays the year 1 and 2 graduates in tables, a button to shift all years, and save
   const CreateAccount = (): JSX.Element => {
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
         <label
           htmlFor="Type the graduate emails to create their account"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="w-full block mb-2 text-gray-900 dark:text-white"
         >
           Type the graduate email(s) to create their account
         </label>
@@ -258,6 +320,50 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
+  const CreateManagerAccount = (): JSX.Element => {
+    return (
+      <div className="w-3/4 pr-5 flex flex-col items-center">
+        <label
+          htmlFor="Type the manager emails to create their account"
+          className="w-full block mb-2 text-gray-900 dark:text-white"
+        >
+          Type the managers email(s) to create their account
+        </label>
+        <textarea
+          id="message"
+          rows={4}
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="manager1@barclays.com, manager2@barclays.com, ..."
+        ></textarea>
+        <div className="py-8">
+          <button
+            type="button"
+            className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          >
+            Create
+          </button>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-5 px-10">
+        
+          <div>
+            Managers
+            <ManagerListTable managerList={managers} /> 
+          </div>
+        </div>
+        <div className="py-8">
+        <button
+          type="button"
+          className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+        >
+          Save
+        </button>
+        </div>
+        
+      </div>
+    );
+  };
+
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
       return <TeamTable />;
@@ -274,8 +380,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     if (currentTab === "Remove Manager") {
       return <RemoveManager />;
     }
-    if (currentTab === "Create Account") {
+    if (currentTab === "Create Graduate Account") {
       return <CreateAccount />;
+    }
+    if (currentTab === "Create Manager Account") {
+      return <CreateManagerAccount />;
     }
     return <div>This component shouldn't be returned 💀</div>;
   };
@@ -291,7 +400,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     else if (query === "remove_graduate") setCurrentTab("Remove Graduate");
     else if (query === "assign_manager") setCurrentTab("Assign Manager");
     else if (query === "remove_manager") setCurrentTab("Remove Manager");
-    else if (query === "create_account") setCurrentTab("Create Account");
+    else if (query === "create_graduate_account") setCurrentTab("Create Graduate Account");
+    else if (query === "create_manager_account")
+      setCurrentTab("Create Manager Account");
     else setCurrentTab("Teams");
 
     () => {};
@@ -341,11 +452,19 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             Remove Manager
           </button>
           <button
-            onClick={() => navigate("/hr/manage/create_account")}
+            onClick={() => navigate("/hr/manage/create_graduate_account")}
             type="button"
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
-            Create Account
+            Create Graduate Account
+          </button>
+
+          <button
+            onClick={() => navigate("/hr/manage/create_manager_account")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Create Manager Account
           </button>
         </div>
         <DisplayComponent />
