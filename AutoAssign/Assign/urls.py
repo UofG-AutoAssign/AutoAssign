@@ -14,7 +14,6 @@ urlpatterns = [
     path('home/hr', views.HrView.as_view(), name="HrHome"),
     path('home/hr/create', views.HrViewCreate.as_view(), name="HrCreate"),
     path('home/hr/CreateTeam', views.CreateTeamView.as_view(), name="CreateTeam"),
-    path('home/hr/CreateDepartment', views.CreateDepartment.as_view(), name="CreateDepartment"),
     path('home/hr/TeamView', views.AllTeamView.as_view(), name="AllTeam"),
     path('home/hr/GradView', views.AllGradView.as_view(), name="AllGrad"),
     path('home/hr/DeleteGrad', views.DeleteGrad.as_view(), name="DeleteGrad"),
@@ -22,11 +21,12 @@ urlpatterns = [
     path('home/hr/DeleteMan', views.DeleteMan.as_view(), name="DeleteManger"),
     path('home/hr/AssignGrad', views.AssignGradToTeam.as_view(), name="AssignGrad"),
     path('home/hr/AssignMan', views.AssignManToTeam.as_view(), name="AssignMan"),
+    path('home/hr/CreateDepartment', views.CreateDepartment.as_view(), name="CreateDepartment"),
+    path('home/hr/AssignTeam', views.AssignTeamToDepartment.as_view(), name="AssignTeamToDepartment"),
     path('home/hr/DeleteTeam', views.DeleteTeam.as_view(), name="DeleteTeam"),
     path('home/hr/DeleteYearTwo', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
-    path('home/hr/AssignTeam', views.AssignTeamToDepartment.as_view(), name="AssignTeamToDepartment"),
 
 
 ]

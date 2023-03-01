@@ -447,6 +447,7 @@ class CreateDepartment(APIView):
 
         return Response({"code": 403, "status": False, 'error': "Create Team failed", "detail": ser.errors})
 
+
 class AssignTeamToDepartment(APIView):
     permission_classes = [HrPermission, ]
 
@@ -475,3 +476,47 @@ class AssignTeamToDepartment(APIView):
             return Response(context)
 
         return Response({"code": 403, "status": False, 'error': "Assign Team failed", "detail": ser.errors})
+
+
+class DeleteTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Team_id = data['Team_id']
+
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        context = {"code": 403, "status": False, "detail": "Fail to delete"}
+
+        if Team_obj:
+            Team_obj.delete()
+            context = {"code": 200, "status": True, "detail": "Has been deleted"}
+
+        return Response(context)
+
+
+class DeleteAllYearTwo(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        Grad_obj = models.Graduate.objects.filter(year=2).all()
+
+        Grad_obj.delete()
+
+        context = {"code": 200, "status": True, "detail": "Has been deleted"}
+
+        return Response(context)
+
+
+class ChangeGraduateYear(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        ser = serializers.ChangeGraduateYear(data=request.data, many=True)
+
+        if ser.is_valid():
+            ser.save()
+            return {"code": 200, "status": True, "detail": "Has been Changed", "data": ser.data}
+
+        return {"code": 403, "status": False, "detail": "Fail to delete"}
