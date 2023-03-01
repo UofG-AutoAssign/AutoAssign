@@ -446,3 +446,32 @@ class CreateDepartment(APIView):
             return Response(context)
 
         return Response({"code": 403, "status": False, 'error': "Create Team failed", "detail": ser.errors})
+
+class AssignTeamToDepartment(APIView):
+    permission_classes = [HrPermission, ]
+
+    def put(self, request):
+        data = request.data
+
+        depart_id = data['depart_id']
+        depart_obj = models.Department.objects.filter(id=depart_id).first()
+
+        Team_id = data['team_id']
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        if not depart_obj:
+            return Response(
+                {"code": 403, "status": False, 'error': "Assign Grad failed", "detail": "Please Check Department"})
+
+        if not Team_obj:
+            return Response(
+                {"code": 403, "status": False, 'error': "Assign Team failed", "detail": "Please Check Team"})
+
+        ser = serializers.AssignTeamtoDepartment(instance=Team_obj, data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"code": 200, "status": True, "Status": "success", "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 403, "status": False, 'error': "Assign Team failed", "detail": ser.errors})

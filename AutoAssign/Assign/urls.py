@@ -24,6 +24,7 @@ urlpatterns = [
     path('home/hr/AssignMan', views.AssignManToTeam.as_view(), name="AssignMan"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
+    path('home/hr/AssignTeam', views.AssignTeamToDepartment.as_view(), name="AssignTeamToDepartment"),
 
 
 ]

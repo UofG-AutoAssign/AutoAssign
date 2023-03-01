@@ -194,7 +194,14 @@ class AssignManger(serializers.ModelSerializer):
         model = models.Team
         fields = ["man_id"]
 
+
 class CreateDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Department
         fields = ["depart_name"]
+
+
+class AssignTeamtoDepartment(serializers.ModelSerializer):
+    class Meta:
+        model = models.Team
+        fields = ["depart_id"]
