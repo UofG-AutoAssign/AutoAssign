@@ -7,7 +7,6 @@ import csv
 url_lis = []
 header = ['Job', 'Business Area', 'Area of Expertise', 'Looking', "Skills"]
 
-
 def get_page():
     url = f'https://search.jobs.barclays/search-jobs/results?ActiveFacetID=0&CurrentPage=''&RecordsPerPage=500&Distance=50&RadiusUnitType=0&Keywords=&Location=&ShowRadius=False&IsPagination=False&CustomFacetName=&FacetTerm=&FacetType=0&SearchResultsModuleName=Refresh+-+Search+Results&SearchFiltersModuleName=Refresh+-+Search+Filter&SortCriteria=0&SortDirection=0&SearchType=5&PostalCode=&fc=&fl=&fcf=&afc=&afl=&afcf='
     headers = {
