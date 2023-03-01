@@ -430,3 +430,19 @@ class AssignManToTeam(APIView):
             return Response(context)
 
         return Response({"code": 403, "status": False, 'error': "Assign failed", "detail": ser.errors})
+
+
+class CreateDepartment(APIView):
+    permission_classes = [HrPermission, ]
+
+    # 1.Get initial data
+    def post(self, request):
+        # 2 Check data format
+        ser = serializers.CreateDepartment(data=request.data)
+
+        if ser.is_valid():
+            ser.save()
+            context = {"code": 200, "status": True, "Create": "Department", "Status": "success", "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 403, "status": False, 'error': "Create Team failed", "detail": ser.errors})
