@@ -205,3 +205,21 @@ class AssignTeamtoDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["depart_id"]
+
+
+class DeleteTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        Team_id = data['Team_id']
+
+        Team_obj = models.Team.objects.filter(id=Team_id).first()
+
+        context = {"code": 403, "status": False, "detail": "Fail to delete"}
+
+        if Team_obj:
+            Team_obj.delete()
+            context = {"code": 200, "status": True, "detail": "Has been deleted"}
+
+        return Response(context)
