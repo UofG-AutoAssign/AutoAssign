@@ -223,3 +223,16 @@ class DeleteTeam(APIView):
             context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
         return Response(context)
+
+
+class DeleteAllYearTwo(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        Grad_obj = models.Graduate.objects.filter(year=2).all()
+
+        Grad_obj.delete()
+
+        context = {"code": 200, "status": True, "detail": "Has been deleted"}
+
+        return Response(context)
