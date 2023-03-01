@@ -400,9 +400,9 @@ class AssignManToTeam(APIView):
     def put(self, request):
 
         data = request.data
-        Man_id = data['man_id']
 
-        Man_obj = models.Graduate.objects.filter(id=Man_id).first()
+        Man_id = data['man_id']
+        Man_obj = models.Manager.objects.filter(id=Man_id).first()
 
         Team_id = data['team_id']
         Team_obj = models.Team.objects.filter(id=Team_id).first()
@@ -414,6 +414,12 @@ class AssignManToTeam(APIView):
         if not Team_obj:
             return Response(
                 {"code": 403, "status": False, 'error': "Assign Team failed", "detail": "Please Check Team"})
+
+        Current_Team = models.Team.objects.filter(man_id=Man_id).first()
+
+        if Current_Team:
+            Current_Team.man_id = None
+            Current_Team.save()
 
         ser = serializers.AssignManger(instance=Team_obj, data=request.data)
 
