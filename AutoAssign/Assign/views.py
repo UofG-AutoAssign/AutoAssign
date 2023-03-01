@@ -202,47 +202,22 @@ class FormView(APIView):
         return Response(context)
 
     def post(self, request):
+        grad_obj = request.user
+        grad_id = grad_obj.id
+        Form = models.Form.objects.filter(graduate=grad_obj).all()
 
         ser = serializers.UpdateFormSerializer(data=request.data, many=True)
 
+        # The front end is not allowed to illegally add forms for other grads through this interface
+        for i in request.data:
+            if i["graduate"] != grad_id:
+                return Response({"code": 403, "status": False, 'error': "Update Form failed",
+                                 "detail": "Please Check Graduate id "})
+
         if ser.is_valid():
+            Form.delete()
             ser.save()
-            data = ser.data
-            for i in data:
-                Form_id = i["id"]
-                id_list = [Form_id]
-                d = {'Form': id_list}
-                new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
-                if not new_ser.is_valid():
-                    for j in data:
-                        Form_id = j["id"]
-                        Form_obj = models.Form.objects.filter(id=Form_id).first()
-                        Form_obj.delete()
-
-                    return Response({"code": 403, "status": False, 'error': "Update Form failed", "detail": ser.errors})
-
-            Grad_obj = request.user
-            From_obj = Grad_obj.Form.all()
-            From_obj.delete()
-
-            id_list = []
-
-            for i in data:
-                Form_id = i["id"]
-                Form_id = [Form_id]
-                id_list = id_list + Form_id
-
-            d = {'Form': id_list}
-
-            new_ser = serializers.AddGraduateFormSerializer(instance=request.user, data=d)
-
-            if new_ser.is_valid():
-                new_ser.save()
-
             return self.get(request)
-
-            # context = {"status": True, "Create": "Team", "Status": "success"}
-            # return Response(context)
 
         return Response({"code": 403, "status": False, 'error': "Update Form failed", "detail": ser.errors})
 
@@ -294,7 +269,7 @@ class TeamSettingView(APIView):
 
             return self.get(request)
 
-        return  Response({"code": 403, "status": False, 'error': "Update Team failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "Update Team failed", "detail": ser.errors})
 
 
 class CreateTeamView(APIView):
@@ -311,6 +286,7 @@ class CreateTeamView(APIView):
             return Response(context)
 
         return Response({"code": 403, "status": False, 'error': "Create Team failed", "detail": ser.errors})
+
 
 class AllTeamView(APIView):
     permission_classes = [HrPermission, ]

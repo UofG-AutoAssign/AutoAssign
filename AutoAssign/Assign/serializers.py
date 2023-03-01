@@ -74,31 +74,29 @@ class CreateHrSerializer(serializers.ModelSerializer):
 
 class FormSerializer(serializers.ModelSerializer):
     Form_information = serializers.SerializerMethodField()
+    Grad_id = serializers.SerializerMethodField()
 
     def get_Form_information(self, obj):
-        Form = obj.Form.all()
+        grad_id = obj
+        Form = models.Form.objects.filter(graduate=grad_id).all()
         return [
-            {"Form_id": i.id, "Skill_id": i.Skill_id.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest,
+            {"Form_id": i.id, "Skill_id": i.skill_id.id, "skill_name": i.skill_id.skill_name, "Interest": i.interest,
              "Experience": i.experience}
             for i in Form]
 
+    def get_Grad_id(self, obj):
+        return obj.id
+
     class Meta:
         model = models.Form
-        fields = ["id", "Form_information"]
+        fields = ["Grad_id", "Form_information"]
         list_serializer_class = serializers.ListSerializer
 
 
 class UpdateFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ["id", "interest", "experience", "Skill_id"]
-        list_serializer_class = serializers.ListSerializer
-
-
-class AddGraduateFormSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Graduate
-        fields = ["Form"]
+        fields = ["interest", "experience", "skill_id", "graduate"]
         list_serializer_class = serializers.ListSerializer
 
 
@@ -120,10 +118,10 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
     Skill_information = serializers.SerializerMethodField()
 
     def get_Skill_information(self, obj):
-        Skill = obj.Skill.all()
+        skill = obj.skill.all()
         return [
             {"Skill_id": i.id, "skill_name": i.skill_name, }
-            for i in Skill]
+            for i in skill]
 
     class Meta:
         model = models.Team
@@ -134,7 +132,7 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
 class CreateTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_id", "depart_id", "ratio", "Skill"]
+        fields = ["team_name", "man_id", "depart_id", "ratio", "skill"]
         extra_kwargs = {
             "team_name": {"max_length": 100, "write_only": True},
         }
@@ -143,7 +141,7 @@ class CreateTeamSerializer(serializers.ModelSerializer):
 class UpdateTeamSettingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Team
-        fields = ["ratio", "Skill"]
+        fields = ["ratio", "skill"]
 
 
 class AllTeamViewSerializer(serializers.ModelSerializer):
@@ -195,3 +193,4 @@ class AssignManger(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["man_id"]
+
