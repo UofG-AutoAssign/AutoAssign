@@ -51,9 +51,9 @@ class LoginView(APIView):
             user_type = 'Graduate'
 
         if user_object:
-            return Response({'status': True, 'user_type': user_type, 'token': token})
+            return Response({"code": 200, 'status': True, 'user_type': user_type, 'token': token})
 
-        return Response({'status': False, 'error': 'User name or password error'})
+        return Response({"code": 403, 'status': False, 'error': 'User name or password error'})
 
 
 class HrView(APIView):
@@ -62,7 +62,7 @@ class HrView(APIView):
     def get(self, request):
         ser = serializers.HrSerializer(instance=request.user)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -71,10 +71,11 @@ class HrView(APIView):
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Hr_id": request.user.id, "data": ser.data}
+            context = {"code": 200, "status": True, "Hr_id": request.user.id, "data": ser.data}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+        return Response(
+            {"code": 403, "status": False, 'error': "Update personal information Fail", "detail": ser.errors})
 
 
 class GradView(APIView):
@@ -83,7 +84,7 @@ class GradView(APIView):
     def get(self, request):
         ser = serializers.GradSerializer(instance=request.user)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -92,10 +93,11 @@ class GradView(APIView):
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Grad_id": request.user.id, "data": ser.data}
+            context = {"code": 200, "status": True, "Grad_id": request.user.id, "data": ser.data}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+        return Response(
+            {"code": 403, "status": False, 'error': "Update personal information Fail", "detail": ser.errors})
 
 
 class ManView(APIView):
@@ -104,7 +106,7 @@ class ManView(APIView):
     def get(self, request):
         ser = serializers.ManSerializer(instance=request.user)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -113,10 +115,11 @@ class ManView(APIView):
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Man_id": request.user.id, "data": ser.data}
+            context = {"code": 200, "status": True, "Man_id": request.user.id, "data": ser.data}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Update personal information Fail", "detail": ser.errors})
+        return Response(
+            {"code": 403, "status": False, 'error': "Update personal information Fail", "detail": ser.errors})
 
 
 class HrViewCreate(APIView):
@@ -137,19 +140,19 @@ class HrViewCreate(APIView):
 
         if role == 1:
             ser = serializers.CreateGraduateSerializer(data=request.data)
-            context = {"status": True, "Create": "Graduate", "Status": "success"}
+            context = {"code": 200, "status": True, "Create": "Graduate", "Status": "success"}
         elif role == 2:
             ser = serializers.CreateMangerSerializer(data=request.data)
-            context = {"status": True, "Create": "Manager", "Status": "success"}
+            context = {"code": 200, "status": True, "Create": "Manager", "Status": "success"}
         elif role == 3:
             ser = serializers.CreateHrSerializer(data=request.data)
-            context = {"status": True, "Create": "Hr", "Status": "success"}
+            context = {"code": 200, "status": True, "Create": "Hr", "Status": "success"}
 
         if ser.is_valid():
             ser.save()
             return Response(context)
 
-        return Response({"code": 1001, 'error': "registration failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "registration failed", "detail": ser.errors})
 
 
 class SkillView(APIView):
@@ -159,7 +162,7 @@ class SkillView(APIView):
 
         ser = serializers.SkillSerializer(instance=skill_QuerySet, many=True)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
         return Response(context)
 
 
@@ -177,13 +180,13 @@ class ChangePassword(APIView):
             return Response({"code": 400, 'error': "Please check whether the passwords entered are consistent"})
 
         if hash_pwd != User.password:
-            return Response({'status': False, 'error': 'password error'})
+            return Response({"code": 403, "status": False, 'error': 'password error'})
 
         hash_pwd = hashEncryption(pwd1)
         User.password = hash_pwd
         User.save()
 
-        context = {"status": True, "data": "Password Changed"}
+        context = {"code": 200, "status": True, "data": "Password Changed"}
 
         return Response(context)
 
@@ -194,7 +197,7 @@ class FormView(APIView):
     def get(self, request):
         ser = serializers.FormSerializer(instance=request.user)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -216,7 +219,7 @@ class FormView(APIView):
                         Form_obj = models.Form.objects.filter(id=Form_id).first()
                         Form_obj.delete()
 
-                    return Response({"code": 1001, 'error': "Create Team failed", "detail": new_ser.errors})
+                    return Response({"code": 403, "status": False, 'error': "Update Form failed", "detail": ser.errors})
 
             Grad_obj = request.user
             From_obj = Grad_obj.Form.all()
@@ -241,7 +244,7 @@ class FormView(APIView):
             # context = {"status": True, "Create": "Team", "Status": "success"}
             # return Response(context)
 
-        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "Update Form failed", "detail": ser.errors})
 
 
 class TeamMemberView(APIView):
@@ -253,10 +256,10 @@ class TeamMemberView(APIView):
         if team_obj:
             grad_QuerySet = models.Graduate.objects.filter(team_id=team_obj).all()
             ser = serializers.TeamViewSerializer(instance=grad_QuerySet, many=True)
-            context = {"status": True, "data": ser.data}
+            context = {"code": 200, "status": True, "data": ser.data}
             return Response(context)
 
-        return Response({'status': False, 'error': 'This manager has no Team yet'})
+        return Response({"code": 403, "status": False, 'error': 'This manager has no Team yet'})
 
 
 class TeamSettingView(APIView):
@@ -271,7 +274,7 @@ class TeamSettingView(APIView):
 
         # Find the corresponding skill name
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -281,7 +284,8 @@ class TeamSettingView(APIView):
 
         if not Team_Obj:
             return Response(
-                {"code": 1001, 'error': "Update Team failed", "detail": "This Manager dont have a team yet"})
+                {"code": 403, "status": False, 'error': "Update Team failed",
+                 "detail": "This Manager dont have a team yet"})
 
         ser = serializers.UpdateTeamSettingSerializer(instance=Team_Obj, data=request.data)
 
@@ -290,7 +294,7 @@ class TeamSettingView(APIView):
 
             return self.get(request)
 
-        return Response({"code": 1001, 'error': "Update Team failed", "detail": ser.errors})
+        return  Response({"code": 403, "status": False, 'error': "Update Team failed", "detail": ser.errors})
 
 
 class CreateTeamView(APIView):
@@ -303,10 +307,10 @@ class CreateTeamView(APIView):
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Create": "Team", "Status": "success"}
+            context = {"code": 200, "status": True, "Create": "Team", "Status": "success"}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Create Team failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "Create Team failed", "detail": ser.errors})
 
 class AllTeamView(APIView):
     permission_classes = [HrPermission, ]
@@ -316,7 +320,7 @@ class AllTeamView(APIView):
 
         ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -329,7 +333,7 @@ class AllGradView(APIView):
 
         ser = serializers.AllGradSerializer(instance=team_obj, many=True)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -342,7 +346,7 @@ class AllManView(APIView):
 
         ser = serializers.AllManSerializer(instance=team_obj, many=True)
 
-        context = {"status": True, "data": ser.data}
+        context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
 
@@ -356,11 +360,11 @@ class DeleteMan(APIView):
 
         Man_obj = models.Manager.objects.filter(id=Man_id).first()
 
-        context = {"status": False, "detail": "Fail to delete"}
+        context = {"code": 403, "status": False, "detail": "Fail to delete"}
 
         if Man_obj:
             Man_obj.delete()
-            context = {"status": True, "detail": "Has been deleted"}
+            context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
         return Response(context)
 
@@ -374,11 +378,11 @@ class DeleteGrad(APIView):
 
         Grad_obj = models.Graduate.objects.filter(id=Grad_id).first()
 
-        context = {"status": False, "detail": "Fail to delete"}
+        context = {"code": 403, "status": False, "detail": "Fail to delete"}
 
         if Grad_obj:
             Grad_obj.delete()
-            context = {"status": True, "detail": "Has been deleted"}
+            context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
         return Response(context)
 
@@ -398,20 +402,20 @@ class AssignGradToTeam(APIView):
 
         if not Grad_obj:
             return Response(
-                {"code": 1001, 'error': "Assign Grad failed", "detail": "Please Check Graduate"})
+                {"code": 403, "status": False, 'error': "Assign Grad failed", "detail": "Please Check Graduate"})
 
         if not Team_obj:
             return Response(
-                {"code": 1001, 'error': "Assign Team failed", "detail": "Please Check Team"})
+                {"code": 403, "status": False, 'error': "Assign Team failed", "detail": "Please Check Team"})
 
         ser = serializers.AssignGraduate(instance=Grad_obj, data=request.data)
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Grad_id": Grad_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
+            context = {"code": 200, "status": True, "Grad_id": Grad_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "Assign failed", "detail": ser.errors})
 
 
 class AssignManToTeam(APIView):
@@ -429,17 +433,18 @@ class AssignManToTeam(APIView):
 
         if not Man_obj:
             return Response(
-                {"code": 1001, 'error': "Assign Grad failed", "detail": "Please Check Manger"})
+                {"code": 403, "status": False, 'error': "Assign Grad failed", "detail": "Please Check Manger"})
 
         if not Team_obj:
             return Response(
-                {"code": 1001, 'error': "Assign Team failed", "detail": "Please Check Team"})
+                {"code": 403, "status": False, 'error': "Assign Team failed", "detail": "Please Check Team"})
 
         ser = serializers.AssignManger(instance=Team_obj, data=request.data)
 
         if ser.is_valid():
             ser.save()
-            context = {"status": True, "Man_id": Man_obj.id, "Team_id": Team_obj.id, "detail": "Updated"}
+            context = {"code": 200, "status": True, "Man_id": Man_obj.id, "Team_id": Team_obj.id,
+                       "detail": "Updated"}
             return Response(context)
 
-        return Response({"code": 1001, 'error': "Assign failed", "detail": ser.errors})
+        return Response({"code": 403, "status": False, 'error': "Assign failed", "detail": ser.errors})
