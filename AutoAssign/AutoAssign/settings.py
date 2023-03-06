@@ -168,3 +168,11 @@ REST_FRAMEWORK = {
     ]
 
 }
+
+# Email
+EMAIL_HOST = "smtp.vip.163.com"     # server
+EMAIL_PORT = 25                 # Normally it is 25
+EMAIL_HOST_USER = "wenda76629@vip.163.com"     # User_name
+EMAIL_HOST_PASSWORD = "QUYUUBSZBSKLDEWF"          # Password (note: the password here refers to the authorization code)
+EMAIL_USE_TLS = True       # Generally False
+

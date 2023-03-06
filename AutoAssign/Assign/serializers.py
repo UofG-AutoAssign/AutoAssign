@@ -13,10 +13,11 @@ class HrSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+# Graduate informations
 class GradSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
-        fields = ["first_name", "second_name", "email"]
+        fields = ["first_name", "second_name", "email", "year"]
         list_serializer_class = serializers.ListSerializer
 
 
@@ -201,7 +202,7 @@ class CreateDepartment(serializers.ModelSerializer):
         fields = ["depart_name"]
 
 
-class AssignTeamtoDepartment(serializers.ModelSerializer):
+class AssignTeamToDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["depart_id"]
@@ -211,3 +212,35 @@ class ChangeGraduateYear(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
         fields = ["id", "year"]
+
+
+class AddRegistrations(serializers.Serializer):
+    email = serializers.CharField()
+    role = serializers.IntegerField()
+
+    def create(self, validated_data):
+        mail = validated_data.get('email')
+        role = validated_data.get('role')
+
+        # Allow repeat registrations
+        instance, created = models.Registration.objects.get_or_create(email=mail, role=role)
+
+        return instance
+
+
+class RegisterGraduate(serializers.ModelSerializer):
+    class Meta:
+        model = models.Graduate
+        fields = ["email", 'password', 'first_name', 'second_name']
+
+
+class RegisterManager(serializers.ModelSerializer):
+    class Meta:
+        model = models.Manager
+        fields = ["email", 'password', 'first_name', 'second_name']
+
+
+class CheckPasswordFormat(serializers.Serializer):
+    password = serializers.CharField(max_length=64, validators=[
+        lambda value: len(value) <= 64 or serializers.ValidationError("The password format is incorrect")
+    ])

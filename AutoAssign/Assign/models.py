@@ -48,6 +48,9 @@ class Graduate(models.Model):
 
     year = models.IntegerField(default=1)
 
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
+
 
 class Manager(models.Model):
     # man_id = models.BigAutoField(verbose_name="man_id ",
@@ -69,6 +72,9 @@ class Manager(models.Model):
                                 null=False)
 
     role = models.IntegerField(verbose_name="Roles", default=2)
+
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
 
 
 class Department(models.Model):
@@ -102,6 +108,9 @@ class HR(models.Model):
                                 null=False)
 
     role = models.IntegerField(verbose_name="Roles", default=3)
+
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
 
 
 class Form(models.Model):
@@ -149,3 +158,16 @@ class Skill(models.Model):
                                   null=False,
                                   unique=True,
                                   )
+
+
+class Registration(models.Model):
+    email = models.CharField(verbose_name="User's email", max_length=100,
+                             null=False,
+                             unique=True,
+                             )
+
+    registration_status = models.IntegerField(verbose_name="registration_status", default=0)
+
+    role = models.IntegerField(verbose_name="Roles")
+
+    token = models.CharField(verbose_name="Token", max_length=64, )
