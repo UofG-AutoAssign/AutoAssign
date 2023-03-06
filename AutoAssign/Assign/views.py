@@ -245,13 +245,14 @@ class TeamSettingView(APIView):
         user_obj = request.user
         team_obj = models.Team.objects.filter(man_id=user_obj).first()
 
-        ser = serializers.TeamSettingViewSerializer(instance=team_obj)
+        if team_obj:
+            ser = serializers.TeamSettingViewSerializer(instance=team_obj)
+            context = {"code": 200, "status": True, "data": ser.data}
+            return Response(context)
 
         # Find the corresponding skill name
 
-        context = {"code": 200, "status": True, "data": ser.data}
-
-        return Response(context)
+        return Response({"code": 403, "status": False, 'error': 'This manager dose not has a team'})
 
     def put(self, request):
         Man_Obj = request.user
