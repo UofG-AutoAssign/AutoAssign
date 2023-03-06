@@ -13,10 +13,11 @@ class HrSerializer(serializers.ModelSerializer):
         list_serializer_class = serializers.ListSerializer
 
 
+# Graduate information
 class GradSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Graduate
-        fields = ["first_name", "second_name", "email"]
+        fields = ["first_name", "second_name", "email", "year"]
         list_serializer_class = serializers.ListSerializer
 
 
