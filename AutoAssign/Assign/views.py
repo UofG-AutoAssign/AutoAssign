@@ -7,6 +7,7 @@ from Assign import models
 from ext.per import HrPermission, ManagerPermission, GradPermission
 from Assign import serializers
 from ext.jwt_auth import create_token
+from django.core.mail import send_mail
 
 from ext.Hash_encryption import hashEncryption
 
@@ -54,6 +55,67 @@ class LoginView(APIView):
             return Response({"code": 200, 'status': True, 'user_type': user_type, 'token': token})
 
         return Response({"code": 403, 'status': False, 'error': 'User name or password error'})
+
+
+class Register(APIView):
+    authentication_classes = []
+
+    def post(self, request):
+
+        token = request.data['token']
+
+        pwd1 = request.data['pwd1']
+
+        pwd2 = request.data['pwd2']
+
+        if pwd1 != pwd2:
+            return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
+
+        # Check this register
+        register_obj = models.Registration.objects.filter(token=token).first()
+
+        if not register_obj:
+            return Response({"code": 403, "status": False, 'error': "token wrong"})
+
+        # Check the user information
+        role = register_obj.role
+        email = register_obj.email
+
+        # Hash the password
+        hash_pwd = hashEncryption(pwd2)
+
+        # Generating a register data
+
+        first_name = request.data['first_name']
+        second_name = request.data['second_name']
+
+        registration_data = {"email": email, 'password': hash_pwd, 'first_name': first_name, 'second_name': second_name}
+
+        context = {"code": 403, "status": False, 'error': "Failed to register"}
+
+        if role == 1:
+            ser = serializers.RegisterGraduate(data=registration_data)
+
+            if ser.is_valid():
+                ser.save()
+                context = {"code": 200, "status": True, "detail": "Has been added", "data": ser.data}
+            else:
+                return Response({"code": 403, "status": False, 'error': "Failed to register", "detail": ser.errors})
+
+        elif role == 2:
+            ser = serializers.RegisterManager(data=registration_data)
+
+            if ser.is_valid():
+                ser.save()
+                context = {"code": 200, "status": True, "detail": "Has been added", "data": ser.data}
+            else:
+                return Response({"code": 403, "status": False, 'error': "Failed to register", "detail": ser.errors})
+
+        # If Successful registered , Deleted this register obj to make sure no one use it update info again
+        if context.get('code') == 200:
+            register_obj.delete()
+
+        return Response(context)
 
 
 class HrView(APIView):
@@ -521,3 +583,58 @@ class ChangeGraduateYear(APIView):
             return {"code": 200, "status": True, "detail": "Has been Changed", "data": ser.data}
 
         return {"code": 403, "status": False, "detail": "Fail to delete"}
+
+
+class Batch_Register(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+
+        # Get Email List and role
+        email_list = request.data['email']
+        role = request.data['role']
+
+        # Generating a registration list
+        registration_list = []
+
+        for email in email_list:
+            email_dic = {"email": email, "role": role}
+
+            registration_list.append(email_dic)
+
+        # Check that Role conforms
+        ser_role = serializers.RoleSerializer(data=request.data)
+
+        if not ser_role.is_valid():
+            return Response({"code": 403, "status": False, "detail": "Fail to delete"})
+
+        ser = serializers.AddRegistrations(data=registration_list, many=True)
+
+        if ser.is_valid():
+            ser.save()
+        else:
+            return Response({"code": 403, "status": False, 'error': "Failed to add", "detail": ser.errors})
+
+        for email in email_list:
+            email_obj = models.Registration.objects.filter(email=email).first()
+
+            # Generate tokens
+            id = str(email_obj.id)
+            token = hashEncryption(id)
+
+            email_obj.token = token
+            email_obj.save()
+
+            # send the email
+
+            RegisterUrl = '127.0.0.1:5173/sign_up/' + token
+
+            send_mail(
+                subject='Registration link',
+                message='Here is your Register link : ' + RegisterUrl,
+                from_email='wenda76629@vip.163.com',
+                recipient_list=[email],
+                fail_silently=False
+            )
+
+        return Response({"code": 200, "status": True, "detail": "Email has been Send", "data": ser.data})
