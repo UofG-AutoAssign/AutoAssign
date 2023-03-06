@@ -28,7 +28,7 @@ class LoginView(APIView):
 
         # 2.database validation
 
-        # Hash verification
+        # Hash Password and validation
         hash_pwd = hashEncryption(pwd)
 
         manger_object = models.Manager.objects.filter(email=user, password=hash_pwd).first()
@@ -41,17 +41,22 @@ class LoginView(APIView):
             token = create_token({'email': manger_object.email})
             user_type = 'Manger'
 
-        if hr_object:
+        elif hr_object:
             user_object = hr_object
             token = create_token({'email': hr_object.email})
             user_type = 'Hr'
 
-        if grad_object:
+        elif grad_object:
             user_object = grad_object
             token = create_token({'email': grad_object.email})
             user_type = 'Graduate'
 
         if user_object:
+            # If user successfully logged in, the token that reset the password will be deleted to ensure that other
+            # users will not use the token to change the password again.
+            user_object.token = None
+            user_object.save()
+
             return Response({"code": 200, 'status': True, 'user_type': user_type, 'token': token})
 
         return Response({"code": 403, 'status': False, 'error': 'User name or password error'})
@@ -580,9 +585,9 @@ class ChangeGraduateYear(APIView):
 
         if ser.is_valid():
             ser.save()
-            return {"code": 200, "status": True, "detail": "Has been Changed", "data": ser.data}
+            return Response({"code": 200, "status": True, "detail": "Has been Changed", "data": ser.data})
 
-        return {"code": 403, "status": False, "detail": "Fail to delete"}
+        return Response({"code": 403, "status": False, "detail": "Fail to delete"})
 
 
 class Batch_Register(APIView):
@@ -638,3 +643,109 @@ class Batch_Register(APIView):
             )
 
         return Response({"code": 200, "status": True, "detail": "Email has been Send", "data": ser.data})
+
+
+class ResetPasswordByEmail(APIView):
+    authentication_classes = []
+
+    def post(self, request):
+        # Get Email List and role
+        email = request.data['email']
+
+        # Find the User
+        manger_object = models.Manager.objects.filter(email=email).first()
+        hr_object = models.HR.objects.filter(email=email).first()
+        grad_object = models.Graduate.objects.filter(email=email).first()
+
+        user_obj = False
+        if manger_object:
+            user_obj = manger_object
+            user_type = 'Manager'
+
+        elif hr_object:
+            user_obj = hr_object
+            user_type = 'Hr'
+
+        elif grad_object:
+            user_obj = grad_object
+            user_type = 'Graduate'
+
+        if not user_obj:
+            return Response({"code": 403, "status": False, 'error': "Please check the email"})
+
+        # Generate tokens
+        id = str(user_obj.id)
+        token = hashEncryption(id)
+
+        user_obj.token = token
+        user_obj.save()
+
+        # send the email
+        RegisterUrl = '127.0.0.1:5173/sign_up/' + token
+
+        send_mail(
+            subject='Registration link',
+            message='Here is your Register link : ' + RegisterUrl,
+            from_email='wenda76629@vip.163.com',
+            recipient_list=[email],
+            fail_silently=False
+        )
+
+        return Response({"code": 200, 'status': True, 'user_type': user_type, 'Detail': "Email has been send"})
+
+    def put(self, request):
+
+        # Get the token
+        token = request.data['token']
+
+        pwd1 = request.data['pwd1']
+
+        pwd2 = request.data['pwd2']
+
+        # Check new password
+        if pwd1 != pwd2:
+            return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
+
+        # Hash the new password
+        hash_pwd = hashEncryption(pwd2)
+
+        # Generating updated information
+        password_dic = {"password": hash_pwd}
+
+        # Find the user
+
+        manger_object = models.Manager.objects.filter(token=token).first()
+        hr_object = models.HR.objects.filter(token=token).first()
+        grad_object = models.Graduate.objects.filter(token=token).first()
+
+        user_obj = False
+
+        if manger_object:
+            user_obj = manger_object
+            user_type = 'Manager'
+
+        elif hr_object:
+            user_obj = hr_object
+            user_type = 'Hr'
+
+        elif grad_object:
+            user_obj = grad_object
+            user_type = 'Graduate'
+
+        if not user_obj:
+            return Response({"code": 403, "status": False, 'error': "Token incorrect"})
+
+        # Check the password format
+        ser = serializers.CheckPasswordFormat(data=password_dic)
+
+        if ser.is_valid():
+
+            user_obj.password = hash_pwd
+
+            user_obj.token = None
+            user_obj.save()
+
+            return Response({"code": 200, 'status': True, 'user_type': user_type, 'Detail': "Password Changed"})
+
+        else:
+            return Response({"code": 403, "status": False, 'error': "Failed to add", "detail": ser.errors})

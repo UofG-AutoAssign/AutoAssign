@@ -6,9 +6,10 @@ app_name = 'Assign'
 urlpatterns = [
     path('', views.LoginView.as_view(), name="Login"),  # CBV Style Login
     path('home/register', views.Register.as_view(), name="Register"),
-    path('home/grad/', views.GradView.as_view(), name="GradHome"),
+    path('home/reset', views.ResetPasswordByEmail.as_view(), name="ResetPasswordByEmail"),
+    path('home/grad', views.GradView.as_view(), name="GradHome"),
     path('home/grad/Form', views.FormView.as_view(), name="FromDisplay"),
-    path('home/man/', views.ManView.as_view(), name="ManHome"),
+    path('home/man', views.ManView.as_view(), name="ManHome"),
     path('home/man/Team', views.TeamMemberView.as_view(), name="TeamMemberView"),
     path('home/man/Team/Setting', views.TeamSettingView.as_view(), name="TeamSettingView"),
     path('home/man/Team/UpdateSetting', views.TeamSettingView.as_view(), name="UpdateTeamSetting"),
@@ -25,9 +26,9 @@ urlpatterns = [
     path('home/hr/CreateDepartment', views.CreateDepartment.as_view(), name="CreateDepartment"),
     path('home/hr/AssignTeam', views.AssignTeamToDepartment.as_view(), name="AssignTeamToDepartment"),
     path('home/hr/DeleteTeam', views.DeleteTeam.as_view(), name="DeleteTeam"),
+    path('home/hr/Register', views.Batch_Register.as_view(), name="Register"),
     path('home/hr/DeleteYearTwo', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
     path('home/skill', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword', views.ChangePassword.as_view(), name="ChangePassWord"),
-
 
 ]
