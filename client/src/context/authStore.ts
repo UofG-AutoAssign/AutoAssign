@@ -1,5 +1,8 @@
 // @Todo Integrate MobX into our state management later
+import axios from "axios";
 import { makeAutoObservable } from "mobx"; // Add this to where we centralize our data
+import { toast } from "react-toastify";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
 
 type tokenType = {
   status: boolean;
@@ -7,7 +10,7 @@ type tokenType = {
   token: string;
 };
 
-type returnType = {
+export type returnType = {
   data: { first_name: string; second_name: string; email: string };
 };
 
@@ -19,21 +22,31 @@ type postType = {
   password: string;
 };
 class AuthStore {
-  username: string = "George";
+  username: string = "";
   userType: string = "";
-  password: string = "123456";
-  authToken: string | null = localStorage.getItem("authToken");
+  authToken: string = "";
 
   constructor() {
     makeAutoObservable(this);
+
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername !== null) {
+      this.username = storedUsername;
+    }
+
+    const storedUserType = localStorage.getItem("userType");
+    if (storedUserType !== null) {
+      this.userType = storedUserType;
+    }
+
+    const storedAuthToken = localStorage.getItem("authToken");
+    if (storedAuthToken !== null) {
+      this.authToken = storedAuthToken
+    }
   }
 
   setUsername(newUsername: string): void {
     this.username = newUsername;
-  }
-
-  setPassword(newPassword: string): void {
-    this.username = newPassword;
   }
 
   setAuthToken(newToken: string): void {
@@ -45,32 +58,35 @@ class AuthStore {
   }
 
   // @Todo Use Axios Interceptor https://youtu.be/QQYeipc_cik https://youtu.be/2k8NleFjG7I
-  async loginUser(): Promise<void> {
-    const requestBody = {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: "Hr@email.com",
-        password:
-          "$2a$10$qwIq0tCUBoPtsad19vfZd.ISDFopI5F4RqVUUDSpNsbKwFMC6wnBS",
-      }),
-      // body: JSON.stringify({ username: "Grad@email.com", password: "123456" }),
-      // body: JSON.stringify({ username: "Man@email.com", password: "123456" }),
-    };
+  async loginUser(username: string, password: string): Promise<string> {
+    try {
+      const response = await axios.post(`${environmentalVariables.backend}`, {
+        username,
+        password
+      });
+      
+      const data = response.data;
+      console.log(data);
 
-    await fetch("http://101.200.41.196:8000/", requestBody).then((response) => {
-      console.log(
-        response.json().then((data: tokenType) => {
-          this.setAuthToken(data.token);
-          this.setUserType(data.user_type);
-          console.log(data);
-          localStorage.setItem("authToken", data.token);
-        })
-      );
-    });
+      if (data.status === false) {
+        toast.error("Login Failed")
+        return "Login Failed";
+      }
+
+      // Fixes "manger" typo from API
+      const correctedUserType = data.user_type === "Manger" ? "Manager" : data.user_type;
+      
+      this.setAuthToken(data.token);
+      this.setUserType(correctedUserType);
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("userType", correctedUserType);
+
+      return correctedUserType;
+
+    } catch (error) {
+      console.log(error);
+      return "Caught error in login";
+    }
   }
 
   async getUserInfo(): Promise<void> {
@@ -115,10 +131,12 @@ class AuthStore {
     };
 
     // @Todo Use Axios Interceptor
-    let response = await fetch("http://101.200.41.196:8000/home/hr/creat", requestBody);
+    let response = await fetch(
+      "http://101.200.41.196:8000/home/hr/creat",
+      requestBody
+    );
     let data = await response.json();
-    console.log(data)
-
+    console.log(data);
   }
 }
 

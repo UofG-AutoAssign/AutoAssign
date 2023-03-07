@@ -8,7 +8,6 @@ from ext.jwt_auth import parse_payload
 
 
 def locateUser(payload):
-
     data = payload['data']
     user = data['email']
 
@@ -24,9 +23,7 @@ def locateUser(payload):
         return grad_object
 
 
-
 class JwtQueryParamAuthentication(BaseAuthentication):
-
     """
    The user needs to transfer the parameters in the url to transfer tokens, for example:
     http://www.abc.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
@@ -49,7 +46,6 @@ class JwtAuthorizationAuthentication(BaseAuthentication):
        """
 
     def authenticate(self, request):
-
         # Verification token is required for non-login pages
         token = request.META.get("HTTP_AUTHORIZATION")
         payload = parse_payload(token)

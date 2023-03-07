@@ -1,12 +1,32 @@
+"""
+
+DataBase Model:
+
+This is the file where the DataBase Model is stored.
+Please use the command after the update to update the database:
+-> python manage.py make migrations
+-> python manage.py make migrate
+
+
+"""
 from django.db import models
 
 
-# Create your models here.
 
 # unique = True ,Give a unique index to email, greatly improve the efficiency of mysql query
 # db_index=True Give an index to name, greatly improve the efficiency of mysql query
 
+
 class Graduate(models.Model):
+    """
+
+    Graduate Table:
+
+    This table stores the basic information about the Graduate,
+    And the Token inside is used to reset the password.
+
+    """
+
     # grad_id = models.BigAutoField(verbose_name="grad_id ",
     #                               primary_key=True)
 
@@ -15,25 +35,11 @@ class Graduate(models.Model):
                              unique=True,
                              )
 
-    # One to Many Link to Manger
-    # VAUGHN: Why do we need this? there is already a link to managers via the team table
-    # man_id = models.ForeignKey(to="Manager", on_delete=models.CASCADE,
-    #                            null=True,
-    #                            )
-
     # One to Many Link to team
 
     team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE,
                                 null=True,
                                 )
-
-    # One to Many Link to Departments
-    # If we delete a department ,The department id for Graduate will be set to NULL
-
-    # VAUGHN: Why do we need this? there is already a link to department via the team table
-    # depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE,
-    #                               null=True,
-    #                               )
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)
@@ -48,8 +54,20 @@ class Graduate(models.Model):
 
     year = models.IntegerField(default=1)
 
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
+
 
 class Manager(models.Model):
+    """
+
+        Manager Table:
+
+        This table stores the basic information about the Manager,
+        And the Token inside is used to reset the password.
+
+    """
+
     # man_id = models.BigAutoField(verbose_name="man_id ",
     #                              primary_key=True)
 
@@ -70,8 +88,18 @@ class Manager(models.Model):
 
     role = models.IntegerField(verbose_name="Roles", default=2)
 
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
+
 
 class Department(models.Model):
+    """
+
+    Department Table:
+
+    This table stores the basic information about the Department.
+
+    """
     # depart_id = models.BigAutoField(verbose_name="department's id ",
     #                                 primary_key=True)
 
@@ -84,6 +112,15 @@ class Department(models.Model):
 
 
 class HR(models.Model):
+    """
+
+    HR Table:
+
+    This table stores the basic information about the Department.
+    And the Token inside is used to reset the password.
+
+    """
+
     # hr_id = models.BigAutoField(primary_key=True)
 
     email = models.CharField(verbose_name="Hr's email", max_length=100,
@@ -103,8 +140,21 @@ class HR(models.Model):
 
     role = models.IntegerField(verbose_name="Roles", default=3)
 
+    token = models.CharField(verbose_name="Password", max_length=64,
+                             null=True)
+
 
 class Form(models.Model):
+    """
+
+    Form Table:
+
+    This form mainly stores the information of the form filled by the Graduate,
+    which records the skills selected by the Graduate,
+    the degree of familiarity and interest in the skills.
+
+    """
+
     # form_id = models.BigAutoField(verbose_name="department's id ",
     #                               primary_key=True)
 
@@ -113,11 +163,19 @@ class Form(models.Model):
     interest = models.IntegerField(verbose_name="Interest_One", null=True)
 
     experience = models.IntegerField(verbose_name="experience_One", null=True)
-    skill_id = models.ForeignKey(to="Skill", related_name='Skill', on_delete=models.CASCADE, null=True)
+    skill_id = models.ForeignKey(to="Skill", related_name='Skill',
+                                 on_delete=models.CASCADE, null=True)
     graduate = models.ForeignKey(to="Graduate", on_delete=models.CASCADE, null=True)
 
 
 class Team(models.Model):
+    """
+
+    Team Table:
+
+    This table stores information about the Team, as well as the Team Settings.
+
+    """
     # team_id = models.BigAutoField(verbose_name="team's id ",
     #                               primary_key=True)
 
@@ -145,7 +203,37 @@ class Team(models.Model):
 
 
 class Skill(models.Model):
+    """
+
+    Skill Table:
+
+    This table stores all the skill information.
+
+    """
+
     skill_name = models.CharField(verbose_name="skills_name", max_length=100,
                                   null=False,
                                   unique=True,
                                   )
+
+
+class Registration(models.Model):
+    """
+
+        Registration Table:
+
+        This form is used to store information about who is preparing to signup.
+        If the account is not registered, the registration statu is 0.
+
+    """
+
+    email = models.CharField(verbose_name="User's email", max_length=100,
+                             null=False,
+                             unique=True,
+                             )
+
+    registration_status = models.IntegerField(verbose_name="registration_status", default=0)
+
+    role = models.IntegerField(verbose_name="Roles")
+
+    token = models.CharField(verbose_name="Token", max_length=64, )

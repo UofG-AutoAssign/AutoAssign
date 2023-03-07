@@ -1,10 +1,13 @@
 import Navbar from "../components/Navbar";
 import { FC, useEffect, useState } from "react";
-import { TechnologyDropdown } from "./GraduateTeamPage";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ItemType } from "../constants/Interfaces";
+import { ItemInterface } from "../constants/Interfaces";
 import { initialComponentManager } from "../constants/Types";
+import axios from "axios";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import authStore, { returnType } from "../context/authStore";
+import Select from "react-select";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
@@ -15,48 +18,42 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   const navigate = useNavigate();
   let location = useLocation();
 
-  const [mockTeamList, setMockTeamList] = useState<
+  const [subordinateList, setSubordinateList] = useState<
     {
       name: string;
       email: string;
     }[]
-  >([
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
+  >([{ name: "...", email: "..." }]);
+
+  const [allSkills, setAllSkills] = useState<ItemInterface[]>([
+    { value: 1, label: "Python" },
   ]);
 
-  const [techList, setTechList] = useState<ItemType[]>([
-    { id: 0, name: "Full-Stack Development" },
+  const [techList, setTechList] = useState<ItemInterface[]>([
+    { value: 0, label: "Python" },
   ]);
 
   const [curId, setCurId] = useState<number>(1);
 
   const deleteItem = (delete_id: number): void => {
-    let newList: ItemType[] = [...techList];
+    let newList: ItemInterface[] = [...techList];
 
     newList = newList.filter((item) => {
-      return item.id !== delete_id;
+      return item.value !== delete_id;
     });
-    // console.log(newList);
     setTechList(newList);
   };
 
   const addItem = (): void => {
-    let newList: ItemType[] = [...techList];
+    let newList: ItemInterface[] = [...techList];
 
-    newList.push({ id: curId, name: "hi" });
+    newList.push({ value: curId, label: "hi" });
     // console.log(newList);
     setTechList(newList);
     setCurId((prev) => prev + 1);
   };
 
-  const [sliderValue, setSliderValue] = useState("50");
+  const [sliderValue, setSliderValue] = useState<string>("50");
 
   const teamTable = (): JSX.Element => {
     return (
@@ -73,7 +70,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             </tr>
           </thead>
           <tbody>
-            {mockTeamList.map(({ name, email }, idx) => (
+            {subordinateList.map(({ name, email }, idx) => (
               <tr
                 className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={idx}
@@ -93,6 +90,13 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     );
   };
 
+  const TechnologyDropdown = (): JSX.Element => (
+    <Select
+      className="min-w-[200px] relative w-full h-10 text-black"
+      options={allSkills}
+    />
+  );
+
   const settingsTable = (): JSX.Element => {
     return (
       <div>
@@ -109,7 +113,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
               {techList.map((item) => (
                 <tr
                   className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={item.id}
+                  key={item.value}
                 >
                   <th
                     scope="row"
@@ -118,7 +122,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
                     <TechnologyDropdown />
                     <HiOutlineTrash
                       className="text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-150 my-auto mx-5 hover:cursor-pointer"
-                      onClick={() => deleteItem(item.id)}
+                      onClick={() => deleteItem(item.value)}
                     />
                   </th>
                 </tr>
@@ -178,6 +182,89 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
     () => {};
   }, [location]);
+
+  useEffect(() => {
+    const getSubordinateInfo = async () => {
+      axios
+        .get(`${environmentalVariables.backend}home/man/Team`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const subordinateList = response.data.data;
+
+          let newSubordinateList: any[] = [];
+
+          subordinateList.forEach((member: any) => {
+            newSubordinateList.push({
+              name: `${member.first_name} ${member.second_name}`,
+              email: member.email,
+            });
+          });
+
+          setSubordinateList(newSubordinateList);
+        });
+    };
+
+    const getTeamPreferenceInfo = async () => {
+      axios
+        .get(`${environmentalVariables.backend}home/man/Team/Setting`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const { team_name, ratio, Skill_information } = response.data.data;
+          console.log(ratio);
+
+          // @Todo display team name
+
+          if (ratio !== null) {
+            if (ratio === 0) setSliderValue("0");
+            if (ratio === 1) setSliderValue("25");
+            if (ratio === 2) setSliderValue("50");
+            if (ratio === 3) setSliderValue("75");
+            if (ratio === 4) setSliderValue("100");
+          }
+
+          console.log(Skill_information)
+          // let newSubordinateList: any[] = [];
+
+          // subordinateList.forEach((member: any) => {
+          //   newSubordinateList.push({ name: `${member.first_name} ${member.second_name}`, email: member.email });
+          // });
+
+          // setSubordinateList(newSubordinateList);
+        });
+    };
+
+    const getAllSkills = async () => {
+      axios
+        .get(`${environmentalVariables.backend}home/skill`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const data = response.data.data;
+
+          let newAllSkills: any[] = [];
+
+          data.forEach(({ id, skill_name }: any) => {
+            newAllSkills.push({ value: id, label: skill_name });
+          });
+
+          setAllSkills(newAllSkills);
+        });
+    };
+
+    getSubordinateInfo();
+    getTeamPreferenceInfo();
+    getAllSkills();
+
+    return () => {};
+  }, []);
 
   return (
     <div>

@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from Assign import models
-
-from rest_framework import serializers
 from rest_framework import exceptions
 
+from Assign import models
 
-# Hr Info
+
 class HrSerializer(serializers.ModelSerializer):
+    """
+        Hr information
+    """
+
     class Meta:
         model = models.HR
         fields = ["first_name", "second_name", "email"]
@@ -14,20 +16,34 @@ class HrSerializer(serializers.ModelSerializer):
 
 
 class GradSerializer(serializers.ModelSerializer):
+    """
+        Graduate information
+    """
+
     class Meta:
         model = models.Graduate
-        fields = ["first_name", "second_name", "email"]
+        fields = ["first_name", "second_name", "email", "year"]
         list_serializer_class = serializers.ListSerializer
 
 
 class ManSerializer(serializers.ModelSerializer):
+    """
+        Manger information
+    """
+
     class Meta:
         model = models.Manager
         fields = ["first_name", "second_name", "email"]
         list_serializer_class = serializers.ListSerializer
 
 
+# pylint: disable=W0223
 class RoleSerializer(serializers.Serializer):
+    """
+        Check that the role value is in range
+        Avoid external input of the wrong role value,
+        avoid wrong operation of the database.
+    """
     role = serializers.IntegerField(required=True)
 
     def validate_role(self, value):
@@ -37,6 +53,12 @@ class RoleSerializer(serializers.Serializer):
 
 
 class CreateGraduateSerializer(serializers.ModelSerializer):
+    """
+        Check that the role value is in range
+        Avoid external input of the wrong role value,
+        avoid wrong operation of the database.
+    """
+
     class Meta:
         model = models.Graduate
         fields = ["role", "email", "password", "first_name", "second_name"]
@@ -49,6 +71,10 @@ class CreateGraduateSerializer(serializers.ModelSerializer):
 
 
 class CreateMangerSerializer(serializers.ModelSerializer):
+    """
+        Check that the data that created the administrator is in the correct format
+    """
+
     class Meta:
         model = models.Manager
         fields = ["role", "email", "password", "first_name", "second_name"]
@@ -61,6 +87,10 @@ class CreateMangerSerializer(serializers.ModelSerializer):
 
 
 class CreateHrSerializer(serializers.ModelSerializer):
+    """
+        Check that the data that created the Hr is in the correct format
+    """
+
     class Meta:
         model = models.HR
         fields = ["role", "email", "password", "first_name", "second_name"]
@@ -73,36 +103,47 @@ class CreateHrSerializer(serializers.ModelSerializer):
 
 
 class FormSerializer(serializers.ModelSerializer):
-    Form_information = serializers.SerializerMethodField()
+    """
+        Get all the Form information of Graduate in batch
+        and output in accordance with the format
+    """
+    form_information = serializers.SerializerMethodField()
+    grad_id = serializers.SerializerMethodField()
 
-    def get_Form_information(self, obj):
-        Form = obj.Form.all()
+    def get_form_information(self, obj):
+        grad_obj = obj
+        form = models.Form.objects.filter(graduate=grad_obj).all()
         return [
-            {"Form_id": i.id, "Skill_id": i.Skill_id.id, "skill_name": i.Skill_id.skill_name, "Interest": i.interest,
+            {"Form_id": i.id, "Skill_id": i.skill_id.id,
+             "skill_name": i.skill_id.skill_name, "Interest": i.interest,
              "Experience": i.experience}
-            for i in Form]
+            for i in form]
+
+    def get_grad_id(self, obj):
+        return obj.id
 
     class Meta:
         model = models.Form
-        fields = ["id", "Form_information"]
+        fields = ["Grad_id", "Form_information"]
         list_serializer_class = serializers.ListSerializer
 
 
 class UpdateFormSerializer(serializers.ModelSerializer):
+    """
+        Update From information
+    """
+
     class Meta:
         model = models.Form
-        fields = ["id", "interest", "experience", "Skill_id"]
-        list_serializer_class = serializers.ListSerializer
-
-
-class AddGraduateFormSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Graduate
-        fields = ["Form"]
+        fields = ["interest", "experience", "skill_id", "graduate"]
         list_serializer_class = serializers.ListSerializer
 
 
 class SkillSerializer(serializers.ModelSerializer):
+    """
+        Serialize the output Skill information
+    """
+
     class Meta:
         model = models.Skill
         fields = ["id", "skill_name"]
@@ -110,6 +151,10 @@ class SkillSerializer(serializers.ModelSerializer):
 
 
 class TeamViewSerializer(serializers.ModelSerializer):
+    """
+        Serialize the output Team information
+    """
+
     class Meta:
         model = models.Graduate
         fields = ["email", "first_name", "second_name"]
@@ -117,13 +162,16 @@ class TeamViewSerializer(serializers.ModelSerializer):
 
 
 class TeamSettingViewSerializer(serializers.ModelSerializer):
-    Skill_information = serializers.SerializerMethodField()
+    """
+        Serialize the output Team's Setting information
+    """
+    skill_information = serializers.SerializerMethodField()
 
-    def get_Skill_information(self, obj):
-        Skill = obj.Skill.all()
+    def get_skill_information(self, obj):
+        skill = obj.skill.all()
         return [
-            {"Skill_id": i.id, "skill_name": i.skill_name, }
-            for i in Skill]
+            {"skill_id": i.id, "skill_name": i.skill_name, }
+            for i in skill]
 
     class Meta:
         model = models.Team
@@ -132,41 +180,56 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
 
 
 class CreateTeamSerializer(serializers.ModelSerializer):
+    """
+        Check that the data used to create the Team is formatted
+    """
+
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_id", "depart_id", "ratio", "Skill"]
+        fields = ["team_name", "man_id", "depart_id", "ratio", "skill"]
         extra_kwargs = {
             "team_name": {"max_length": 100, "write_only": True},
         }
 
 
 class UpdateTeamSettingSerializer(serializers.ModelSerializer):
+    """
+       Serialize the update group Settings
+    """
+
     class Meta:
         model = models.Team
-        fields = ["ratio", "Skill"]
+        fields = ["ratio", "skill"]
 
 
 class AllTeamViewSerializer(serializers.ModelSerializer):
+    """
+       Serialization outputs all Team information
+    """
     information = serializers.SerializerMethodField()
 
     def get_information(self, obj):
-        Man = obj.man_id
-        Dep = obj.depart_id
+        man = obj.man_id
+        dep = obj.depart_id
 
-        if Man and Dep:
-            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": Dep.id,
-                       "Dep_name": Dep.depart_name}
-        elif Man:
-            Message = {"Man_id": Man.id, "first_name": Man.first_name, "second_name": Man.second_name, "Dep_id": "NULL",
+        if man and dep:
+            message = {"Man_id": man.id, "first_name": man.first_name,
+                       "second_name": man.second_name, "Dep_id": dep.id,
+                       "Dep_name": dep.depart_name}
+        elif man:
+            message = {"Man_id": man.id, "first_name": man.first_name,
+                       "second_name": man.second_name, "Dep_id": "NULL",
                        "Dep_name": "NULL"}
-        elif Dep:
-            Message = {"Man_id": "NULL", "first_name": "NULL", "second_name": "NULL", "Dep_id": Dep.id,
-                       "Dep_name": Dep.depart_name}
+        elif dep:
+            message = {"Man_id": "NULL", "first_name": "NULL",
+                       "second_name": "NULL", "Dep_id": dep.id,
+                       "Dep_name": dep.depart_name}
         else:
-            Message = {"Man_id": "Null,", "first_name": "Null", "second_name": "Null", "Dep_id": "Null,",
+            message = {"Man_id": "Null,", "first_name": "Null",
+                       "second_name": "Null", "Dep_id": "Null,",
                        "Dep_name": "Null"}
 
-        return Message
+        return message
 
     class Meta:
         model = models.Team
@@ -174,24 +237,118 @@ class AllTeamViewSerializer(serializers.ModelSerializer):
 
 
 class AllGradSerializer(serializers.ModelSerializer):
+    """
+       Serializes the output of all Graduate information
+    """
+
     class Meta:
         model = models.Graduate
         fields = ["id", "email", "first_name", "second_name"]
 
 
 class AllManSerializer(serializers.ModelSerializer):
+    """
+       Serializes the output of all Manager information
+    """
+
     class Meta:
         model = models.Graduate
         fields = ["id", "email", "first_name", "second_name"]
 
 
 class AssignGraduate(serializers.ModelSerializer):
+    """
+       Assign Gradute into Team
+    """
+
     class Meta:
         model = models.Graduate
         fields = ["team_id"]
 
 
-class AssignManger(serializers.ModelSerializer):
+class AssignManager(serializers.ModelSerializer):
+    """
+       Assign Manager into Team
+    """
+
     class Meta:
         model = models.Team
         fields = ["man_id"]
+
+
+class CreateDepartment(serializers.ModelSerializer):
+    """
+        Creating a new Department
+    """
+
+    class Meta:
+        model = models.Department
+        fields = ["depart_name"]
+
+
+class AssignTeamToDepartment(serializers.ModelSerializer):
+    """
+        Assign Team into a department
+    """
+
+    class Meta:
+        model = models.Team
+        fields = ["depart_id"]
+
+
+class ChangeGraduateYear(serializers.ModelSerializer):
+    """
+        Change the Graduate's Year
+    """
+
+    class Meta:
+        model = models.Graduate
+        fields = ["id", "year"]
+
+
+class AddRegistrations(serializers.Serializer):
+    """
+        Enter the batch mailbox into the registration information,
+        if there is already registration information, overwrite.
+    """
+    email = serializers.CharField()
+    role = serializers.IntegerField()
+
+    def create(self, validated_data):
+        mail = validated_data.get('email')
+        role = validated_data.get('role')
+
+        # Allow repeat registrations
+        instance = models.Registration.objects.get_or_create(email=mail, role=role)
+
+        return instance
+
+
+class RegisterGraduate(serializers.ModelSerializer):
+    """
+        Check the Graduate registration information and register
+    """
+
+    class Meta:
+        model = models.Graduate
+        fields = ["email", 'password', 'first_name', 'second_name']
+
+
+class RegisterManager(serializers.ModelSerializer):
+    """
+        Check the Manager registration information and register
+    """
+
+    class Meta:
+        model = models.Manager
+        fields = ["email", 'password', 'first_name', 'second_name']
+
+
+class CheckPasswordFormat(serializers.Serializer):
+    """
+        Check the Password Format
+    """
+    password = serializers.CharField(max_length=64, validators=[
+        lambda value: len(value) <= 64
+                      or serializers.ValidationError("The password format is incorrect")
+    ])

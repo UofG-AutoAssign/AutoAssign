@@ -1,15 +1,35 @@
-import { useContext, MouseEvent, FC } from "react";
+import { MouseEvent, FC, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import authStore from "../context/authStore";
 
 const LoginCard: FC = () => {
-  const authContext = useContext(AuthContext);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
   const routerNavigator = useNavigate();
 
-  const delayAndGo = (e: MouseEvent, path: string): void => {
+  const handleSignin = async (e: MouseEvent) => {
     e.preventDefault();
-    authContext?.loginUser();
-    setTimeout(() => routerNavigator(path), 1000);
+
+    if (!emailInputRef.current?.value || !passwordInputRef.current?.value)
+      return;
+
+    const userType = await authStore.loginUser(
+      emailInputRef.current?.value,
+      passwordInputRef.current?.value
+    );
+
+    if (userType === "Graduate") {
+      routerNavigator(`/graduate`)
+    }
+    else if (userType === "Manager"){
+      routerNavigator(`/manager`)
+    }
+    else if (userType === "Hr") {
+      routerNavigator(`/hr`)
+    }
+
   };
 
   return (
@@ -28,6 +48,7 @@ const LoginCard: FC = () => {
                 Your email
               </label>
               <input
+                ref={emailInputRef}
                 type="email"
                 name="email"
                 id="email"
@@ -44,6 +65,7 @@ const LoginCard: FC = () => {
                 Password
               </label>
               <input
+                ref={passwordInputRef}
                 type="password"
                 name="password"
                 id="password"
@@ -78,13 +100,13 @@ const LoginCard: FC = () => {
                 Forgot password?
               </Link>
             </div>
-              <button
-                onClick={(e) => delayAndGo(e, "/hr")}
-                type="submit"
-                className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-5"
-              >
-                Sign in
-              </button>
+            <button
+              onClick={(e) => handleSignin(e)}
+              type="submit"
+              className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-5"
+            >
+              Sign in
+            </button>
           </form>
         </div>
       </div>

@@ -1,0 +1,42 @@
+
+200 (Success) The server has successfully processed the request. Usually, this means that the server served the requested web page.
+201 (Created) The request was successful and the server created a new resource.
+202 (Accepted) The server has accepted the request but has not yet processed it.
+203 (Non-Authorization Information) The server has successfully processed the request, but the returned information may have come from another source.
+204 (No Content) The server successfully processed the request, but did not return any content.
+205 (Reset Content) The server successfully processed the request, but did not return any content.
+206 (Partial Content) The server successfully processed a partial GET request.
+
+300 (multiple choices) The server can perform various operations in response to the request. The server can choose an operation according to the requester (user agent), or provide a list of operations for the requester to choose.
+301 (Moved Permanently) The requested webpage has permanently moved to a new location. When the server returns this response (in response to a GET or HEAD request), it automatically forwards the requester to the new location.
+302 (temporarily moved) The server currently responds to requests from web pages in different locations, but the requester should continue to use the original location for future requests.
+303 (See other locations) This code is returned by the server when the requester should use separate GET requests for different locations to retrieve the response.
+304 (Not Modified) The requested page has not been modified since the last request. When the server returns this response, no webpage content is returned.
+305 (Using Proxy) The requester can only use a proxy to access the requested web page. If the server returns this response, it also indicates that the requester should use a proxy.
+307 (temporary redirection) The server is currently responding to requests from web pages in different locations, but the requester should continue to use the original location for future requests.
+
+400 (Bad Request) The server did not understand the syntax of the request.
+401 (Unauthorized) The request requires authentication. The server might return this response for web pages that require a login.
+403 (Forbidden) The server rejected the request.
+404 (Not Found) The server could not find the requested webpage.
+405 (Method Forbidden) The method specified in the request is disabled.
+406 (Not Accepted) Unable to respond to the requested web page with the requested content attributes.
+407 (Proxy Authorization Required) This status code is the same as
+408 (Request Timed Out) The server timed out while waiting for the request.
+409 (Conflict) The server had a conflict while completing the request. The server MUST include information about the conflict in the response.
+410 (Deleted) The server returns this response if the requested resource has been permanently deleted.
+411 (Valid Length Required) The server does not accept a request without a Valid Content-Length header field.
+412 (Precondition not met) The server did not meet one of the preconditions set by the requester in the request.
+413 (The request entity is too large) The server cannot process the request because the request entity is too large and exceeds the processing capacity of the server.
+414 (The requested URI is too long) The requested URI (usually a web address) is too long for the server to handle.
+415 (Unsupported Media Type) The requested format is not supported by the requested page.
+416 (Requested range does not meet requirements) This status code is returned by the server if the page cannot provide the requested range.
+417 (Expectation not met) The server did not meet the "Expectation" request header field.
+
+500 (Internal Server Error) The server encountered an error and was unable to complete the request.
+501 (not yet implemented) The server is not capable of fulfilling the request. For example, this code might be returned when the server does not recognize the request method.
+502 (Bad Gateway) The server, acting as a gateway or proxy, received an invalid response from an upstream server.
+503 (Service Unavailable) The server is currently unavailable (due to overloading or down for maintenance). Usually, this is only a temporary state.
+504 (Gateway Timeout) The server is acting as a gateway or proxy, but did not receive the request from the upstream server in time.
+505 (HTTP Version Unsupported) The server does not support the HTTP protocol version used in the request.
+

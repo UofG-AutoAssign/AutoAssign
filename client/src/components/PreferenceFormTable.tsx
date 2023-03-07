@@ -1,36 +1,168 @@
-import { FC, useState } from "react";
-import {
-  TechnologyDropdown,
-  ExperienceDropdown,
-  InterestDropdown,
-} from "../pages/GraduateTeamPage";
+import { FC, useEffect, useState, useCallback } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
-import { ItemType } from "../constants/Interfaces";
+import Select from "react-select";
+import axios from "axios";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import authStore from "../context/authStore";
+
+type selectedDataType = {
+  selectedTechnology: {
+    value: number;
+    label: string;
+  };
+  selectedExperience: number;
+  selectedInterest: number;
+};
 
 const PreferenceFormTable: FC = () => {
-  // @Todo prevent duplicate technology picks
-  const [mockData, setMockData] = useState<ItemType[]>([
-    { id: 0, name: "Full-Stack Development" },
+  // Map of selected skills, experience, and interest for each row
+  const [selectedData, setSelectedData] = useState<{
+    [rowId: number]: selectedDataType;
+  }>({
+    0: {
+      selectedExperience: 0,
+      selectedInterest: 0,
+      selectedTechnology: {
+        value: 0,
+        label: "...",
+      },
+    },
+  });
+
+  // List of available skills to de displayed in a drop down
+  const [allSkills, setAllSkills] = useState<any[]>([
+    { value: 1, label: "Python" },
   ]);
 
-  const [curId, setCurId] = useState<number>(1);
+  const [curRowId, setCurRowId] = useState<number>(100);
 
-  const deleteItem = (delete_id: number): void => {
-    let newList: ItemType[] = [...mockData];
-
-    newList = newList.filter((item) => {
-      return item.id !== delete_id;
+  const deleteItem = (deletedId: number): void => {
+    setSelectedData((prevState) => {
+      const newState = { ...prevState };
+      delete newState[deletedId];
+      return newState;
     });
-    setMockData(newList);
   };
 
   const addItem = (): void => {
-    let newList: ItemType[] = [...mockData];
+    // Add a new row with a unique ID and no selected skill
+    setSelectedData((prevState) => {
+      return {
+        ...prevState,
+        [curRowId]: {
+          selectedExperience: 0,
+          selectedInterest: 0,
+          selectedTechnology: {
+            value: 0,
+            label: "",
+          },
+        },
+      };
+    });
 
-    newList.push({ id: curId, name: "hi" });
-    setMockData(newList);
-    setCurId((prev) => prev + 1);
+    setCurRowId((prevRowId) => prevRowId + 1);
   };
+
+  const TechnologyDropdown = ({
+    selectedTechnology,
+    rowId,
+  }: {
+    selectedTechnology: {
+      value: number;
+      label: string;
+    };
+    rowId: string;
+  }): JSX.Element => {
+    const handleSelectChange = (
+      value: any,
+      property: string,
+      rowId: number
+    ) => {
+      setSelectedData((prevData) => ({
+        ...prevData,
+        [rowId]: {
+          ...prevData[rowId],
+          [property]: value,
+        },
+      }));
+    };
+
+    return (
+      <Select
+        className="min-w-[200px] relative w-full h-10 text-black"
+        value={selectedTechnology}
+        onChange={(value) =>
+          handleSelectChange(value, "selectedTechnology", Number(rowId))
+        }
+        options={allSkills}
+      />
+    );
+  };
+
+  const ExperienceDropdown = () => {
+    return <div>yo</div>;
+  };
+
+  const InterestDropdown = () => {
+    return <div>yo</div>;
+  };
+
+  useEffect(() => {
+    const getAllSkills = async () => {
+      axios
+        .get(`${environmentalVariables.backend}home/skill`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const data = response.data.data;
+
+          let newAllSkills: any[] = [];
+
+          data.forEach(({ id, skill_name }: any) => {
+            newAllSkills.push({ value: id, label: skill_name });
+          });
+
+          setAllSkills(newAllSkills);
+        });
+    };
+
+    const getFormList = async () => {
+      axios
+        .get(`${environmentalVariables.backend}home/grad/Form`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const data = response.data.data.Form_information;
+          console.log(data);
+
+          data.forEach(
+            ({ Form_id, Skill_id, skill_name, Interest, Experience }: any, idx: number) => {
+              setSelectedData((prevSelectedData) => ({
+                ...prevSelectedData,
+                [idx]: {
+                  selectedExperience: Experience,
+                  selectedInterest: Interest,
+                  selectedTechnology: {
+                    value: Skill_id,
+                    label: skill_name,
+                  },
+                },
+              }));
+            }
+          );
+          
+        });
+    };
+
+    getAllSkills();
+    getFormList();
+
+    return () => {};
+  }, []);
 
   return (
     <div className="">
@@ -50,26 +182,37 @@ const PreferenceFormTable: FC = () => {
             </tr>
           </thead>
           <tbody>
-            {mockData.map((item) => (
-              <tr
-                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
-                key={item.id}
-              >
-                <td className="w-full flex flex-row font-medium py-4 px-6">
-                  <TechnologyDropdown />
-                  <HiOutlineTrash
-                    className="ml-6 text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 my-auto hover:cursor-pointer"
-                    onClick={() => deleteItem(item.id)}
-                  />
-                </td>
-                <td className="w-1/3 py-4 px-6">
-                  <ExperienceDropdown />
-                </td>
-                <td className="w-1/3 py-4 px-6">
-                  <InterestDropdown />
-                </td>
-              </tr>
-            ))}
+            {Object.keys(selectedData).map((rowId: string) => {
+              const {
+                selectedExperience,
+                selectedInterest,
+                selectedTechnology,
+              } = selectedData[parseInt(rowId)];
+
+              return (
+                <tr
+                  className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
+                  key={rowId}
+                >
+                  <td className="w-full flex flex-row font-medium py-4 px-6">
+                    <TechnologyDropdown
+                      selectedTechnology={selectedTechnology}
+                      rowId={rowId}
+                    />
+                    <HiOutlineTrash
+                      className="ml-6 text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 my-auto hover:cursor-pointer"
+                      onClick={() => deleteItem(parseInt(rowId))}
+                    />
+                  </td>
+                  <td className="w-1/3 py-4 px-6">
+                    <ExperienceDropdown />
+                  </td>
+                  <td className="w-1/3 py-4 px-6">
+                    <InterestDropdown />
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -2,12 +2,11 @@ import { FC, useContext } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
-import AuthContext from "../context/AuthContext";
+import authStore from "../context/authStore";
 import themeStore from "../context/themeStore";
 
 // Graduate Home Page that Displays landing buttons for the Preference Form and Your Team pages
 const GraduatePage: FC = () => {
-  const authContext = useContext(AuthContext);
 
   const data: LandingButtonLinkProps[] = [
     {
@@ -34,7 +33,7 @@ const GraduatePage: FC = () => {
         </nav>
         <div>
           <div className="hi-text dark:text-white">
-            Hi! {authContext?.username}
+            Hi! {authStore.userType}
           </div>
         </div>
         <div className="p-16 flex flex-col gap-5">
