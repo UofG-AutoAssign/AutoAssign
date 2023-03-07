@@ -8,17 +8,12 @@ export interface LandingButtonLinkProps {
   initialState: initialComponentHR;
 }
 
-export interface ManagerTableType {
+export interface ManagerTableInterface {
   name: string;
   email: string;
 }
 
-export interface ItemType {
+export interface ItemInterface {
   value: number;
   label: string;
-}
-
-export interface ManagerTableType {
-  name: string;
-  email: string;
 }

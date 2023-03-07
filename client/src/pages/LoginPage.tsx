@@ -1,12 +1,13 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import LoginCard from "../components/LoginCard";
 import Navbar from "../components/Navbar";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const LoginPage: FC = () => {
   return (
       <div>
         <nav className="sticky top-0 z-50">
-          <Navbar hideLogoutButton={true}/>
+          <Navbar hideLogoutButton={true} hideAccountButton={true}/>
         </nav>
         <div className="flex flex-col md:flex-row justify-between bg-white dark:bg-gray-700 min-h-screen py-12 transition-all delay-100">
           <div className="w-full bg-loginBlue basis-1/2 rounded-r-3xl flex flex-col justify-center shadow-lg py-5">

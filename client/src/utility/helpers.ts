@@ -1,8 +1,3 @@
-// const delayAndGo = (e: MouseEvent, path: string): void => {
-//     e.preventDefault();
-//     authContext?.loginUser();
-//     setTimeout(() => routerNavigator(path), 1000);
-//   };
+const placeholder = (): void => {};
 
-// export default delayAndGo;
-export function placeHolder(): void {}
+export { placeholder };

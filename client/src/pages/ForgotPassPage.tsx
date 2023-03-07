@@ -6,7 +6,7 @@ const ForgotPassPage: FC = () => {
   return (
     <div>
       <nav className="sticky top-0 z-50">
-        <Navbar />
+        <Navbar hideLogoutButton={true} hideAccountButton={true} />
       </nav>
       <div className="flex flex-col md:flex-row justify-between bg-white dark:bg-gray-800 min-h-screen py-12">
         <div className="w-full bg-loginBlue basis-1/2 rounded-r-3xl flex flex-col justify-center py-5">
