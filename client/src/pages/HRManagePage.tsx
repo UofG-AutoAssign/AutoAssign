@@ -1,10 +1,14 @@
-import { FC, useEffect, useState } from "react";
+import axios from "axios";
+import { FC, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import CreateGraduateEmailField from "../components/CreateGraduateEmailField";
 import AssignGraduate from "../components/HRManage/AssignGraduate";
 import AssignManager from "../components/HRManage/AssignManager";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
 import Navbar from "../components/Navbar";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { initialComponentHR } from "../constants/Types";
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
@@ -276,21 +280,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         >
           Type the graduate email(s) to create their account
         </label>
-        <textarea
-          id="message"
-          rows={4}
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="grad1@barclays.com, grad2@barclays.com, ..."
-        ></textarea>
-        <div className="py-8">
-          <button
-            type="button"
-            className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-          >
-            Create
-          </button>
-        </div>
-
+        <CreateGraduateEmailField />
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
