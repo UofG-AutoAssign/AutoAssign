@@ -124,7 +124,7 @@ class FormSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Form
-        fields = ["Grad_id", "Form_information"]
+        fields = ["grad_id", "form_information"]
         list_serializer_class = serializers.ListSerializer
 
 
