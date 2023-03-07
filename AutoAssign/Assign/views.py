@@ -411,9 +411,9 @@ class AllGradView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        team_obj = models.Graduate.objects.filter().all()
+        grad_obj = models.Graduate.objects.filter().all()
 
-        ser = serializers.AllGradSerializer(instance=team_obj, many=True)
+        ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
 
         context = {"code": 200, "status": True, "data": ser.data}
 
@@ -424,9 +424,9 @@ class AllManView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        team_obj = models.Manager.objects.filter().all()
+        man_obj = models.Manager.objects.filter().all()
 
-        ser = serializers.AllManSerializer(instance=team_obj, many=True)
+        ser = serializers.AllManSerializer(instance=man_obj, many=True)
 
         context = {"code": 200, "status": True, "data": ser.data}
 
@@ -475,7 +475,7 @@ class AssignGradToTeam(APIView):
     def put(self, request):
 
         data = request.data
-        grad_id = data['Grad_id']
+        grad_id = data['grad_id']
 
         grad_obj = models.Graduate.objects.filter(id=grad_id).first()
 
@@ -805,3 +805,29 @@ class ResetPasswordByEmail(APIView):
 
         return Response({"code": 403, "status": False,
                          'error': "Failed to add", "detail": ser.errors})
+
+
+class AllUnGradView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        grad_obj = models.Graduate.objects.filter(team_id=None).all()
+
+        ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AllUnManView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        man_obj = models.Manager.objects.filter(team__isnull=True).all()
+
+        ser = serializers.AllManSerializer(instance=man_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)

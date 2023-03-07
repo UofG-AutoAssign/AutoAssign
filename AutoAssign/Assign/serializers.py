@@ -175,7 +175,7 @@ class TeamSettingViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Team
-        fields = ["team_name", "ratio", "Skill_information"]
+        fields = ["team_name", "ratio", "skill_information"]
         list_serializer_class = serializers.ListSerializer
 
 
@@ -206,34 +206,34 @@ class AllTeamViewSerializer(serializers.ModelSerializer):
     """
        Serialization outputs all Team information
     """
-    information = serializers.SerializerMethodField()
+    team_information = serializers.SerializerMethodField()
 
-    def get_information(self, obj):
+    def get_team_information(self, obj):
         man = obj.man_id
         dep = obj.depart_id
 
         if man and dep:
-            message = {"Man_id": man.id, "first_name": man.first_name,
-                       "second_name": man.second_name, "Dep_id": dep.id,
+            message = {"man_id": man.id, "man_email": man.email, "first_name": man.first_name,
+                       "second_name": man.second_name, "dep_id": dep.id,
                        "Dep_name": dep.depart_name}
         elif man:
-            message = {"Man_id": man.id, "first_name": man.first_name,
-                       "second_name": man.second_name, "Dep_id": "NULL",
-                       "Dep_name": "NULL"}
+            message = {"man_id": man.id, "man_email": man.email, "first_name": man.first_name,
+                       "second_name": man.second_name, "dep_id": "NULL",
+                       "dep_name": "NULL"}
         elif dep:
-            message = {"Man_id": "NULL", "first_name": "NULL",
+            message = {"man_id": "NULL", "man_email": "NULL", "first_name": "NULL",
                        "second_name": "NULL", "Dep_id": dep.id,
-                       "Dep_name": dep.depart_name}
+                       "dep_name": dep.depart_name}
         else:
-            message = {"Man_id": "Null,", "first_name": "Null",
-                       "second_name": "Null", "Dep_id": "Null,",
-                       "Dep_name": "Null"}
+            message = {"man_id": "Null,", "man_email": "NULL", "first_name": "Null",
+                       "second_name": "Null", "dep_id": "Null,",
+                       "dep_name": "Null"}
 
         return message
 
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_id", "information"]
+        fields = ["team_name", "team_information"]
 
 
 class AllGradSerializer(serializers.ModelSerializer):
