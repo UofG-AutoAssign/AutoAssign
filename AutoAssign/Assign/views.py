@@ -52,8 +52,11 @@ class LoginView(APIView):
             user_type = 'Graduate'
 
         if user_object:
-            # If user successfully logged in, the token that reset the password will be deleted to ensure that other
-            # users will not use the token to change the password again.
+            '''
+            If user successfully logged in, 
+            the token that reset the password will be deleted to ensure 
+            -that other users will not use the token to change the password again.
+            '''
             user_object.token = None
             user_object.save()
 
@@ -94,7 +97,8 @@ class Register(APIView):
         first_name = request.data['first_name']
         second_name = request.data['second_name']
 
-        registration_data = {"email": email, 'password': hash_pwd, 'first_name': first_name, 'second_name': second_name}
+        registration_data = {"email": email, 'password': hash_pwd,
+                             'first_name': first_name, 'second_name': second_name}
 
         context = {"code": 403, "status": False, 'error': "Failed to register"}
 
@@ -103,7 +107,8 @@ class Register(APIView):
 
             if ser.is_valid():
                 ser.save()
-                context = {"code": 200, "status": True, "detail": "Has been added", "data": ser.data}
+                context = {"code": 200, "status": True,
+                           "detail": "Has been added", "data": ser.data}
             else:
                 return Response({"code": 403, "status": False, 'error': "Failed to register", "detail": ser.errors})
 
@@ -489,7 +494,7 @@ class AssignManToTeam(APIView):
             Current_Team.man_id = None
             Current_Team.save()
 
-        ser = serializers.AssignManger(instance=Team_obj, data=request.data)
+        ser = serializers.AssignManager(instance=Team_obj, data=request.data)
 
         if ser.is_valid():
             ser.save()
