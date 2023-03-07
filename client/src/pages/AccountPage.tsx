@@ -65,7 +65,7 @@ const AccountPage: FC = () => {
 
     axios
       .put(
-        `${environmentalVariables.backend}home/ChangePassword`,
+        `${environmentalVariables.backend}home/ChangePassword/`,
         {
           pwd: currentPasswordRef.current?.value,
           pwd1: newPasswordRef.current?.value,
@@ -222,11 +222,12 @@ const AccountPage: FC = () => {
       console.log("authStore user type: " + authStore.userType);
       if (authStore.userType === "Graduate") {
         userTypeQuery = "grad";
-      } else if (authStore.userType === "Manger") {
+      } else if (authStore.userType === "Manager") {
         userTypeQuery = "man";
       } else if (authStore.userType === "Hr") {
         userTypeQuery = "hr";
       }
+      
 
       axios
         .get(`${environmentalVariables.backend}home/${userTypeQuery}`, {
