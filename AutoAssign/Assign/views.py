@@ -239,7 +239,7 @@ class HrViewCreate(APIView):
 
 class SkillView(APIView):
 
-    def get(self):
+    def get(self, request):
         skill_queryset = models.Skill.objects.all()
 
         ser = serializers.SkillSerializer(instance=skill_queryset, many=True)
@@ -378,7 +378,7 @@ class CreateTeamView(APIView):
 class AllTeamView(APIView):
     permission_classes = [HrPermission, ]
 
-    def get(self):
+    def get(self, request):
         team_obj = models.Team.objects.filter().all()
 
         ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
@@ -391,7 +391,7 @@ class AllTeamView(APIView):
 class AllGradView(APIView):
     permission_classes = [HrPermission, ]
 
-    def get(self):
+    def get(self, request):
         team_obj = models.Graduate.objects.filter().all()
 
         ser = serializers.AllGradSerializer(instance=team_obj, many=True)
@@ -404,7 +404,7 @@ class AllGradView(APIView):
 class AllManView(APIView):
     permission_classes = [HrPermission, ]
 
-    def get(self):
+    def get(self, request):
         team_obj = models.Manager.objects.filter().all()
 
         ser = serializers.AllManSerializer(instance=team_obj, many=True)
@@ -600,7 +600,7 @@ class DeleteTeam(APIView):
 class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
-    def post(self):
+    def post(self, request):
         grad_obj = models.Graduate.objects.filter(year=2).all()
 
         grad_obj.delete()
