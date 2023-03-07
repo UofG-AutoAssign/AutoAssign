@@ -16,7 +16,7 @@ const SignUpCard: FC = () => {
       !passwordInputRef.current?.value ||
       !confirmPasswordInputRef.current?.value
     ) {
-      toast.error("Please enter the required credentials");
+      toast.error("Please enter the required credentials!");
       return;
     }
     e.preventDefault();
