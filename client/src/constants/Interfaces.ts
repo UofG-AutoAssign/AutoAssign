@@ -14,8 +14,8 @@ export interface ManagerTableType {
 }
 
 export interface ItemType {
-  id: number;
-  name: string;
+  value: number;
+  label: string;
 }
 
 export interface ManagerTableType {
