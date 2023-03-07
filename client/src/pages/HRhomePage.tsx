@@ -4,11 +4,10 @@ import { FC, Fragment, useContext, useState } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
 import Navbar from "../components/Navbar";
-import AuthContext from "../context/AuthContext";
 import LandingButtonModal from "../components/LandingButtonModal";
+import authStore from "../context/authStore";
 
 const HRHomePage: FC = () => {
-  const authContext = useContext(AuthContext);
   
   // Used for the Landing buttons for the following pages
   const data: LandingButtonLinkProps[] = [
@@ -166,7 +165,7 @@ const HRHomePage: FC = () => {
       </nav>
       <div>
         <div className="hi-text dark:text-white">
-          Hi! {authContext?.username}
+          Hi! {authStore.userType}
         </div>
       </div>
       <div className="p-16 flex flex-col gap-5">
