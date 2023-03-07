@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ItemInterface } from "../constants/Interfaces";
@@ -8,6 +8,8 @@ import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore, { returnType } from "../context/authStore";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import { selectedDataType } from "../components/PreferenceFormTable";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
@@ -25,37 +27,51 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     }[]
   >([{ name: "...", email: "..." }]);
 
-  const [allSkills, setAllSkills] = useState<ItemInterface[]>([
+  // List of available skills to de displayed in a drop down
+  const [allSkills, setAllSkills] = useState<any[]>([
     { value: 1, label: "Python" },
   ]);
 
-  const [techList, setTechList] = useState<ItemInterface[]>([
-    { value: 0, label: "Python" },
-  ]);
+  const [selectedData, setSelectedData] = useState<{
+    [rowId: number]: {
+      value: number;
+      label: string;
+    };
+  }>({
+    0: {
+      value: 0,
+      label: "...",
+    },
+  });
 
-  const [curId, setCurId] = useState<number>(1);
+  const [curRowId, setCurRowId] = useState<number>(100);
 
-  const deleteItem = (delete_id: number): void => {
-    let newList: ItemInterface[] = [...techList];
-
-    newList = newList.filter((item) => {
-      return item.value !== delete_id;
+  const deleteItem = (deletedId: number): void => {
+    setSelectedData((prevState) => {
+      const newState = { ...prevState };
+      delete newState[deletedId];
+      return newState;
     });
-    setTechList(newList);
   };
 
   const addItem = (): void => {
-    let newList: ItemInterface[] = [...techList];
+    // Add a new row with a unique ID and no selected skill
+    setSelectedData((prevState) => {
+      return {
+        ...prevState,
+        [curRowId]: {
+          value: 0,
+          label: "...",
+        },
+      };
+    });
 
-    newList.push({ value: curId, label: "hi" });
-    // console.log(newList);
-    setTechList(newList);
-    setCurId((prev) => prev + 1);
+    setCurRowId((prevRowId) => prevRowId + 1);
   };
 
   const [sliderValue, setSliderValue] = useState<string>("50");
 
-  const teamTable = (): JSX.Element => {
+  const TeamTable = (): JSX.Element => {
     return (
       <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -90,14 +106,45 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     );
   };
 
-  const TechnologyDropdown = (): JSX.Element => (
-    <Select
-      className="min-w-[200px] relative w-full h-10 text-black"
-      options={allSkills}
-    />
-  );
+  const TechnologyDropdown = ({
+    selectedTechnology,
+    rowId,
+  }: {
+    selectedTechnology: {
+      value: number;
+      label: string;
+    };
+    rowId: string;
+  }): JSX.Element => {
+    
+    const handleSelectChange = (
+      value: any,
+      property: string,
+      rowId: number
+    ) => {
+      setSelectedData((prevData) => ({
+        ...prevData,
+        [rowId]: {
+          ...prevData[rowId],
+          [property]: value
+        },
+      }));
+    };
 
-  const settingsTable = (): JSX.Element => {
+    return (
+      <Select
+        className="min-w-[200px] relative w-full h-10 text-black"
+        value={selectedTechnology}
+        onChange={(value) => {          
+          handleSelectChange(value, "selectedTechnology", Number(rowId))
+        }
+      }
+        options={allSkills}
+      />
+    );
+  };
+
+  const SettingsTable = (): JSX.Element => {
     return (
       <div>
         <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
@@ -110,23 +157,30 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
               </tr>
             </thead>
             <tbody>
-              {techList.map((item) => (
-                <tr
-                  className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={item.value}
-                >
-                  <th
-                    scope="row"
-                    className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
+              {Object.keys(selectedData).map((rowId: string) => {
+                const selectedTechnology = selectedData[Number(rowId)];
+
+                return (
+                  <tr
+                    className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    key={rowId}
                   >
-                    <TechnologyDropdown />
-                    <HiOutlineTrash
-                      className="text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-150 my-auto mx-5 hover:cursor-pointer"
-                      onClick={() => deleteItem(item.value)}
-                    />
-                  </th>
-                </tr>
-              ))}
+                    <th
+                      scope="row"
+                      className="flex flex-row justify-between px-6 py-4 font-medium text-black whitespace-nowrap"
+                    >
+                      <TechnologyDropdown
+                        rowId={rowId}
+                        selectedTechnology={selectedTechnology}
+                      />
+                      <HiOutlineTrash
+                        className="text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-150 my-auto mx-5 hover:cursor-pointer"
+                        onClick={() => deleteItem(Number(rowId))}
+                      />
+                    </th>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -143,7 +197,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     );
   };
 
-  const preferenceSlider = (): JSX.Element => {
+  const PreferenceSlider = (): JSX.Element => {
     return (
       <div className="bg-white dark:bg-gray-800 text-black dark:text-white">
         <input
@@ -183,6 +237,37 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     () => {};
   }, [location]);
 
+  const handleTeamPreferenceSave = async (): Promise<boolean> => {
+    const sliderValueMap: {
+      [key: string]: number;
+    } = {
+      "0": 0,
+      "25": 0.25,
+      "50": 0.5,
+      "75": 0.75,
+      "100": 1,
+    };
+
+    // @Todo replace this with real data
+    const { data } = await axios.put(
+      `${environmentalVariables.backend}home/man/Team/UpdateSetting/`,
+      {
+        ratio: sliderValueMap[sliderValue],
+        skill: [1, 7, 12, 5],
+      },
+      {
+        headers: {
+          AUTHORIZATION: authStore.authToken,
+        },
+      }
+    );
+
+    console.log(data);
+
+    return data.status;
+  };
+
+  const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
     const getSubordinateInfo = async () => {
       axios
@@ -193,7 +278,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         })
         .then((response) => {
           const subordinateList = response.data.data;
-
+          
           let newSubordinateList: any[] = [];
 
           subordinateList.forEach((member: any) => {
@@ -209,14 +294,14 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
     const getTeamPreferenceInfo = async () => {
       axios
-        .get(`${environmentalVariables.backend}home/man/Team/Setting`, {
+        .get(`${environmentalVariables.backend}home/man/Team/setting/`, {
           headers: {
             AUTHORIZATION: authStore.authToken,
           },
         })
         .then((response) => {
-          const { team_name, ratio, Skill_information } = response.data.data;
-          console.log(ratio);
+          const { team_name, ratio, skill_information } = response.data.data;
+          console.log(team_name, ratio, skill_information);
 
           // @Todo display team name
 
@@ -228,20 +313,28 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             if (ratio === 4) setSliderValue("100");
           }
 
-          console.log(Skill_information)
-          // let newSubordinateList: any[] = [];
+          console.log(skill_information);
 
-          // subordinateList.forEach((member: any) => {
-          //   newSubordinateList.push({ name: `${member.first_name} ${member.second_name}`, email: member.email });
-          // });
+          // @Todo fix this
+          skill_information.forEach(
+            ({ Form_id, Skill_id, skill_name }: any, idx: number) => {
+              setSelectedData((prevSelectedData) => ({
+                ...prevSelectedData,
+                [curRowId]: {
+                  value: Skill_id,
+                  label: skill_name,
+                },
+              }));
 
-          // setSubordinateList(newSubordinateList);
+              setCurRowId((prevRowId) => prevRowId + 1);
+            }
+          );
         });
     };
 
     const getAllSkills = async () => {
       axios
-        .get(`${environmentalVariables.backend}home/skill`, {
+        .get(`${environmentalVariables.backend}home/skill/`, {
           headers: {
             AUTHORIZATION: authStore.authToken,
           },
@@ -259,11 +352,15 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         });
     };
 
-    getSubordinateInfo();
-    getTeamPreferenceInfo();
-    getAllSkills();
+    if (effectRanOnFirstLoad.current === false) {
+      getSubordinateInfo();
+      getTeamPreferenceInfo();
+      getAllSkills();
+    }
 
-    return () => {};
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    };
   }, []);
 
   return (
@@ -272,7 +369,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <Navbar />
       </nav>
       <div>
-        <div className="hi-text dark:text-white">Pick Your Team Preference</div>
+        <div className="hi-text dark:text-white">Your Team</div>
         {currentTab !== "Your Team" && (
           <div className="flex flex-row items-center justify-center gap-5">
             <div className="hi-text dark:text-white text-xl">
@@ -281,6 +378,9 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             <button
               type="button"
               className="my-4 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+              onClick={() => {
+                handleTeamPreferenceSave()
+              }}
             >
               Save
             </button>
@@ -312,11 +412,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <div className="w-3/4 pr-5">
           <div className="bg-white rounded-2xl">
             {currentTab === "Your Team" ? (
-              teamTable()
+              <TeamTable />
             ) : (
               <div className="">
-                {settingsTable()}
-                {preferenceSlider()}
+                <SettingsTable />
+                <PreferenceSlider />
               </div>
             )}
           </div>
