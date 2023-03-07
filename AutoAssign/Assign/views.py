@@ -180,6 +180,25 @@ class GradView(APIView):
              'error': "Update personal information Fail", "detail": ser.errors})
 
 
+class ViewGradTeamInfo(APIView):
+    permission_classes = [GradPermission, ]
+
+    def get(self, request):
+        grad_obj = request.user
+        team_obj = grad_obj.team_id
+
+        if team_obj:
+            grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
+            ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
+
+            context = {"code": 200, "status": True, "data": ser.data}
+
+            return Response(context)
+
+        return Response({"code": 403, "status": False,
+                         'error': "This Graduate dose not has a team yet"})
+
+
 class ManView(APIView):
     permission_classes = [ManagerPermission, ]
 

@@ -9,6 +9,7 @@ urlpatterns = [
     path('home/reset/', views.ResetPasswordByEmail.as_view(), name="ResetPasswordByEmail"),
     path('home/grad/', views.GradView.as_view(), name="GradHome"),
     path('home/grad/form/', views.FormView.as_view(), name="FromDisplay"),
+    path('home/grad/team/', views.ViewGradTeamInfo.as_view(), name="ViewTeamInformation"),
     path('home/man/', views.ManView.as_view(), name="ManHome"),
     path('home/man/Team/', views.TeamMemberView.as_view(), name="TeamMemberView"),
     path('home/man/Team/setting/', views.TeamSettingView.as_view(), name="TeamSettingView"),
