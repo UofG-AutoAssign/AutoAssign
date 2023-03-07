@@ -69,7 +69,7 @@ const Navbar: FC<{
                 localStorage.removeItem("username");
                 routerNavigator("/");
               }}
-              className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-full sm:w-auto"
+              className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-auto"
             >
               Sign Out
             </button>

@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { useLocation, useNavigate } from "react-router-dom";
 import PreferenceFormTable from "../components/PreferenceFormTable";
@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
+import { toast } from "react-toastify";
 
 export const ExperienceDropdown = (): JSX.Element => (
   <Select
@@ -34,7 +35,6 @@ export const TechnologyDropdown = (): JSX.Element => (
   />
 );
 
-
 const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   initialComponent,
 }) => {
@@ -42,14 +42,12 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     useState<initialComponentGraduate>(initialComponent);
 
   // List of team members
-  const [mockTeamList, setMockTeamList] = useState<ManagerTableInterface[]>([
+  const [teammateList, setTeammateList] = useState<ManagerTableInterface[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
-
-  
 
   // Displays the table for the graduate to view their team
   const YourTeamTable = (): JSX.Element => {
@@ -67,7 +65,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
             </tr>
           </thead>
           <tbody>
-            {mockTeamList.map(({ name, email }, idx) => (
+            {teammateList.map(({ name, email }, idx) => (
               <tr
                 className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 key={idx}
@@ -92,14 +90,6 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     return (
       <div className="w-full bg-white rounded-2xl font-medium">
         <PreferenceFormTable />
-        <div className="flex flex-row justify-center bg-white dark:bg-gray-800">
-          <button
-            type="button"
-            className="my-5 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-          >
-            Save
-          </button>
-        </div>
       </div>
     );
   };
@@ -119,8 +109,42 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else setCurrentTab("Preference Form");
 
-    () => {};
+    return () => {};
   }, [location]);
+
+  const effectRanOnFirstLoad = useRef<boolean>(false);
+  useEffect(() => {
+    const getTeammateList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/grad/team/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedTeamList = data.data;
+      console.log(data, fetchedTeamList);
+
+      let newTeammateList: ManagerTableInterface[] = [];
+
+      fetchedTeamList.forEach(({ email, first_name, second_name }: any) => {
+        newTeammateList.push({ email, name: `${first_name} ${second_name}` })
+      });
+
+      setTeammateList(newTeammateList)
+
+      if (data.status === false) toast.error(data.error)
+      
+    };
+
+    if (effectRanOnFirstLoad.current === false) getTeammateList();
+
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    };
+  }, []);
 
   return (
     <div>
@@ -155,4 +179,3 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
 };
 
 export default GraduateTeamPage;
-  
