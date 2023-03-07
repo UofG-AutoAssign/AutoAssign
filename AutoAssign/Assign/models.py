@@ -12,7 +12,6 @@ Please use the command after the update to update the database:
 from django.db import models
 
 
-
 # unique = True ,Give a unique index to email, greatly improve the efficiency of mysql query
 # db_index=True Give an index to name, greatly improve the efficiency of mysql query
 
