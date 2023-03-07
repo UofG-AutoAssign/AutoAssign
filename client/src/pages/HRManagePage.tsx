@@ -10,12 +10,24 @@ import RemoveManager from "../components/HRManage/RemoveManager";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { initialComponentHR } from "../constants/Types";
+import authStore from "../context/authStore";
+
+export type gradType = {
+  id: number;
+  email: string;
+  first_name: string;
+  second_name: string;
+}
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
 }) => {
   const [currentTab, setCurrentTab] =
     useState<initialComponentHR>(initialState);
+
+  const [allGradList, setAllGradList] = useState<
+    gradType[]
+  >([{ email: "...", first_name: "...", id: 0, second_name: "..." }]);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -226,49 +238,46 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             return managerName.toLowerCase().includes(query.toLowerCase());
           });
 
-
-          return (
-            <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
-              <input
-                className="w-full border-none my-2 pl-5 pr-10 font-semibold text-left text-sm leading-5 text-black dark:text-white focus:ring-0 bg-gray-100 dark:bg-gray-700"
-                type={"text"}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={"Search Names"}
-              />
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
-                <tbody>
-                  {managerList.length === 0 ? (
-                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <th
-                        scope="row"
-                        className="py-4 px-6 font-medium text-gray-400 whitespace-nowrap dark:text-white"
-                      >
-                        Empty
-                      </th>
-                      <td className="py-4 px-6 text-right">
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredPeople.map((managerName) => {
-                      return (
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                          <th
-                            scope="row"
-                            className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                          >
-                            {managerName}
-                          </th>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
-          );
-      
-        }
+    return (
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
+        <input
+          className="w-full border-none my-2 pl-5 pr-10 font-semibold text-left text-sm leading-5 text-black dark:text-white focus:ring-0 bg-gray-100 dark:bg-gray-700"
+          type={"text"}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={"Search Names"}
+        />
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
+          <tbody>
+            {managerList.length === 0 ? (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th
+                  scope="row"
+                  className="py-4 px-6 font-medium text-gray-400 whitespace-nowrap dark:text-white"
+                >
+                  Empty
+                </th>
+                <td className="py-4 px-6 text-right"></td>
+              </tr>
+            ) : (
+              filteredPeople.map((managerName) => {
+                return (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {managerName}
+                    </th>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   // Displays the year 1 and 2 graduates in tables, a button to shift all years, and save
   const CreateAccount = (): JSX.Element => {
@@ -335,21 +344,19 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-5 px-10">
-        
           <div>
             Managers
-            <ManagerListTable managerList={managers} /> 
+            <ManagerListTable managerList={managers} />
           </div>
         </div>
         <div className="py-8">
-        <button
-          type="button"
-          className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-        >
-          Save
-        </button>
+          <button
+            type="button"
+            className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          >
+            Save
+          </button>
         </div>
-        
       </div>
     );
   };
@@ -359,7 +366,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       return <TeamTable />;
     }
     if (currentTab === "Assign Graduate") {
-      return <AssignGraduate />;
+      return <AssignGraduate allGradList={allGradList}/>;
     }
     if (currentTab === "Remove Graduate") {
       return <RemoveGraduate />;
@@ -390,13 +397,71 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     else if (query === "remove_graduate") setCurrentTab("Remove Graduate");
     else if (query === "assign_manager") setCurrentTab("Assign Manager");
     else if (query === "remove_manager") setCurrentTab("Remove Manager");
-    else if (query === "create_graduate_account") setCurrentTab("Create Graduate Account");
+    else if (query === "create_graduate_account")
+      setCurrentTab("Create Graduate Account");
     else if (query === "create_manager_account")
       setCurrentTab("Create Manager Account");
     else setCurrentTab("Teams");
 
     () => {};
   }, [location]);
+
+  const effectRanOnFirstLoad = useRef<boolean>(false);
+  useEffect(() => {
+    // @Todo send team_id to receive member list of each team
+    const getAllTeamsList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/TeamView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedTeamList = data.data;
+      console.log(data, fetchedTeamList);
+
+      if (data.status === false) {
+        toast.error("Failed to fetch departments and teams list");
+        return;
+      }
+
+      // let newTeammateList: ManagerTableInterface[] = [];
+
+      // fetchedTeamList.forEach(({ email, first_name, second_name }: any) => {
+      //   newTeammateList.push({ email, name: `${first_name} ${second_name}` })
+      // });
+
+      // setTeammateList(newTeammateList)
+
+      //   if (data.status === false) toast.error(data.error)
+    };
+
+    const getAllGradList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/GradView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedGradList = data.data;
+      console.log(fetchedGradList);
+      setAllGradList(fetchedGradList);
+    };
+
+    if (effectRanOnFirstLoad.current === false) {
+      // getAllTeamsList();
+      getAllGradList();
+    }
+
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -459,6 +524,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         </div>
         <DisplayComponent />
       </section>
+      <div>
+      </div>
     </div>
   );
 };

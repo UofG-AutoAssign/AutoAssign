@@ -1,11 +1,13 @@
-import { FC, useEffect, useState, useCallback } from "react";
+import { FC, useEffect, useState, useCallback, useRef } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import Select from "react-select";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
+import { interestOptions } from "../constants/Options";
+import { toast } from "react-toastify";
 
-type selectedDataType = {
+export type selectedDataType = {
   selectedTechnology: {
     value: number;
     label: string;
@@ -54,7 +56,7 @@ const PreferenceFormTable: FC = () => {
           selectedInterest: 0,
           selectedTechnology: {
             value: 0,
-            label: "",
+            label: "...",
           },
         },
       };
@@ -99,18 +101,57 @@ const PreferenceFormTable: FC = () => {
     );
   };
 
-  const ExperienceDropdown = () => {
-    return <div>yo</div>;
+  const ExperienceDropdown = ({}: {}) => {
+    return (
+      <Select
+        className="min-w-[200px] relative w-full h-10 text-black"
+        // value={selectedTechnology}
+        // onChange={(value) =>
+        //   handleSelectChange(value, "selectedTechnology", Number(rowId))
+        // }
+        options={interestOptions}
+      />
+    );
   };
 
   const InterestDropdown = () => {
     return <div>yo</div>;
   };
 
+  const handleFormSubmission = async (): Promise<boolean> => {
+    // @Todo replace the mock data
+    const { data } = await axios.post(
+      `${environmentalVariables.backend}home/grad/form/`,
+      [
+        { interest: 1, experience: 2, skill_id: 16, graduate: 1 },
+        { interest: 2, experience: 3, skill_id: 2, graduate: 1 },
+        { interest: 4, experience: 1, skill_id: 3, graduate: 1 },
+        { interest: 4, experience: 5, skill_id: 4, graduate: 1 },
+        { interest: 4, experience: 2, skill_id: 5, graduate: 1 },
+      ],
+      {
+        headers: {
+          AUTHORIZATION: authStore.authToken,
+        },
+      }
+    );
+
+    console.log(data);
+
+    if (data.status === true) {
+      toast.success("Form saved to database!")
+      return true;
+    } else {
+      toast.error("Form failed to deliver...")
+      return false;
+    }
+  };
+
+  const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
     const getAllSkills = async () => {
       axios
-        .get(`${environmentalVariables.backend}home/skill`, {
+        .get(`${environmentalVariables.backend}home/skill/`, {
           headers: {
             AUTHORIZATION: authStore.authToken,
           },
@@ -130,17 +171,25 @@ const PreferenceFormTable: FC = () => {
 
     const getFormList = async () => {
       axios
-        .get(`${environmentalVariables.backend}home/grad/Form`, {
+        .get(`${environmentalVariables.backend}home/grad/form/`, {
           headers: {
             AUTHORIZATION: authStore.authToken,
           },
         })
         .then((response) => {
-          const data = response.data.data.Form_information;
+          const data = response.data.data.form_information;
           console.log(data);
 
+          if (data === undefined) {
+            toast.error("Data undefined");
+            return;
+          }
+
           data.forEach(
-            ({ Form_id, Skill_id, skill_name, Interest, Experience }: any, idx: number) => {
+            (
+              { Form_id, Skill_id, skill_name, Interest, Experience }: any,
+              idx: number
+            ) => {
               setSelectedData((prevSelectedData) => ({
                 ...prevSelectedData,
                 [idx]: {
@@ -154,14 +203,21 @@ const PreferenceFormTable: FC = () => {
               }));
             }
           );
-          
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err);
         });
     };
 
-    getAllSkills();
-    getFormList();
+    if (effectRanOnFirstLoad.current === false) {
+      getAllSkills();
+      getFormList();
+    }
 
-    return () => {};
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    };
   }, []);
 
   return (
@@ -187,7 +243,7 @@ const PreferenceFormTable: FC = () => {
                 selectedExperience,
                 selectedInterest,
                 selectedTechnology,
-              } = selectedData[parseInt(rowId)];
+              } = selectedData[Number(rowId)];
 
               return (
                 <tr
@@ -201,7 +257,7 @@ const PreferenceFormTable: FC = () => {
                     />
                     <HiOutlineTrash
                       className="ml-6 text-3xl text-red-500 duration-150 hover:text-red-700 hover:scale-125 my-auto hover:cursor-pointer"
-                      onClick={() => deleteItem(parseInt(rowId))}
+                      onClick={() => deleteItem(Number(rowId))}
                     />
                   </td>
                   <td className="w-1/3 py-4 px-6">
@@ -223,6 +279,17 @@ const PreferenceFormTable: FC = () => {
           onClick={() => addItem()}
         >
           Add New Row
+        </button>
+      </div>
+      <div className="flex flex-row justify-center bg-white dark:bg-gray-800">
+        <button
+          type="button"
+          className="my-5 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          onClick={() => {
+           handleFormSubmission();
+          }}
+        >
+          Save
         </button>
       </div>
     </div>
