@@ -10,17 +10,19 @@ const SignUpCard: FC = () => {
   const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
 
   const handleNewPasswordSubmission = async (e: MouseEvent) => {
+    // Notification for when any field is empty
     if (
       !firstNameInputRef.current?.value ||
       !lastNameInputRef.current?.value ||
       !passwordInputRef.current?.value ||
       !confirmPasswordInputRef.current?.value
     ) {
-      toast.error("Please enter the required credentials!");
+      toast.error("Please enter the required credentials");
       return;
     }
     e.preventDefault();
     
+    // Notification when the two password fields don't match
     if (
       passwordInputRef.current.value !== confirmPasswordInputRef.current.value
       ) {
