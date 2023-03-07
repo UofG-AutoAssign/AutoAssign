@@ -1,12 +1,11 @@
-import { FC, useContext } from "react";
+import { observer } from "mobx-react";
+import { FC, useContext, useEffect } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
-import AuthContext from "../context/AuthContext";
+import authStore from "../context/authStore";
 
 const ManagerPage: FC = () => {
-  const authContext = useContext(AuthContext);
-
   const data: LandingButtonLinkProps[] = [
     {
       title: "Team Settings",
@@ -23,7 +22,7 @@ const ManagerPage: FC = () => {
       initialState: "Teams",
     }
   ];
-
+  
   return (
       <div>
         <nav className="sticky top-0 z-50">
@@ -31,7 +30,7 @@ const ManagerPage: FC = () => {
         </nav>
         <div>
           <div className="hi-text dark:text-white">
-            Hi! {authContext?.username}
+            Hi! {authStore.userType}
           </div>
         </div>
         <div className="p-16 flex flex-col gap-5">

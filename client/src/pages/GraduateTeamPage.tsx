@@ -3,10 +3,17 @@ import { FC, useEffect, useState } from "react";
 import Select from "react-select";
 import { useLocation, useNavigate } from "react-router-dom";
 import PreferenceFormTable from "../components/PreferenceFormTable";
-import { ItemType } from "../constants/Interfaces";
+import { ItemInterface } from "../constants/Interfaces";
 import { initialComponentGraduate } from "../constants/Types";
-import { ManagerTableType } from "../constants/Interfaces";
-import { experienceOptions, interestOptions, techOptions } from "../constants/Options";
+import { ManagerTableInterface } from "../constants/Interfaces";
+import {
+  experienceOptions,
+  interestOptions,
+  techOptions,
+} from "../constants/Options";
+import axios from "axios";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import authStore from "../context/authStore";
 
 export const ExperienceDropdown = (): JSX.Element => (
   <Select
@@ -21,31 +28,29 @@ export const InterestDropdown = (): JSX.Element => (
   />
 );
 export const TechnologyDropdown = (): JSX.Element => (
-  <Select className="min-w-[200px] relative w-full h-10 text-black" options={techOptions} />
+  <Select
+    className="min-w-[200px] relative w-full h-10 text-black"
+    options={[]}
+  />
 );
 
-const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ initialComponent }) => {
-  const [currentTab, setCurrentTab] = useState<
-    initialComponentGraduate
-  >(initialComponent);
+
+const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
+  initialComponent,
+}) => {
+  const [currentTab, setCurrentTab] =
+    useState<initialComponentGraduate>(initialComponent);
 
   // List of team members
-  const [mockTeamList, setMockTeamList] = useState<ManagerTableType[]>([
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
+  const [mockTeamList, setMockTeamList] = useState<ManagerTableInterface[]>([
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
     { name: "Jack", email: "Jack@yahoo.com" },
   ]);
 
-  // Constant data for sending to backend
-  const [techList, setTechList] = useState<ItemType[]>([
-    { id: 0, name: "Full-Stack Development" },
-  ]);
   
+
   // Displays the table for the graduate to view their team
   const YourTeamTable = (): JSX.Element => {
     return (
@@ -81,7 +86,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
       </div>
     );
   };
-  
+
   // Displays the Preference Form Table as well as a save button
   const PreferenceTable = (): JSX.Element => {
     return (
@@ -101,9 +106,9 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
 
   // Display page corresponding to the active tab
   const DisplayComponent = (): JSX.Element => {
-    if (currentTab === "Your Team") return <YourTeamTable />
-    else return <PreferenceTable />
-  }
+    if (currentTab === "Your Team") return <YourTeamTable />;
+    else return <PreferenceTable />;
+  };
 
   const navigate = useNavigate();
   let location = useLocation();
@@ -111,11 +116,11 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
   useEffect(() => {
     const query = location.pathname.split("/").at(-1);
 
-    if (query === "view_team") setCurrentTab("Your Team")
+    if (query === "view_team") setCurrentTab("Your Team");
     else setCurrentTab("Preference Form");
 
-    () => {}
-  }, [location])
+    () => {};
+  }, [location]);
 
   return (
     <div>
@@ -139,7 +144,6 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
           >
             Preference Form
           </button>
-          
         </div>
 
         <div className="w-3/4 pr-5">
@@ -151,3 +155,4 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({ 
 };
 
 export default GraduateTeamPage;
+  

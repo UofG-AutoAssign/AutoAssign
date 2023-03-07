@@ -1,3 +1,5 @@
+import { ItemInterface } from "./Interfaces";
+
 export const experienceOptions = [
     { value: 3, label: "Proficient" },
     { value: 2, label: "Intermediate" },
@@ -12,9 +14,6 @@ export const experienceOptions = [
     { value: 0, label: "Not Interested" },
   ];
   
-  export const techOptions = [
-    { value: "full_stack_development", label: "Full Stack Development" },
-    { value: "ui_ux_development", label: "UI/UX Development" },
-    { value: "machine_learning", label: "Machine Learning" },
-    { value: "cyber_security", label: "Cyber Security" },
+  export const techOptions: ItemInterface[] = [
+    { value: 1, label: "Python" },
   ];

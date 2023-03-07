@@ -1,22 +1,105 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import AvatarBar from "../components/AvatarBar";
 import Navbar from "../components/Navbar";
 import AccountTable from "../components/AccountTable";
+import axios from "axios";
+import authStore from "../context/authStore";
+import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AccountPage: FC = () => {
   const [currentTab, setCurrentTab] = useState<"Settings" | "Password">(
     "Settings"
   );
+  const [userFirstName, setUserFirstName] = useState("...");
+  const [userLastName, setUserLastName] = useState("...");
+  const [userEmail, setUserEmail] = useState("...");
+  const [userYear, setUserYear] = useState<number | string>("...");
+  const routerNavigator = useNavigate();
 
   // Conditionally display the component depending on the active tab
   const displayComponent = (): JSX.Element => {
-    if (currentTab === "Settings") return (<AccountTable data={["Firstname: ", "Surname", "Email", "Year"]} />)
+    if (currentTab === "Settings")
+      return (
+        <AccountTable
+          data={[
+            `Firstname: ${userFirstName}`,
+            `Surname: ${userLastName}`,
+            `Email: ${userEmail}`,
+            `Year: ${userYear}`,
+          ]}
+        />
+      );
     else {
       return passwordSetting();
     }
   };
 
   const confirmGraduateToTeamModalId2: string = "confirm-graduate2";
+
+  const currentPasswordRef = useRef<HTMLInputElement>(null);
+  const newPasswordRef = useRef<HTMLInputElement>(null);
+  const confirmNewPasswordRef = useRef<HTMLInputElement>(null);
+
+  const handleChangePassword = async () => {
+    // No empty fields allowed
+    if (
+      !currentPasswordRef.current?.value ||
+      !newPasswordRef.current?.value ||
+      !confirmNewPasswordRef.current?.value
+    ) {
+      toast.error("No empty fields allowed");
+      return;
+    }
+
+    // Check for new password confirmation
+    if (
+      newPasswordRef.current?.value !== confirmNewPasswordRef.current?.value
+    ) {
+      toast.error("Unmatching new passwords");
+      return;
+    }
+
+    console.log("Passed all 3 tests");
+
+    axios
+      .put(
+        `${environmentalVariables.backend}home/ChangePassword`,
+        {
+          pwd: currentPasswordRef.current?.value,
+          pwd1: newPasswordRef.current?.value,
+          pwd2: confirmNewPasswordRef.current?.value,
+        },
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      )
+      .then(({ data }) => {
+        console.log(data);
+
+        if (data.status === true) {
+          toast.success("Password sucessfully changed!");
+
+          setTimeout(() => {
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userType");
+            localStorage.removeItem("username");
+            routerNavigator("/");
+          }, 1000);
+
+          return;
+        }
+
+        toast.error("Failed to change password");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const passwordSetting = (): JSX.Element => {
     return (
       <div className="w-full pr-5">
@@ -27,14 +110,15 @@ const AccountPage: FC = () => {
           <div className="flex flex-col gap-5">
             <div>
               <label
-                htmlFor="first_name"
+                htmlFor="current_password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Your current password
               </label>
               <input
+                ref={currentPasswordRef}
                 type="text"
-                id="first_name"
+                id="current_password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Current Password"
                 required
@@ -42,14 +126,15 @@ const AccountPage: FC = () => {
             </div>
             <div>
               <label
-                htmlFor="last_name"
+                htmlFor="new_password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Your new password
               </label>
               <input
+                ref={newPasswordRef}
                 type="text"
-                id="last_name"
+                id="new_password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="New Password"
                 required
@@ -58,14 +143,15 @@ const AccountPage: FC = () => {
 
             <div>
               <label
-                htmlFor="last_name"
+                htmlFor="confirm_new_password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Confirm your new password
               </label>
               <input
+                ref={confirmNewPasswordRef}
                 type="text"
-                id="last_name"
+                id="confirm_new_password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Confirm New Password"
                 required
@@ -119,6 +205,7 @@ const AccountPage: FC = () => {
               <label
                 htmlFor={confirmGraduateToTeamModalId2}
                 className="btn bg-blue-800 text-white"
+                onClick={() => handleChangePassword()}
               >
                 Yes, I'm sure
               </label>
@@ -129,17 +216,50 @@ const AccountPage: FC = () => {
     );
   };
 
+  useEffect(() => {
+    const getUserInfo = async () => {
+      let userTypeQuery = "";
+      console.log("authStore user type: " + authStore.userType);
+      if (authStore.userType === "Graduate") {
+        userTypeQuery = "grad";
+      } else if (authStore.userType === "Manger") {
+        userTypeQuery = "man";
+      } else if (authStore.userType === "Hr") {
+        userTypeQuery = "hr";
+      }
+
+      axios
+        .get(`${environmentalVariables.backend}home/${userTypeQuery}`, {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        })
+        .then((response) => {
+          const data = response.data.data;
+
+          localStorage.setItem("username", data.first_name);
+          setUserFirstName(data.first_name);
+          setUserLastName(data.second_name);
+          setUserEmail(data.email);
+          setUserYear(data.year);
+        });
+    };
+
+    getUserInfo();
+
+    return () => {};
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <nav className="sticky top-0 z-50">
         <Navbar />
       </nav>
       <div>
-        <AvatarBar />
+        <AvatarBar firstName={userFirstName} lastName={userLastName} />
       </div>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">
-
           <button
             onClick={() => setCurrentTab("Settings")}
             type="button"
@@ -156,10 +276,7 @@ const AccountPage: FC = () => {
             Change Password
           </button>
         </div>
-        <div className="w-3/4 ">
-          
-          {displayComponent()}
-        </div>
+        <div className="w-3/4 ">{displayComponent()}</div>
       </section>
     </div>
   );
