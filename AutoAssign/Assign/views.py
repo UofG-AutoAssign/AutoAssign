@@ -475,7 +475,7 @@ class AssignGradToTeam(APIView):
     def put(self, request):
 
         data = request.data
-        grad_id = data['Grad_id']
+        grad_id = data['grad_id']
 
         grad_obj = models.Graduate.objects.filter(id=grad_id).first()
 
