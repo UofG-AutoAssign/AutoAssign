@@ -79,7 +79,7 @@ const App: FC = observer(() => {
               element={<ManagerTeamPage initialState={"Team Preference"} />}
             />
             <Route path="forgot_password" element={<ForgotPassPage />} />
-            <Route path="/sign_up" element={<SignUpPage />} />
+            <Route path="/sign_up/:signUpToken" element={<SignUpPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AuthContextProvider>
