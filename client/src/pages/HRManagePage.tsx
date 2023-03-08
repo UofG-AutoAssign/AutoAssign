@@ -17,7 +17,19 @@ export type gradType = {
   email: string;
   first_name: string;
   second_name: string;
-}
+};
+
+export type teamAndDepartmentType = {
+  team_name: string;
+  team_information: {
+    Dep_name: string;
+    dep_id: number;
+    first_name: string;
+    man_email: string;
+    man_id: number;
+    second_name: string;
+  };
+};
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
@@ -25,9 +37,19 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   const [currentTab, setCurrentTab] =
     useState<initialComponentHR>(initialState);
 
-  const [allGradList, setAllGradList] = useState<
-    gradType[]
-  >([{ email: "...", first_name: "...", id: 0, second_name: "..." }]);
+  const [allGradList, setAllGradList] = useState<gradType[]>([
+    { email: "...", first_name: "...", id: 0, second_name: "..." },
+  ]);
+
+  const [teamAndDepartmentList, setTeamAndDepartmentList] = useState<teamAndDepartmentType[]>([{
+    team_name: "...", team_information: { 
+      dep_id: 0,
+      Dep_name: "...",
+      first_name: "...",
+      man_email: "...",
+      man_id: 0,
+      second_name: "...",
+     } }]);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -366,7 +388,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       return <TeamTable />;
     }
     if (currentTab === "Assign Graduate") {
-      return <AssignGraduate allGradList={allGradList}/>;
+      return <AssignGraduate allGradList={allGradList} teamAndDepartmentList={teamAndDepartmentList}/>;
     }
     if (currentTab === "Remove Graduate") {
       return <RemoveGraduate />;
@@ -408,7 +430,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
-    // @Todo send team_id to receive member list of each team
+    
     const getAllTeamsList = async () => {
       const { data } = await axios.get(
         `${environmentalVariables.backend}home/hr/TeamView/`,
@@ -419,23 +441,15 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         }
       );
 
-      const fetchedTeamList = data.data;
-      console.log(data, fetchedTeamList);
+      const fetchedTeamList: teamAndDepartmentType[] = data.data;
+      console.log(fetchedTeamList);
 
       if (data.status === false) {
         toast.error("Failed to fetch departments and teams list");
         return;
       }
 
-      // let newTeammateList: ManagerTableInterface[] = [];
-
-      // fetchedTeamList.forEach(({ email, first_name, second_name }: any) => {
-      //   newTeammateList.push({ email, name: `${first_name} ${second_name}` })
-      // });
-
-      // setTeammateList(newTeammateList)
-
-      //   if (data.status === false) toast.error(data.error)
+      setTeamAndDepartmentList(fetchedTeamList);
     };
 
     const getAllGradList = async () => {
@@ -454,8 +468,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     };
 
     if (effectRanOnFirstLoad.current === false) {
-      // getAllTeamsList();
+      getAllTeamsList();
       getAllGradList();
+      // @Todo send team_id to receive member list of each team
     }
 
     return () => {
@@ -524,8 +539,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         </div>
         <DisplayComponent />
       </section>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 };
