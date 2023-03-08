@@ -15,7 +15,7 @@ const CreateGraduateEmailField: FC = () => {
     console.log(splitEmailList);
 
     const { data } = await axios.post(
-      `${environmentalVariables.backend}home/hr/Register`,
+      `${environmentalVariables.backend}home/hr/Register/`,
       {
         email: emails,
         role: 1,
