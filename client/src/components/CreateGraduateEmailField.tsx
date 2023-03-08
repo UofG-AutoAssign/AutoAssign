@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
 
-const CreateGraduateEmailField: FC = () => {
+const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ createEmailFor }) => {
   const [emails, setEmails] = useState<string[]>([]);
   const [focused, setFocused] = useState(false);
 
@@ -18,7 +18,7 @@ const CreateGraduateEmailField: FC = () => {
       `${environmentalVariables.backend}home/hr/Register/`,
       {
         email: emails,
-        role: 1,
+        role: createEmailFor === "Graduates" ? 1 : 2,
       },
       {
         headers: {
@@ -86,4 +86,4 @@ const CreateGraduateEmailField: FC = () => {
   );
 };
 
-export default CreateGraduateEmailField;
+export default CreateEmailField;

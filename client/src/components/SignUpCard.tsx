@@ -1,5 +1,6 @@
 import axios from "axios";
 import { MouseEvent, FC, useRef } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 
@@ -8,6 +9,7 @@ const SignUpCard: FC = () => {
   const lastNameInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleNewPasswordSubmission = async (e: MouseEvent) => {
     // Notification for when any field is empty
@@ -48,6 +50,7 @@ const SignUpCard: FC = () => {
     
     if (data.status === true) {
       toast.success("Sucessfully registered!");
+      navigate("/")
     } else {
       toast.error(`Failed to register new password: ${data.detail.email}`);
     }
