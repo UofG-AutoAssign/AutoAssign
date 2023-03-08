@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import CreateEmailField from "../components/CreateGraduateEmailField";
 import AssignGraduate from "../components/HRManage/AssignGraduate";
 import AssignManager from "../components/HRManage/AssignManager";
+import DeleteTeam from "../components/HRManage/DeleteTeam";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
 import Navbar from "../components/Navbar";
@@ -375,6 +376,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     if (currentTab === "Teams") {
       return <TeamTable />;
     }
+    if (currentTab === "Delete Team") {
+      return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList}/>;
+    }
     if (currentTab === "Assign Graduate") {
       return (
         <AssignGraduate
@@ -413,6 +417,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     const query = location.pathname.split("/").at(-1);
 
     if (query === "view_team") setCurrentTab("Teams");
+    else if (query === "delete_team") setCurrentTab("Delete Team");
     else if (query === "assign_graduate") setCurrentTab("Assign Graduate");
     else if (query === "remove_graduate") setCurrentTab("Remove Graduate");
     else if (query === "assign_manager") setCurrentTab("Assign Manager");
@@ -506,6 +511,13 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Manage Teams
+          </button>
+          <button
+            onClick={() => navigate("/hr/manage/delete_team")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            Delete Team
           </button>
           <button
             onClick={() => navigate("/hr/manage/assign_graduate")}

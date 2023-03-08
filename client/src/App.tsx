@@ -14,45 +14,22 @@ import themeStore from "./context/themeStore";
 import SignUpPage from "./pages/SignUpPage";
 import HRHomePage from "./pages/HRhomePage";
 import { observer } from "mobx-react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import RequireAuth from "./components/RequireAuth";
 
 const App: FC = observer(() => {
+  // Implement routing later
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
       {/* <nav className="sticky top-0 z-50">
         <Navbar />
       </nav> */}
       <div className="page-background dark:bg-gray-800 overflow-y-auto">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="forgot_password" element={<ForgotPassPage />} />
-          <Route path="/sign_up/:signUpToken" element={<SignUpPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-
-          {/* Private Routes */}
-          <Route element={<RequireAuth />}>
-            {/* Not role-specific */}
-            <Route path="account" element={<AccountPage />} />
-
-            {/* Graduate Routes */}
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
             <Route path="graduate" element={<GraduatePage />} />
-            <Route
-              path="graduate/team"
-              element={<GraduateTeamPage initialComponent="Your Team" />}
-            />
-            <Route
-              path="graduate/team/view_team"
-              element={<GraduateTeamPage initialComponent="Your Team" />}
-            />
-            <Route
-              path="graduate/team/preference_form"
-              element={<GraduateTeamPage initialComponent="Preference Form" />}
-            />
-
-            {/* HR Routes */}
+            <Route path="graduate/team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
+            <Route path="graduate/team/view_team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
+            <Route path="graduate/team/preference_form" element={<GraduateTeamPage initialComponent="Preference Form"/>} />
+            <Route path="account" element={<AccountPage />} />
             <Route path="hr" element={<HRHomePage />} />
             <Route
               path="hr/manage/"
@@ -61,6 +38,10 @@ const App: FC = observer(() => {
             <Route
               path="hr/manage/manage_team"
               element={<HRManagePage initialState={"Teams"} />}
+            />
+            <Route
+              path="hr/manage/delete_team"
+              element={<HRManagePage initialState={"Delete Team"} />}
             />
             <Route
               path="hr/manage/assign_graduate"
@@ -80,16 +61,12 @@ const App: FC = observer(() => {
             />
             <Route
               path="hr/manage/create_graduate_account"
-              element={
-                <HRManagePage initialState={"Create Graduate Account"} />
-              }
+              element={<HRManagePage initialState={"Create Graduate Account"} />}
             />
             <Route
               path="hr/manage/create_manager_account"
               element={<HRManagePage initialState={"Create Manager Account"} />}
             />
-
-            {/* Manager Routes */}
             <Route path="manager" element={<ManagerPage />} />
             <Route
               path="manager/team/"
@@ -103,20 +80,10 @@ const App: FC = observer(() => {
               path="manager/team/team_preference"
               element={<ManagerTeamPage initialState={"Team Preference"} />}
             />
-          </Route>
-        </Routes>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss={false}
-          draggable={false}
-          pauseOnHover={false}
-          theme="light"
-        />
+            <Route path="forgot_password" element={<ForgotPassPage />} />
+            <Route path="/sign_up" element={<SignUpPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
       </div>
     </div>
   );
