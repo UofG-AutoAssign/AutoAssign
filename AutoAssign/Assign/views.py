@@ -620,7 +620,7 @@ class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        check_num = not request.data['check_num']
+        check_num = request.data['check_num']
 
         if check_num != 1:
             context = {"code": 200, "status": False, "detail": "Fail to delete"}
