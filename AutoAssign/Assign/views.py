@@ -736,7 +736,7 @@ class ResetPasswordByEmail(APIView):
         user_obj.save()
 
         # send the email
-        register_url = '127.0.0.1:5173/sign_up/' + token
+        register_url = '127.0.0.1:5173/forget_password/' + token
 
         send_mail(
             subject='Registration link',

@@ -207,6 +207,7 @@ class AllTeamViewSerializer(serializers.ModelSerializer):
        Serialization outputs all Team information
     """
     team_information = serializers.SerializerMethodField()
+    team_id = serializers.SerializerMethodField()
 
     def get_team_information(self, obj):
         man = obj.man_id
@@ -231,9 +232,13 @@ class AllTeamViewSerializer(serializers.ModelSerializer):
 
         return message
 
+    def get_team_id(self, obj):
+
+        return obj.id
+
     class Meta:
         model = models.Team
-        fields = ["team_name", "team_information"]
+        fields = ["team_name", "team_id", "team_information"]
 
 
 class AllGradSerializer(serializers.ModelSerializer):
