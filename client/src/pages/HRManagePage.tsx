@@ -21,6 +21,7 @@ export type gradType = {
 
 export type teamAndDepartmentType = {
   team_name: string;
+  team_id: number;
   team_information: {
     Dep_name: string;
     dep_id: number;
@@ -42,7 +43,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   ]);
 
   const [teamAndDepartmentList, setTeamAndDepartmentList] = useState<teamAndDepartmentType[]>([{
-    team_name: "...", team_information: { 
+    team_name: "...", team_id: 0, team_information: { 
       dep_id: 0,
       Dep_name: "...",
       first_name: "...",
@@ -391,10 +392,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       return <AssignGraduate allGradList={allGradList} teamAndDepartmentList={teamAndDepartmentList}/>;
     }
     if (currentTab === "Remove Graduate") {
-      return <RemoveGraduate />;
+      return <RemoveGraduate allGradList={allGradList}/>;
     }
     if (currentTab === "Assign Manager") {
-      return <AssignManager />;
+      return <AssignManager allManagerList={[]} teamAndDepartmentList={teamAndDepartmentList}/>;
     }
     if (currentTab === "Remove Manager") {
       return <RemoveManager />;

@@ -19,7 +19,7 @@ const AssignGraduate: FC<{
   const handleAssignGrad = async (): Promise<boolean> => {
     try {
       const gradId = (selectedGrad as any).id;
-      const teamId = teamAndDepartmentList.find((team) => team.team_name === selectedTeam)?.team_information;
+      const teamId = teamAndDepartmentList.find((team) => team.team_name === selectedTeam)?.team_id;
       console.log(gradId, teamId);
 
       if (!selectedGrad || !selectedTeam || !gradId || !teamId) {
@@ -30,7 +30,7 @@ const AssignGraduate: FC<{
       const { data } = await axios.put(
         `${environmentalVariables.backend}home/hr/AssignGrad/`,
         {
-          Grad_id: gradId,
+          grad_id: gradId,
           team_id: teamId,
         },
         {

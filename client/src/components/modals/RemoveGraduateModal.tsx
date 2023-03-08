@@ -6,7 +6,9 @@ import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 //   | { type: "Remove-manager"; managerName: string }
 //   | { type: "Remove-graduate"; graduateName: string };
 
-const RemoveGraduateModal: FC = () => {
+const RemoveGraduateModal: FC<{
+  handleRemoveGrad: () => Promise<boolean>;
+}> = ({ handleRemoveGrad }) => {
   return (
     <>
       <div className="modal z-50 overflow-y-auto">
@@ -21,7 +23,6 @@ const RemoveGraduateModal: FC = () => {
               </span>
             </label>
           </div>
-
           <div className="modal-action">
             <label
               htmlFor={confirmGraduateToTeamModalId2}
@@ -29,12 +30,14 @@ const RemoveGraduateModal: FC = () => {
             >
               Cancel
             </label>
-            <label
-              htmlFor={confirmGraduateToTeamModalId2}
-              className="btn bg-red-700 text-white"
-            >
-              Yes, I'm sure
-            </label>
+            <div onClick={() => handleRemoveGrad()}>
+              <label
+                htmlFor={confirmGraduateToTeamModalId2}
+                className="btn bg-red-700 text-white"
+              >
+                Yes, I'm sure
+              </label>
+            </div>
           </div>
         </div>
       </div>
