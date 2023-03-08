@@ -319,7 +319,7 @@ class AddRegistrations(serializers.Serializer):
         role = validated_data.get('role')
 
         # Allow repeat registrations
-        instance = models.Registration.objects.get_or_create(email=mail, role=role)
+        instance, _ = models.Registration.objects.get_or_create(email=mail, role=role)
 
         return instance
 
