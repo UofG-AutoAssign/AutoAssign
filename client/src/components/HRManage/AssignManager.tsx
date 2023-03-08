@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId3 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
-import { teamAndDepartmentType } from "../../pages/HRManagePage";
+import { managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
 import AssignManagerModal from "../modals/AssignManagerModal";
 
 // Assigns a manager to a specific team/department
 const AssignManager: FC<{
-  allManagerList: any[];
+  allManagerList: managerType[];
   teamAndDepartmentList: teamAndDepartmentType[];
 }> = ({ allManagerList, teamAndDepartmentList }) => {
 

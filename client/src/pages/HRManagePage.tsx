@@ -417,7 +417,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
     }
     if (currentTab === "Remove Manager") {
-      return <RemoveManager />;
+      return <RemoveManager allManagerList={managerList} />;
     }
     if (currentTab === "Create Graduate Account") {
       return <CreateAccount />;
