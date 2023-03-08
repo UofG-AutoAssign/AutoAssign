@@ -1,6 +1,27 @@
 image: node:16.5.0
-pages:
-  stage: deploy
+
+# Define the pipeline stages
+stages:
+  - build
+  - test
+  - quality
+
+# Define the jobs
+build-backend:
+  stage: build
+  image: python:3.8 
+  before_script:
+    # Install dependencies
+    - pip install --upgrade pip
+    - cd "AutoAssign"
+    - pip install -r requirements.txt
+  script:
+    # Build the Django backend
+    - python manage.py makemigrations
+    - python manage.py migrate
+
+build-frontend:
+  stage: build
   cache:
     key:
       files:
@@ -17,5 +38,32 @@ pages:
   artifacts:
     paths:
       - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+test-backend:
+  stage: test
+  image: python:3.8 
+  before_script:
+    # Install dependencies
+    - pip install --upgrade pip
+    - cd "AutoAssign"
+    - pip install -r requirements.txt
+  script:
+    # Run the Django backend tests
+    - python manage.py test
+
+backend_code_quality_pylint:
+  stage: quality
+  image: python:3.8
+  before_script:
+    # Install dependencies
+    - pip install --upgrade pip
+    - cd "AutoAssign"
+    - pip install -r requirements.txt
+    - pip install pylint pylint-django
+  script:
+    # Run pylint to check for coding style issues and other code quality problems
+    - pylint --load-plugins pylint_quotes **/*.py
+
+  artifacts:
+    paths:
+      - htmlcov/
