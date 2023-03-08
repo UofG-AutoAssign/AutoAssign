@@ -2,6 +2,7 @@ export type initialComponentGraduate = "Your Team" | "Preference Form";
 
 export type initialComponentHR =
   | "Teams"
+  | "Delete Team"
   | "Assign Graduate"
   | "Remove Graduate"
   | "Assign Manager"
