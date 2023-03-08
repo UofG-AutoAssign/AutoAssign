@@ -620,6 +620,12 @@ class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
+        check_num = not request.data['check_num']
+
+        if check_num != 1:
+            context = {"code": 200, "status": False, "detail": "Fail to delete"}
+            return Response(context)
+
         grad_obj = models.Graduate.objects.filter(year=2).all()
 
         grad_obj.delete()
@@ -827,6 +833,19 @@ class AllUnManView(APIView):
         man_obj = models.Manager.objects.filter(team__isnull=True).all()
 
         ser = serializers.AllManSerializer(instance=man_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AllYearTwoGrad(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        grad_obj = models.Graduate.objects.filter(year=2).all()
+
+        ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
 
         context = {"code": 200, "status": True, "data": ser.data}
 
