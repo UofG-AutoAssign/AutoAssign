@@ -32,25 +32,38 @@ export type teamAndDepartmentType = {
   };
 };
 
+export type managerType = gradType;
+
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
 }) => {
   const [currentTab, setCurrentTab] =
     useState<initialComponentHR>(initialState);
 
+  const [managerList, setManagerList] = useState<managerType[]>([
+    { email: "...", first_name: "...", id: 0, second_name: "..." },
+  ]);
+
   const [allGradList, setAllGradList] = useState<gradType[]>([
     { email: "...", first_name: "...", id: 0, second_name: "..." },
   ]);
 
-  const [teamAndDepartmentList, setTeamAndDepartmentList] = useState<teamAndDepartmentType[]>([{
-    team_name: "...", team_id: 0, team_information: { 
-      dep_id: 0,
-      Dep_name: "...",
-      first_name: "...",
-      man_email: "...",
-      man_id: 0,
-      second_name: "...",
-     } }]);
+  const [teamAndDepartmentList, setTeamAndDepartmentList] = useState<
+    teamAndDepartmentType[]
+  >([
+    {
+      team_name: "...",
+      team_id: 0,
+      team_information: {
+        dep_id: 0,
+        Dep_name: "...",
+        first_name: "...",
+        man_email: "...",
+        man_id: 0,
+        second_name: "...",
+      },
+    },
+  ]);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -66,10 +79,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   const [yearTwoGrads, setYearTwoGrads] = useState<string[]>([
     "sam@barclays.com",
     "dequan@barclays.com",
-  ]);
-  const [managers, setManagers] = useState<string[]>([
-    "joey-manager@barclays.com",
-    "tyson-manager@barclays.com",
   ]);
 
   // Swaps the graduate to the other year table
@@ -369,7 +378,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Managers
-            <ManagerListTable managerList={managers} />
+            <ManagerListTable managerList={managerList.map((manager) => manager.email)} />
           </div>
         </div>
         <div className="py-8">
@@ -389,13 +398,23 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       return <TeamTable />;
     }
     if (currentTab === "Assign Graduate") {
-      return <AssignGraduate allGradList={allGradList} teamAndDepartmentList={teamAndDepartmentList}/>;
+      return (
+        <AssignGraduate
+          allGradList={allGradList}
+          teamAndDepartmentList={teamAndDepartmentList}
+        />
+      );
     }
     if (currentTab === "Remove Graduate") {
-      return <RemoveGraduate allGradList={allGradList}/>;
+      return <RemoveGraduate allGradList={allGradList} />;
     }
     if (currentTab === "Assign Manager") {
-      return <AssignManager allManagerList={[]} teamAndDepartmentList={teamAndDepartmentList}/>;
+      return (
+        <AssignManager
+          allManagerList={managerList}
+          teamAndDepartmentList={teamAndDepartmentList}
+        />
+      );
     }
     if (currentTab === "Remove Manager") {
       return <RemoveManager />;
@@ -431,7 +450,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
-    
     const getAllTeamsList = async () => {
       const { data } = await axios.get(
         `${environmentalVariables.backend}home/hr/TeamView/`,
@@ -468,9 +486,26 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setAllGradList(fetchedGradList);
     };
 
+    const getAllManagerList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/ManView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedManagerList = data.data;
+      console.log(fetchedManagerList);
+      setManagerList(fetchedManagerList);
+    };
+
+
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
       getAllGradList();
+      getAllManagerList();
       // @Todo send team_id to receive member list of each team
     }
 

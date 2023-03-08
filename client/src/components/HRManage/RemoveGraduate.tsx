@@ -1,6 +1,6 @@
 import { Combobox, Transition } from "@headlessui/react";
 import axios from "axios";
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
@@ -14,6 +14,7 @@ const RemoveGraduate: FC<{
 }> = ({ allGradList }) => {
 
   const [selectedGrad, setSelectedGrad] = useState<string>("");
+  const [allYearTwoGrads, setAllYearTwoGrads] = useState<gradType[]>([])
 
   const handleRemoveGrad = async (): Promise<boolean> => {
     try {
@@ -54,14 +55,10 @@ const RemoveGraduate: FC<{
 
   const handleRemoveAllYearTwoGrads = async (): Promise<boolean> => {
     try {
-
-      console.log(authStore.authToken);
-      
-
       const { data } = await axios.post(
         `${environmentalVariables.backend}home/hr/DeleteYearTwo/`,
         {
-          check_number: 1
+          check_num: 1
         },
         {
           headers: {
@@ -75,7 +72,7 @@ const RemoveGraduate: FC<{
         toast.success("All year 2 graduate(s) successfully deleted!");
         return true;
       } else {
-        toast.error(`Failed to delete all year 2 graduate(s): ${data.status}`);
+        toast.error(`Failed to delete all year 2 graduate(s): ${data.detail}`);
         return false;
       }
     } catch (error) {
@@ -221,6 +218,33 @@ const RemoveGraduate: FC<{
     );
   };
 
+  const effectRanOnFirstLoad = useRef<boolean>(false);
+  useEffect(() => {
+    const getAllYearTwoGradList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/AllYearTwoGrad/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedYearTwoGradList = data.data;
+      console.log(fetchedYearTwoGradList);
+      setAllYearTwoGrads(fetchedYearTwoGradList);
+    };
+
+    if (effectRanOnFirstLoad.current === false) {
+      getAllYearTwoGradList();
+    }
+  
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    }
+  }, [])
+  
+
   return (
     <div className="w-3/4 pr-5">
       <div className="mb-7 text-black dark:text-white">
@@ -254,7 +278,7 @@ const RemoveGraduate: FC<{
 
             <div className="my-5 p-5 w-full border-2 border-red-800 bg-red-500 bg-opacity-50 basis-1/2 rounded-3xl flex flex-col justify-center shadow-lg py-5">
               <div className="hi-text dark:text-white text-xl mb-5">All Year 2 Graduates</div>
-              <GraduateTable graduateList={["Jack", "Jack", "Jack", "Jack"]}/>
+              <GraduateTable graduateList={allYearTwoGrads.map((grad) => `${grad.first_name} ${grad.second_name}`)}/>
               <button
                 onClick={() => handleRemoveAllYearTwoGrads()}
                 type="button"

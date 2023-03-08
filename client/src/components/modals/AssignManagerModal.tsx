@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { confirmGraduateToTeamModalId3 } from "../../constants/ModalIDs";
 
-const AssignManagerModal: FC = () => {
+const AssignManagerModal: FC<{
+  handleAssignManager: () => Promise<boolean>;
+}> = ({ handleAssignManager }) => {
   return (
     <>
       <div className="modal z-50 overflow-y-auto">
@@ -24,12 +26,14 @@ const AssignManagerModal: FC = () => {
             >
               Cancel
             </label>
+            <div onClick={() => handleAssignManager()}>
             <label
               htmlFor={confirmGraduateToTeamModalId3}
               className="btn bg-blue-800 text-white"
             >
               Yes, I'm sure
             </label>
+            </div>
           </div>
         </div>
       </div>
