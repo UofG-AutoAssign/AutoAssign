@@ -2,7 +2,7 @@ import axios from "axios";
 import { FC, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CreateGraduateEmailField from "../components/CreateGraduateEmailField";
+import CreateEmailField from "../components/CreateGraduateEmailField";
 import AssignGraduate from "../components/HRManage/AssignGraduate";
 import AssignManager from "../components/HRManage/AssignManager";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
@@ -321,7 +321,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         >
           Type the graduate email(s) to create their account
         </label>
-        <CreateGraduateEmailField />
+        <CreateEmailField createEmailFor="Graduates"/>
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
@@ -360,34 +360,12 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         >
           Type the managers email(s) to create their account
         </label>
-        <textarea
-          id="message"
-          rows={4}
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="manager1@barclays.com, manager2@barclays.com, ..."
-        ></textarea>
-        <div className="py-8">
-          <button
-            type="button"
-            className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-          >
-            Create
-          </button>
-        </div>
-
+        <CreateEmailField createEmailFor="Managers"/>
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Managers
             <ManagerListTable managerList={managerList.map((manager) => manager.email)} />
           </div>
-        </div>
-        <div className="py-8">
-          <button
-            type="button"
-            className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-          >
-            Save
-          </button>
         </div>
       </div>
     );
