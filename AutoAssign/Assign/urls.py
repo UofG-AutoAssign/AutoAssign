@@ -19,6 +19,7 @@ urlpatterns = [
     path('home/hr/CreateTeam/', views.CreateTeamView.as_view(), name="CreateTeam"),
     path('home/hr/TeamView/', views.AllTeamView.as_view(), name="AllTeam"),
     path('home/hr/GradView/', views.AllGradView.as_view(), name="AllGrad"),
+    path('home/hr/AllYearTwoGrad/', views. AllYearTwoGrad.as_view(), name="AllYearTwoGrad"),
     path('home/hr/UnGradView/', views.AllUnGradView.as_view(), name="AllUnAssignGrad"),
     path('home/hr/UnManView/', views.AllUnManView.as_view(), name="AllUnAssignMan"),
     path('home/hr/DeleteGrad/', views.DeleteGrad.as_view(), name="DeleteGrad"),
@@ -33,5 +34,6 @@ urlpatterns = [
     path('home/hr/DeleteYearTwo/', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
     path('home/skill/', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword/', views.ChangePassword.as_view(), name="ChangePassWord"),
+
 
 ]
