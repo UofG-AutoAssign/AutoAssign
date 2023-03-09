@@ -23,67 +23,72 @@ const App: FC = observer(() => {
         <Navbar />
       </nav> */}
       <div className="page-background dark:bg-gray-800 overflow-y-auto">
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="graduate" element={<GraduatePage />} />
-            <Route path="graduate/team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
-            <Route path="graduate/team/view_team" element={<GraduateTeamPage initialComponent="Your Team"/>} />
-            <Route path="graduate/team/preference_form" element={<GraduateTeamPage initialComponent="Preference Form"/>} />
-            <Route path="account" element={<AccountPage />} />
-            <Route path="hr" element={<HRHomePage />} />
-            <Route
-              path="hr/manage/"
-              element={<HRManagePage initialState={"Teams"} />}
-            />
-            <Route
-              path="hr/manage/manage_team"
-              element={<HRManagePage initialState={"Teams"} />}
-            />
-            <Route
-              path="hr/manage/delete_team"
-              element={<HRManagePage initialState={"Delete Team"} />}
-            />
-            <Route
-              path="hr/manage/assign_graduate"
-              element={<HRManagePage initialState={"Assign Graduate"} />}
-            />
-            <Route
-              path="hr/manage/remove_graduate"
-              element={<HRManagePage initialState={"Remove Graduate"} />}
-            />
-            <Route
-              path="hr/manage/assign_manager"
-              element={<HRManagePage initialState={"Assign Manager"} />}
-            />
-            <Route
-              path="hr/manage/remove_manager"
-              element={<HRManagePage initialState={"Remove Manager"} />}
-            />
-            <Route
-              path="hr/manage/create_graduate_account"
-              element={<HRManagePage initialState={"Create Graduate Account"} />}
-            />
-            <Route
-              path="hr/manage/create_manager_account"
-              element={<HRManagePage initialState={"Create Manager Account"} />}
-            />
-            <Route path="manager" element={<ManagerPage />} />
-            <Route
-              path="manager/team/"
-              element={<ManagerTeamPage initialState={"Your Team"} />}
-            />
-            <Route
-              path="manager/team/view_team"
-              element={<ManagerTeamPage initialState={"Your Team"} />}
-            />
-            <Route
-              path="manager/team/team_preference"
-              element={<ManagerTeamPage initialState={"Team Preference"} />}
-            />
-            <Route path="forgot_password" element={<ForgotPassPage />} />
-            <Route path="/sign_up" element={<SignUpPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="graduate" element={<GraduatePage />} />
+          <Route path="graduate/team" element={<GraduateTeamPage initialComponent="Your Team" />} />
+          <Route path="graduate/team/view_team" element={<GraduateTeamPage initialComponent="Your Team" />} />
+          <Route path="graduate/team/preference_form" element={<GraduateTeamPage initialComponent="Preference Form" />} />
+          <Route path="account" element={<AccountPage />} />
+          <Route path="hr" element={<HRHomePage />} />
+          <Route
+            path="hr/manage/"
+            element={<HRManagePage initialState={"Teams"} />}
+          />
+          <Route
+            path="hr/manage/manage_team"
+            element={<HRManagePage initialState={"Teams"} />}
+          />
+          <Route
+            path="hr/manage/delete_team"
+            element={<HRManagePage initialState={"Delete Team"} />}
+          />
+          <Route
+            path="hr/manage/assign_graduate"
+            element={<HRManagePage initialState={"Assign Graduate"} />}
+          />
+          <Route
+            path="hr/manage/remove_graduate"
+            element={<HRManagePage initialState={"Remove Graduate"} />}
+          />
+          <Route
+            path="hr/manage/assign_manager"
+            element={<HRManagePage initialState={"Assign Manager"} />}
+          />
+          <Route
+            path="hr/manage/remove_manager"
+            element={<HRManagePage initialState={"Remove Manager"} />}
+          />
+          <Route
+            path="hr/manage/create_graduate_account"
+            element={<HRManagePage initialState={"Create Graduate Account"} />}
+          />
+          <Route
+            path="hr/manage/create_manager_account"
+            element={<HRManagePage initialState={"Create Manager Account"} />}
+          />
+          <Route
+            path="hr/manage/auto_assign"
+            element={<HRManagePage initialState={"Auto Assign"} />}
+          />
+
+          <Route path="manager" element={<ManagerPage />} />
+          <Route
+            path="manager/team/"
+            element={<ManagerTeamPage initialState={"Your Team"} />}
+          />
+          <Route
+            path="manager/team/view_team"
+            element={<ManagerTeamPage initialState={"Your Team"} />}
+          />
+          <Route
+            path="manager/team/team_preference"
+            element={<ManagerTeamPage initialState={"Team Preference"} />}
+          />
+          <Route path="forgot_password" element={<ForgotPassPage />} />
+          <Route path="/sign_up" element={<SignUpPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </div>
     </div>
   );
