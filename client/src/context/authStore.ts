@@ -29,17 +29,17 @@ class AuthStore {
   constructor() {
     makeAutoObservable(this);
 
-    const storedUsername = localStorage.getItem("username");
+    const storedUsername = sessionStorage.getItem("username");
     if (storedUsername !== null) {
       this.username = storedUsername;
     }
 
-    const storedUserType = localStorage.getItem("userType");
+    const storedUserType = sessionStorage.getItem("userType");
     if (storedUserType !== null) {
       this.userType = storedUserType;
     }
 
-    const storedAuthToken = localStorage.getItem("authToken");
+    const storedAuthToken = sessionStorage.getItem("authToken");
     if (storedAuthToken !== null) {
       this.authToken = storedAuthToken
     }
@@ -78,8 +78,8 @@ class AuthStore {
       
       this.setAuthToken(data.token);
       this.setUserType(correctedUserType);
-      localStorage.setItem("authToken", data.token);
-      localStorage.setItem("userType", correctedUserType);
+      sessionStorage.setItem("authToken", data.token);
+      sessionStorage.setItem("userType", correctedUserType);
 
       return correctedUserType;
 

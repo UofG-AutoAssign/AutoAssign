@@ -20,15 +20,18 @@ const AccountPage: FC = () => {
 
   // Conditionally display the component depending on the active tab
   const displayComponent = (): JSX.Element => {
+    const data = [
+      `Firstname: ${userFirstName}`,
+      `Surname: ${userLastName}`,
+      `Email: ${userEmail}`,      
+    ]
+
+    if (userYear) data.push(`Year: ${userYear}`);
+
     if (currentTab === "Settings")
       return (
         <AccountTable
-          data={[
-            `Firstname: ${userFirstName}`,
-            `Surname: ${userLastName}`,
-            `Email: ${userEmail}`,
-            `Year: ${userYear}`,
-          ]}
+          data={data}
         />
       );
     else {
@@ -84,9 +87,9 @@ const AccountPage: FC = () => {
           toast.success("Password sucessfully changed!");
 
           setTimeout(() => {
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("userType");
-            localStorage.removeItem("username");
+            sessionStorage.removeItem("authToken");
+            sessionStorage.removeItem("userType");
+            sessionStorage.removeItem("username");
             routerNavigator("/");
           }, 1000);
 
@@ -238,7 +241,7 @@ const AccountPage: FC = () => {
         .then((response) => {
           const data = response.data.data;
 
-          localStorage.setItem("username", data.first_name);
+          sessionStorage.setItem("username", data.first_name);
           setUserFirstName(data.first_name);
           setUserLastName(data.second_name);
           setUserEmail(data.email);
