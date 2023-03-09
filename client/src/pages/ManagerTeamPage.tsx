@@ -117,17 +117,17 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     rowId: string;
   }): JSX.Element => {
     const handleSelectChange = (
-      value: any,
+      value: typeof selectedTechnology,
       property: string,
       rowId: number
-    ) => {
-      setSelectedData((prevData) => ({
-        ...prevData,
-        [rowId]: {
-          ...prevData[rowId],
-          [property]: value,
-        },
-      }));
+    ) => {      
+      let newData = {...selectedData, 
+      [rowId]: {
+        value: value.value,
+        label: value.label
+      }
+    };
+      setSelectedData(newData);
     };
 
     return (
@@ -135,7 +135,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         className="min-w-[200px] relative w-full h-10 text-black"
         value={selectedTechnology}
         onChange={(value) => {
-          handleSelectChange(value, "selectedTechnology", Number(rowId));
+          handleSelectChange(value as typeof selectedTechnology, "selectedTechnology", Number(rowId));
         }}
         options={allSkills}
       />
@@ -186,8 +186,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           <button
             type="button"
             className="mb-10 hover:scale-110 transition-all duration-150 my-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            // onClick={() => addItem()}
-            onClick={() => toast.success("YOOO")}
+            onClick={() => addItem()}
           >
             Add New Row
           </button>
@@ -237,6 +236,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   }, [location]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
+    if (Object.keys(selectedData).length === 0) {
+      toast.error("At least 1 technology is required")
+      return false;
+    }
+
     const sliderValueMap: {
       [key: string]: number;
     } = {
@@ -247,12 +251,24 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       "100": 1,
     };
 
-    // @Todo replace this with real data
+    const skill: number[] = []
+
+    Object.keys(selectedData).forEach((rowId) => {
+      const value = selectedData[Number(rowId)].value;
+    
+      if (value === 0 || skill.includes(value)) return;
+    
+      skill.push(value);
+    });
+
+    console.log(skill)
+
+    // @Todo fix this (still 403)
     const { data } = await axios.put(
       `${environmentalVariables.backend}home/man/Team/UpdateSetting/`,
       {
         ratio: sliderValueMap[sliderValue],
-        skill: [7, 9, 16],
+        skill
       },
       {
         headers: {
@@ -260,11 +276,13 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         },
       }
     );
+    console.log(data);
+    
 
     if (data.status === true) {
       toast.success("Data successfully delivered!")
     } else {
-      toast.error("Data failed to be delivered!")
+      toast.error(`Data failed to be delivered! ${data.detail.skill}`)
     }
 
     return data.status;
@@ -357,10 +375,6 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       getSubordinateInfo();
       getTeamPreferenceInfo();
       getAllSkills();
-
-      // setInterval(() => {
-      //   console.log(selectedData);
-      // }, 1000);
     }
 
     return () => {
