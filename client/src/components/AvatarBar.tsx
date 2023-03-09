@@ -6,7 +6,7 @@ const AvatarBar: FC<{ firstName: string, lastName: string }> = ({ firstName, las
     <div className="w-full flex flex-col md:flex-row md:justify-center gap-5 p-5 align-middle">
       <div className="avatar placeholder">
         <Avatar
-          name="Johny Johnson"
+          name={`${firstName} ${lastName}`}
           size={"100"}
           round={true}
           textMarginRatio={0.15}
