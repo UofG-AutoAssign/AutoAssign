@@ -899,3 +899,21 @@ class AllDepartmentView(APIView):
         context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
+
+
+class DeleteDepartment(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data = request.data
+        dep_id = data['dep_id']
+
+        dep_obj = models.Department.objects.filter(id=dep_id).first()
+
+        context = {"code": 403, "status": False, "detail": "Fail to delete"}
+
+        if dep_obj:
+            dep_obj.delete()
+            context = {"code": 200, "status": True, "detail": "Has been deleted"}
+
+        return Response(context)
