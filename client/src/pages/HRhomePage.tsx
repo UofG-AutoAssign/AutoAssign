@@ -19,6 +19,13 @@ const HRHomePage: FC = () => {
       initialState: "Teams",
     },
     {
+      title: "Delete Team",
+      desc: "Delete teams",
+      btn_color: "bg-orange-300",
+      link: "hr/manage/delete_team",
+      initialState: "Delete Team",
+    },
+    {
       title: "Remove Graduates",
       desc: "Remove graduate profiles from the app",
       btn_color: "bg-btnColor2",
