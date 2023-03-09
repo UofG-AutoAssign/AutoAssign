@@ -89,11 +89,11 @@ const RemoveGraduate: FC<{
       query === ""
         ? allGradList
         : allGradList.filter((grad) =>
-            grad.email
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
+          grad.email
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
 
     return (
       <div className="relative min-w-[72px] w-full z-50">
@@ -126,8 +126,7 @@ const RemoveGraduate: FC<{
                     <Combobox.Option
                       key={grad.id}
                       className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-blue-600 text-white" : "text-gray-900"
                         }`
                       }
                       value={grad}
@@ -135,17 +134,15 @@ const RemoveGraduate: FC<{
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
+                            className={`block truncate ${selected ? "font-medium" : "font-normal"
+                              }`}
                           >
                             {grad.email}
                           </span>
                           {selected ? (
                             <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
+                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-blue-600"
+                                }`}
                             >
                               ✅
                             </span>
@@ -174,8 +171,8 @@ const RemoveGraduate: FC<{
       query === ""
         ? graduateList
         : graduateList.filter((graduateName) => {
-            return graduateName.toLowerCase().includes(query.toLowerCase());
-          });
+          return graduateName.toLowerCase().includes(query.toLowerCase());
+        });
 
     return (
       <div className="bg-white dark:bg-gray-800 overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -238,12 +235,12 @@ const RemoveGraduate: FC<{
     if (effectRanOnFirstLoad.current === false) {
       getAllYearTwoGradList();
     }
-  
+
     return () => {
       effectRanOnFirstLoad.current = true;
     }
   }, [])
-  
+
 
   return (
     <div className="w-3/4 pr-5">
@@ -274,11 +271,11 @@ const RemoveGraduate: FC<{
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            <RemoveGraduateModal handleRemoveGrad={handleRemoveGrad}/>
+            <RemoveGraduateModal handleRemoveGrad={handleRemoveGrad} />
 
             <div className="my-5 p-5 w-full border-2 border-red-800 bg-red-500 bg-opacity-50 basis-1/2 rounded-3xl flex flex-col justify-center shadow-lg py-5">
               <div className="hi-text dark:text-white text-xl mb-5">All Year 2 Graduates</div>
-              <GraduateTable graduateList={allYearTwoGrads.map((grad) => `${grad.first_name} ${grad.second_name}`)}/>
+              <GraduateTable graduateList={allYearTwoGrads.map((grad) => `${grad.first_name} ${grad.second_name}`)} />
               <button
                 onClick={() => handleRemoveAllYearTwoGrads()}
                 type="button"

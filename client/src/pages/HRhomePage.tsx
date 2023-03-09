@@ -8,7 +8,7 @@ import LandingButtonModal from "../components/LandingButtonModal";
 import authStore from "../context/authStore";
 
 const HRHomePage: FC = () => {
-  
+
   // Used for the Landing buttons for the following pages
   const data: LandingButtonLinkProps[] = [
     {
@@ -67,8 +67,15 @@ const HRHomePage: FC = () => {
       link: "hr/manage/create_manager_account",
       initialState: "Teams",
     },
+    {
+      title: "Auto Assign",
+      desc: "Automatically assign graduates to teams based on their form responses",
+      btn_color: "bg-btnColor6",
+      link: "hr/manage/auto_assign",
+      initialState: "Teams",
+    },
   ];
-  
+
   //Displays the Auto Assign Pop-up to for HR to assign all teams using the algorithm
   const assignGradModalId: string = "assign-grad";
 
@@ -191,15 +198,6 @@ const HRHomePage: FC = () => {
               />
             );
           })}
-          
-          {/* Auto Assign button to display the pop-up within the HR home page */}
-          <LandingButtonModal
-            title="Auto Assign"
-            btn_color="bg-btnColor6"
-            desc="Remove manager profiles from the app"
-            modal={AssignGradModal()}
-            modalId={assignGradModalId}
-          />
         </div>
       </div>
     </div>
