@@ -6,7 +6,7 @@ import { ItemInterface } from "../constants/Interfaces";
 import { initialComponentManager } from "../constants/Types";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import authStore, { returnType } from "../context/authStore";
+import authStore from "../context/authStore";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { selectedDataType } from "../components/PreferenceFormTable";
@@ -116,7 +116,6 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     };
     rowId: string;
   }): JSX.Element => {
-    
     const handleSelectChange = (
       value: any,
       property: string,
@@ -126,7 +125,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         ...prevData,
         [rowId]: {
           ...prevData[rowId],
-          [property]: value
+          [property]: value,
         },
       }));
     };
@@ -135,10 +134,9 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       <Select
         className="min-w-[200px] relative w-full h-10 text-black"
         value={selectedTechnology}
-        onChange={(value) => {          
-          handleSelectChange(value, "selectedTechnology", Number(rowId))
-        }
-      }
+        onChange={(value) => {
+          handleSelectChange(value, "selectedTechnology", Number(rowId));
+        }}
         options={allSkills}
       />
     );
@@ -208,7 +206,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           min="0"
           max="100"
           step="25"
-          defaultValue={sliderValue}
+          defaultValue={Number(sliderValue)}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         ></input>
         <div className="flex flex-col justify-between w-full px-2 text-xs bg-white dark:bg-gray-800">
@@ -254,7 +252,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       `${environmentalVariables.backend}home/man/Team/UpdateSetting/`,
       {
         ratio: sliderValueMap[sliderValue],
-        skill: [1, 7, 12, 5],
+        skill: [7, 9, 16],
       },
       {
         headers: {
@@ -263,7 +261,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       }
     );
 
-    console.log(data);
+    if (data.status === true) {
+      toast.success("Data successfully delivered!")
+    } else {
+      toast.error("Data failed to be delivered!")
+    }
 
     return data.status;
   };
@@ -279,7 +281,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         })
         .then((response) => {
           const subordinateList = response.data.data;
-          
+
           let newSubordinateList: any[] = [];
 
           subordinateList.forEach((member: any) => {
@@ -308,26 +310,24 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
           if (ratio !== null) {
             if (ratio === 0) setSliderValue("0");
-            if (ratio === 1) setSliderValue("25");
-            if (ratio === 2) setSliderValue("50");
-            if (ratio === 3) setSliderValue("75");
-            if (ratio === 4) setSliderValue("100");
+            if (ratio === 0.25) setSliderValue("25");
+            if (ratio === 0.5) setSliderValue("50");
+            if (ratio === 0.75) setSliderValue("75");
+            if (ratio === 1) setSliderValue("100");
           }
 
-          console.log(skill_information);
+          console.log(skill_information, ratio);
 
           // @Todo fix this
           skill_information.forEach(
-            ({ Form_id, Skill_id, skill_name }: any, idx: number) => {
+            ({ Form_id, skill_id, skill_name }: any, idx: number) => {
               setSelectedData((prevSelectedData) => ({
                 ...prevSelectedData,
-                [curRowId]: {
-                  value: Skill_id,
+                [idx]: {
+                  value: skill_id,
                   label: skill_name,
                 },
               }));
-
-              setCurRowId((prevRowId) => prevRowId + 1);
             }
           );
         });
@@ -357,6 +357,10 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       getSubordinateInfo();
       getTeamPreferenceInfo();
       getAllSkills();
+
+      // setInterval(() => {
+      //   console.log(selectedData);
+      // }, 1000);
     }
 
     return () => {
@@ -380,7 +384,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
               type="button"
               className="my-4 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
               onClick={() => {
-                handleTeamPreferenceSave()
+                handleTeamPreferenceSave();
               }}
             >
               Save
