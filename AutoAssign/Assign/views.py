@@ -864,3 +864,26 @@ class AllYearTwoGrad(APIView):
         context = {"code": 200, "status": True, "data": ser.data}
 
         return Response(context)
+
+
+class CrateTeam(APIView):
+    permission_classes = [HrPermission, ]
+
+    def post(self, request):
+        data_list = request.data
+        for data in data_list:
+            capacity = data["num_positions"]
+
+            if 7 < capacity < 1:
+                return Response({"code": 403, "status": False, 'error': "Please Check Capacity "})
+
+        ser = serializers.CreateNewTeamSerializer(data=request.data, many=True)
+
+        if ser.is_valid():
+            ser.save()
+
+            context = {"code": 200, "status": True, "data": ser.data}
+            return Response(context)
+
+        return Response({"code": 403, "status": False, 'error': ser.errors})
+

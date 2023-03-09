@@ -357,3 +357,16 @@ class CheckPasswordFormat(serializers.Serializer):
         lambda value: len(value) <= 64
                       or serializers.ValidationError("The password format is incorrect")
     ])
+
+
+class CreateNewTeamSerializer(serializers.ModelSerializer):
+    """
+        Check that the data used to create the Team is formatted
+    """
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "depart_id", "num_positions"]
+        extra_kwargs = {
+            "team_name": {"max_length": 100, "write_only": True},
+        }
