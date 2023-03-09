@@ -20,15 +20,18 @@ const AccountPage: FC = () => {
 
   // Conditionally display the component depending on the active tab
   const displayComponent = (): JSX.Element => {
+    const data = [
+      `Firstname: ${userFirstName}`,
+      `Surname: ${userLastName}`,
+      `Email: ${userEmail}`,      
+    ]
+
+    if (userYear) data.push(`Year: ${userYear}`);
+
     if (currentTab === "Settings")
       return (
         <AccountTable
-          data={[
-            `Firstname: ${userFirstName}`,
-            `Surname: ${userLastName}`,
-            `Email: ${userEmail}`,
-            `Year: ${userYear}`,
-          ]}
+          data={data}
         />
       );
     else {
