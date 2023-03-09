@@ -87,9 +87,9 @@ const AccountPage: FC = () => {
           toast.success("Password sucessfully changed!");
 
           setTimeout(() => {
-            localStorage.removeItem("authToken");
-            localStorage.removeItem("userType");
-            localStorage.removeItem("username");
+            sessionStorage.removeItem("authToken");
+            sessionStorage.removeItem("userType");
+            sessionStorage.removeItem("username");
             routerNavigator("/");
           }, 1000);
 
@@ -241,7 +241,7 @@ const AccountPage: FC = () => {
         .then((response) => {
           const data = response.data.data;
 
-          localStorage.setItem("username", data.first_name);
+          sessionStorage.setItem("username", data.first_name);
           setUserFirstName(data.first_name);
           setUserLastName(data.second_name);
           setUserEmail(data.email);

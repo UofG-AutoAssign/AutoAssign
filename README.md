@@ -51,9 +51,11 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
 - ``` python3 manage.py makemigrations ```  
 - ``` python3 manage.py migrate ```
+- ``` python3 populate.py ```
 
 #### React
 3) Setup React react using: ``` npm install``` inside [client](client/)
+4) Start frontend: ```npm run dev```
 
 
 ## Usage

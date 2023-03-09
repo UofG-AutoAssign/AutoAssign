@@ -64,9 +64,9 @@ const Navbar: FC<{
           {hideLogoutButton === true ? null : (
             <button
               onClick={() => {
-                localStorage.removeItem("authToken");
-                localStorage.removeItem("userType");
-                localStorage.removeItem("username");
+                sessionStorage.removeItem("authToken");
+                sessionStorage.removeItem("userType");
+                sessionStorage.removeItem("username");
                 routerNavigator("/");
               }}
               className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-auto"
