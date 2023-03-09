@@ -14,9 +14,11 @@ import themeStore from "./context/themeStore";
 import SignUpPage from "./pages/SignUpPage";
 import HRHomePage from "./pages/HRhomePage";
 import { observer } from "mobx-react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import RequireAuth from "./components/RequireAuth";
 
 const App: FC = observer(() => {
-  // Implement routing later
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
       {/* <nav className="sticky top-0 z-50">

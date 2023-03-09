@@ -1,6 +1,6 @@
 import { useEffect, FC } from "react";
 import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { RiReactjsFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
@@ -11,7 +11,8 @@ const Navbar: FC<{
   hideLogoutButton?: boolean;
   hideAccountButton?: boolean;
 }> = ({ hideLogoutButton, hideAccountButton }) => {
-  const routerNavigator = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const BackButton = (): JSX.Element => {
     return (
@@ -19,7 +20,7 @@ const Navbar: FC<{
         <div className="tooltip tooltip-bottom" data-tip="Go Back">
           <IoIosArrowBack
             className="text-3xl hover:scale-125"
-            onClick={() => routerNavigator(-1)}
+            onClick={() => navigate(-1)}
           />
         </div>
       </>
@@ -42,6 +43,14 @@ const Navbar: FC<{
     );
   };
 
+  const goBackToLandingPage = () => {
+    const query = location.pathname.split("/").at(1)?.toLowerCase();
+    console.log(query);
+    
+    if (query) navigate(`/${query}`);
+
+  }
+
   useEffect(() => {
     return () => {};
   }, []);
@@ -52,7 +61,7 @@ const Navbar: FC<{
         <div className="gap-5 scale-90 sm:scale-100">
           <BackButton />
           <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200" />
-          <div className="btn btn-ghost normal-case text-xl">AutoAssign</div>
+          <div onClick={() => goBackToLandingPage()} className="btn btn-ghost normal-case text-xl">AutoAssign</div>
         </div>
         <div className="gap-10 text-3xl">
           <ThemeToggleButton />
@@ -67,7 +76,7 @@ const Navbar: FC<{
                 sessionStorage.removeItem("authToken");
                 sessionStorage.removeItem("userType");
                 sessionStorage.removeItem("username");
-                routerNavigator("/");
+                navigate("/");
               }}
               className="btn normal-case bg-blue-600 btn-outline dark:bg-red-500 border-0 text-white rounded-xl w-auto"
             >
