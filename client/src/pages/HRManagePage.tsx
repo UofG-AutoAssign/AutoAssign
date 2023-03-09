@@ -1,5 +1,6 @@
+import { Transition, Dialog } from "@headlessui/react";
 import axios from "axios";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CreateEmailField from "../components/CreateGraduateEmailField";
@@ -8,10 +9,13 @@ import AssignManager from "../components/HRManage/AssignManager";
 import DeleteTeam from "../components/HRManage/DeleteTeam";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
+import UnassignedGraduateTable from "../components/HRManage/UnassignedGraduatesTable";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
 import { initialComponentHR } from "../constants/Types";
 import authStore from "../context/authStore";
+
 
 export type gradType = {
   id: number;
@@ -198,8 +202,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? gradList
         : gradList.filter((gradName) => {
-            return gradName.toLowerCase().includes(query.toLowerCase());
-          });
+          return gradName.toLowerCase().includes(query.toLowerCase());
+        });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -268,8 +272,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? managerList
         : managerList.filter((managerName) => {
-            return managerName.toLowerCase().includes(query.toLowerCase());
-          });
+          return managerName.toLowerCase().includes(query.toLowerCase());
+        });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -322,7 +326,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         >
           Type the graduate email(s) to create their account
         </label>
-        <CreateEmailField createEmailFor="Graduates"/>
+        <CreateEmailField createEmailFor="Graduates" />
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
@@ -361,7 +365,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         >
           Type the managers email(s) to create their account
         </label>
-        <CreateEmailField createEmailFor="Managers"/>
+        <CreateEmailField createEmailFor="Managers" />
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Managers
@@ -372,12 +376,166 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
+  const AutoAssign = (): JSX.Element => {
+
+    const [gradsCreated, setGradsCreated] = useState<number>(10);
+    const [teamCapacity, setTeamCapacity] = useState<number>(2);
+
+    let [isOpen, setIsOpen] = useState(false)
+
+    function closeModal() {
+      setIsOpen(false)
+    }
+
+    function openModal() {
+      setIsOpen(true)
+    }
+
+    const handleAutoAssign = async (): Promise<boolean> => {
+      try {
+
+        if (teamCapacity < gradsCreated) {
+          toast.warning("Not enough capacity")
+          return false;
+        }
+        // @Todo run assignment algorithm
+        const { data } = await axios.post(
+          `${environmentalVariables.backend}home/hr/REPLACE_LATER`,
+          {
+            headers: {
+              AUTHORIZATION: authStore.authToken,
+            },
+          }
+        );
+        console.log(data);
+
+        if (data.status === true) {
+          toast.success("Teams successfully assigned!");
+          return true;
+        } else {
+          toast.error(`Failed assign graduates: ${data.status}`);
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(`Failed to send request`);
+        return false;
+      }
+    };
+
+    return (
+      <div className="w-3/4 pr-5 flex flex-col items-center">
+        <div className="py-8 flex flex-row justify-between">
+          <div className="flex flex-col  w-96">
+            <label
+              htmlFor="Total Team Capacity : "
+              className="w-full block mb-2 text-gray-900 dark:text-white"
+            >
+              Total Grads Created : {gradsCreated}
+            </label>
+
+            <label
+              htmlFor="Total Team Capacity : "
+              className="w-full block mb-2 text-gray-900 dark:text-white"
+            >
+              Total Team Capacity : {teamCapacity}
+            </label>
+          </div>
+          <div className="flex flex-col w-96">
+            <button
+              type="button"
+              //htmlFor={confirmGraduateToTeamModalId2}
+              onClick={openModal}
+              className={`text-white ${teamCapacity >= gradsCreated ? 'bg-green-500' : 'bg-red-500'} ${teamCapacity >= gradsCreated ? 'hover:bg-green-800' : 'hover:bg-red-800'} focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
+            //disabled={teamCapacity >= gradsCreated ? false : true}
+            >
+              AUTO ASSIGN
+
+            </button>
+            {/* <AutoAssignModal handleAutoAssign={handleAutoAssign} /> */}
+            <label className="break-words text-center dark:text-white" >{teamCapacity >= gradsCreated ? 'Ready To assign' : 'Warning! team capacity is too low, graduates will be left unassigned'} </label>
+
+          </div>
+          <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium leading-6 text-gray-900"
+                      >
+                        Assign Teams?
+                      </Dialog.Title>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                          {teamCapacity >= gradsCreated ? 'Are you sure you want to assign teams? This action can not be reversed.' : 'team capacity is too low, some graduates will be left unassigned.  This action cannot be undone'}
+
+                        </p>
+                      </div>
+
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          className={`inline-flex justify-center rounded-md border border-transparent  ${teamCapacity >= gradsCreated ? "bg-blue-600" : "bg-red-500"}  px-4 py-2 text-sm font-medium text-white ${teamCapacity >= gradsCreated ? "hover:bg-blue-200" : "hover:bg-red-800"} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
+                          onClick={() => {
+                            handleAutoAssign();
+                            setIsOpen(false);
+                          }}
+                        >
+                          {teamCapacity >= gradsCreated ? "Assign Teams" : "Assign Anyway"}
+                        </button>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
+        </div>
+        <div className="flex flex-col lg:flex-row gap-5 px-10">
+          <div>
+            Unassigned Graduates
+            <UnassignedGraduateTable graduateList={yearOneGrads} />
+          </div>
+          <div>
+            Unassigned Managers
+            <ManagerListTable managerList={managerList.map((manager) => manager.email)} />
+          </div>
+        </div>
+
+      </div >
+
+    );
+  };
+
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
       return <TeamTable />;
     }
     if (currentTab === "Delete Team") {
-      return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList}/>;
+      return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList} />;
     }
     if (currentTab === "Assign Graduate") {
       return (
@@ -407,6 +565,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     if (currentTab === "Create Manager Account") {
       return <CreateManagerAccount />;
     }
+    if (currentTab === "Auto Assign") {
+      return <AutoAssign />;
+    }
     return <div>This component shouldn't be returned 💀</div>;
   };
 
@@ -426,9 +587,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setCurrentTab("Create Graduate Account");
     else if (query === "create_manager_account")
       setCurrentTab("Create Manager Account");
+    else if (query === "auto_assign")
+      setCurrentTab("Auto Assign");
     else setCurrentTab("Teams");
 
-    () => {};
+    () => { };
   }, [location]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
@@ -484,6 +647,53 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setManagerList(fetchedManagerList);
     };
 
+    const getUnassignedGraduatesList = async () => {
+      // @Todo use a real endpoint !
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/GradView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedUnassignedGradList = data.data;
+      console.log(fetchedUnassignedGradList);
+      setAllGradList(fetchedUnassignedGradList);
+    };
+
+    const getAllUnassignedManagersList = async () => {
+      // @Todo use a real endpoint !
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/GradView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedUnassignedManagersList = data.data;
+      console.log(fetchedUnassignedManagersList);
+      setAllGradList(fetchedUnassignedManagersList);
+    };
+
+    const getTeamSizes = async () => {
+      // @Todo use a real endpoint !
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/GradView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedTeamSizes = data.data;
+      console.log(fetchedTeamSizes);
+      setAllGradList(fetchedTeamSizes);
+    };
 
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
@@ -561,6 +771,14 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Create Manager Account
+          </button>
+
+          <button
+            onClick={() => navigate("/hr/manage/auto_assign")}
+            type="button"
+            className="w-full border-white border-b-2 rounded-br-2xl text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+          >
+            AutoAssign
           </button>
         </div>
         <DisplayComponent />
