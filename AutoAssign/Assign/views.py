@@ -620,10 +620,11 @@ class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        check_num = not request.data['check_num']
+        check_num = request.data['check_num']
 
         if check_num != 1:
             context = {"code": 200, "status": False, "detail": "Fail to delete"}
+
             return Response(context)
 
         grad_obj = models.Graduate.objects.filter(year=2).all()
@@ -639,14 +640,27 @@ class ChangeGraduateYear(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        ser = serializers.ChangeGraduateYear(data=request.data, many=True)
 
-        if ser.is_valid():
-            ser.save()
-            return Response({"code": 200, "status": True,
-                             "detail": "Has been Changed", "data": ser.data})
+        data = request.data
 
-        return Response({"code": 403, "status": False, "detail": "Fail to delete"})
+        for grad in data:
+            grad_id = grad["grad_id"]
+            grad_year = grad["year"]
+            grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+            if grad_year < 1 or grad_year > 2:
+                return Response({"code": 403, "status": False, "detail": "Please Check year"})
+            if not grad_obj:
+                return Response({"code": 403, "status": False, "detail": "grad_id wrong"})
+
+        for grad in data:
+            grad_id = grad["grad_id"]
+            grad_year = grad["year"]
+            grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+
+            grad_obj.year = grad_year
+            grad_obj.save()
+
+        return Response({"code": 403, "status": False, "detail": "Has been Changed "})
 
 
 class BatchRegister(APIView):
@@ -695,7 +709,7 @@ class BatchRegister(APIView):
             register_url = '127.0.0.1:5173/sign_up/' + token
 
             send_mail(
-                subject='Registration link',
+                subject='Registration link from AutoAssign',
                 message='Here is your Register link : ' + register_url,
                 from_email='wenda76629@vip.163.com',
                 recipient_list=[email],
@@ -745,7 +759,7 @@ class ResetPasswordByEmail(APIView):
         register_url = '127.0.0.1:5173/forget_password/' + token
 
         send_mail(
-            subject='Registration link',
+            subject='Registration link from AutoAssign',
             message='Here is your Register link : ' + register_url,
             from_email='wenda76629@vip.163.com',
             recipient_list=[email],

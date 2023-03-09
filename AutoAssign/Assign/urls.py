@@ -23,6 +23,7 @@ urlpatterns = [
     path('home/hr/UnGradView/', views.AllUnGradView.as_view(), name="AllUnAssignGrad"),
     path('home/hr/UnManView/', views.AllUnManView.as_view(), name="AllUnAssignMan"),
     path('home/hr/DeleteGrad/', views.DeleteGrad.as_view(), name="DeleteGrad"),
+    path('home/hr/ChangeGraduateYear/', views.ChangeGraduateYear.as_view(), name="ChangeGraduateYear"),
     path('home/hr/ManView/', views.AllManView.as_view(), name="AllMan"),
     path('home/hr/DeleteMan/', views.DeleteMan.as_view(), name="DeleteManger"),
     path('home/hr/AssignGrad/', views.AssignGradToTeam.as_view(), name="AssignGrad"),
