@@ -8,6 +8,7 @@ export type initialComponentHR =
   | "Assign Manager"
   | "Remove Manager"
   | "Create Graduate Account"
-  | "Create Manager Account";
+  | "Create Manager Account"
+  | "Auto Assign";
 
 export type initialComponentManager = "Your Team" | "Team Preference";
