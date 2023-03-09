@@ -887,3 +887,15 @@ class CrateTeam(APIView):
 
         return Response({"code": 403, "status": False, 'error': ser.errors})
 
+
+class AllDepartmentView(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        dep_obj = models.Department.objects.filter().all()
+
+        ser = serializers.AllDepSerializer(instance=dep_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)

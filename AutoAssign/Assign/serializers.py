@@ -261,6 +261,16 @@ class AllManSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "first_name", "second_name"]
 
 
+class AllDepSerializer(serializers.ModelSerializer):
+    """
+       Serializes the output of all Department information
+    """
+
+    class Meta:
+        model = models.Department
+        fields = ["id", "depart_name"]
+
+
 class AssignGraduate(serializers.ModelSerializer):
     """
        Assign Gradute into Team

@@ -19,6 +19,7 @@ urlpatterns = [
     path('home/hr/CreateTeam/', views.CrateTeam.as_view(), name="CreateTeam"),
     path('home/hr/TeamView/', views.AllTeamView.as_view(), name="AllTeam"),
     path('home/hr/GradView/', views.AllGradView.as_view(), name="AllGrad"),
+    path('home/hr/DepartmentView/', views.AllDepartmentView.as_view(), name="Department"),
     path('home/hr/AllYearTwoGrad/', views. AllYearTwoGrad.as_view(), name="AllYearTwoGrad"),
     path('home/hr/UnGradView/', views.AllUnGradView.as_view(), name="AllUnAssignGrad"),
     path('home/hr/UnManView/', views.AllUnManView.as_view(), name="AllUnAssignMan"),
