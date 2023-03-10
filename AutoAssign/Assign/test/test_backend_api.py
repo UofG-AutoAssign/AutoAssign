@@ -179,7 +179,7 @@ class testGraduateApi(APITestCase):
 
         self.assertEqual(new_response.data, validate_data)
 
-        # Test Update Form (Correct)
+        # Test Update Form (Correct Case)
         body = {"username": "Graduate@email.com", "password": "123456"}
 
         response = self.client.post("", body, format="json")
@@ -200,7 +200,7 @@ class testGraduateApi(APITestCase):
 
         self.assertEqual(new_response.data, validate_data)
 
-        # Test Update Form (Wrong)
+        # Test Update Form (Wrong Case)
 
         update_information = [{"interest": 1, "experience": 1, "skill_id": 3, "graduate": 1},
                               {"interest": 2, "experience": 1, "skill_id": 4, "graduate": 1},
@@ -218,7 +218,7 @@ class testGraduateApi(APITestCase):
         self.assertEqual(new_response.data['status'], validate_data['status'])
         self.assertEqual(new_response.data['error'], validate_data['error'])
 
-        # Change Password (Correct)
+        # Change Password (Correct Case)
         update_information = {"pwd": "123456", "pwd1": "12345", "pwd2": "12345"}
 
         new_response = self.client.put("/home/ChangePassword/", update_information, format="json")
@@ -245,103 +245,110 @@ class testGraduateApi(APITestCase):
 
         self.assertEqual(new_response.data, validate_data)
 
-#
-#
-# class testManGerApi(APITestCase):
-#     def setUp(self):
-#         models.HR.objects.create(email='Hr@email.com',
-#                                  first_name='Hr', second_name='Test',
-#                                  password='5fa5f62fe937033750ed096d66c866be', role='3')
-#
-#         Man = models.Manager.objects.create(email='Manager@email.com',
-#                                             first_name='Manager', second_name='Test',
-#                                             password='5fa5f62fe937033750ed096d66c866be', role='2')
-#
-#         models.Skill.objects.create(skill_name="A")
-#         models.Skill.objects.create(skill_name="B")
-#         models.Skill.objects.create(skill_name="C")
-#
-#         Team_obj = models.Team.objects.create(team_name='Team',
-#                                               man_id=Man, ratio=0.5, )
-#
-#         Skill_obj = models.Skill.objects.all()
-#
-#         Team_obj.Skill.set(Skill_obj)
-#
-#         models.Graduate.objects.create(email='Graduate@email.com',
-#                                        first_name='Graduate', second_name='Test',
-#                                        password='5fa5f62fe937033750ed096d66c866be', role='1', team_id=Team_obj)
-#
-#     # All Manger get request
-#     def test_Manger_View(self):
-#         body = {"username": "Manager@email.com", "password": "123456"}
-#
-#         response = self.client.post("", body, format="json")
-#         token = response.data["token"]
-#
-#         self.client.credentials(HTTP_AUTHORIZATION=token)
-#         # Get Manager Information
-#
-#         new_response = self.client.get("/home/man/", format="json")
-#         self.assertEqual(new_response.data, {'status': True, 'data': {'first_name': 'Manager', 'second_name': 'Test',
-#                                                                       'email': 'Manager@email.com'}})
-#
-#         # Get Team information:
-#
-#         new_response = self.client.get("/home/man/Team/Setting", format="json")
-#
-#         self.assertEqual(new_response.data, {'status': True, 'data': {'team_name': 'Team', 'ratio': 0.5,
-#                                                                       'Skill_information': [
-#                                                                           {'Skill_id': 1, 'skill_name': 'A'},
-#                                                                           {'Skill_id': 2, 'skill_name': 'B'},
-#                                                                           {'Skill_id': 3, 'skill_name': 'C'}]}})
-#
-#         # Get Team View
-#
-#         new_response = self.client.get("/home/man/Team", format="json")
-#
-#         test_data = collections.OrderedDict()
-#         test_data['email'] = 'Graduate@email.com'
-#         test_data['first_name'] = 'Graduate'
-#         test_data['second_name'] = 'Test'
-#
-#         self.assertEqual(new_response.data, {'status': True, 'data': [test_data]})
-#
-#     # All Manger Post/Put Reqeust:
-#     def test_Manger_Api(self):
-#         body = {"username": "Manager@email.com", "password": "123456"}
-#
-#         response = self.client.post("", body, format="json")
-#         token = response.data["token"]
-#
-#         self.client.credentials(HTTP_AUTHORIZATION=token)
-#
-#         # Update Manger_information
-#
-#         updata_information = {"first_name": "AAAAA", "second_name": "One", "email": "Manager@email.com"}
-#         new_response = self.client.put("/home/man/", updata_information, format="json")
-#
-#         self.assertEqual(new_response.data, {'status': True, 'Man_id': 1,
-#                                              'data': {'first_name': 'AAAAA', 'second_name': 'One',
-#                                                       'email': 'Manager@email.com'}})
-#
-#         # Update Team Setting
-#
-#         body = {"username": "Manager@email.com", "password": "123456"}
-#
-#         response = self.client.post("", body, format="json")
-#         token = response.data["token"]
-#
-#         update_information = {"ration": 0.5, "Skill": [1, 2]}
-#
-#         self.client.credentials(HTTP_AUTHORIZATION=token)
-#
-#         new_response = self.client.put("/home/man/Team/UpdateSetting", update_information, format="json")
-#
-#         self.assertEqual(new_response.data, {'status': True,
-#                                              'data': {'team_name': 'Team', 'ratio': 0.5,
-#                                                       'Skill_information': [{'Skill_id': 1, 'skill_name': 'A'},
-#                                                                             {'Skill_id': 2, 'skill_name': 'B'}]}})
+
+class testManGerApi(APITestCase):
+    def setUp(self):
+        models.HR.objects.create(email='Hr@email.com',
+                                 first_name='Hr', second_name='Test',
+                                 password='5fa5f62fe937033750ed096d66c866be', role='3')
+
+        man = models.Manager.objects.create(email='Manager@email.com',
+                                            first_name='Manager', second_name='Test',
+                                            password='5fa5f62fe937033750ed096d66c866be', role='2')
+
+        models.Skill.objects.create(skill_name="A")
+        models.Skill.objects.create(skill_name="B")
+        models.Skill.objects.create(skill_name="C")
+
+        Team_obj = models.Team.objects.create(team_name='Team',
+                                              man_id=man, ratio=0.5, )
+
+        skill_obj = models.Skill.objects.all()
+
+        Team_obj.skill.set(skill_obj)
+
+        models.Graduate.objects.create(email='Graduate@email.com',
+                                       first_name='Graduate', second_name='Test',
+                                       password='5fa5f62fe937033750ed096d66c866be', role='1', team_id=Team_obj)
+
+    # All Manger get request
+    def test_Manger_View(self):
+        body = {"username": "Manager@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        # Get Manager Information
+        new_response = self.client.get("/home/man/", format="json")
+        validate_data = {'code': 200, 'status': True, 'data': {'first_name': 'Manager', 'second_name': 'Test',
+                                                               'email': 'Manager@email.com'}}
+        self.assertEqual(new_response.data, validate_data)
+
+        # Get Team information:
+
+        new_response = self.client.get("/home/man/Team/", format="json")
+
+        ordered_dict = OrderedDict()
+        ordered_dict['email'] = 'Graduate@email.com'
+        ordered_dict['first_name'] = 'Graduate'
+        ordered_dict['second_name'] = 'Test'
+
+        validate_data = {
+            'code': 200,
+            'status': True,
+            'data': [ordered_dict]
+        }
+        self.assertEqual(new_response.data, validate_data)
+
+        # View Team Setting
+        new_response = self.client.get("/home/man/Team/setting/", format="json")
+
+        validate_data = {'code': 200, 'status': True, 'data':
+            {'team_name': 'Team', 'ratio': 0.5,
+             'skill_information': [{'skill_id': 1, 'skill_name': 'A'},
+                                   {'skill_id': 2, 'skill_name': 'B'}, {'skill_id': 3, 'skill_name': 'C'}]}}
+        self.assertEqual(new_response.data, validate_data)
+
+    # All Manger Post/Put Reqeust:
+    def test_Manger_Api(self):
+        body = {"username": "Manager@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        # Update Manger_information
+
+        update_information = {"first_name": "AAAAA", "second_name": "One", "email": "Manager@email.com"}
+        new_response = self.client.put("/home/man/", update_information, format="json")
+
+        validate_data = {'code': 200, 'status': True, 'Man_id': 1,
+                         'data': {'first_name': 'AAAAA', 'second_name': 'One', 'email': 'Manager@email.com'}}
+
+        self.assertEqual(new_response.data, validate_data)
+
+        # Update Team Setting
+
+        body = {"username": "Manager@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+        token = response.data["token"]
+
+        update_information = {"ration": 0.5, "skill": [1, 2]}
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        new_response = self.client.put("/home/man/Team/UpdateSetting/", update_information, format="json")
+
+        validate_data = {'code': 200, 'status': True,
+                         'data': {'team_name': 'Team', 'ratio': 0.5,
+                                  'skill_information': [{'skill_id': 1, 'skill_name': 'A'},
+                                                        {'skill_id': 2, 'skill_name': 'B'}]}}
+
+        self.assertEqual(new_response.data, validate_data)
 #
 #
 # class testHrApi(APITestCase):
