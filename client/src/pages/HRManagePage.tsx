@@ -11,8 +11,6 @@ import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
 import UnassignedGraduateTable from "../components/HRManage/UnassignedGraduatesTable";
 import Navbar from "../components/Navbar";
-// import ManageTeamsTable from "../components/ManageTeamsTable";
-import ManageTeamsTable from "../components/ManageTeamsTable";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
 import { initialComponentHR } from "../constants/Types";
