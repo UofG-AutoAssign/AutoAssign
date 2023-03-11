@@ -17,6 +17,7 @@ import { observer } from "mobx-react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RequireAuth from "./components/RequireAuth";
+import TestPageForHRTable from "./pages/TestPageForHRTable";
 
 const App: FC = observer(() => {
   return (
@@ -31,6 +32,7 @@ const App: FC = observer(() => {
           <Route path="forgot_password" element={<ForgotPassPage />} />
           <Route path="/sign_up/:signUpToken" element={<SignUpPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/test" element={<TestPageForHRTable />} />
 
           {/* Private Routes */}
           <Route element={<RequireAuth />}>
