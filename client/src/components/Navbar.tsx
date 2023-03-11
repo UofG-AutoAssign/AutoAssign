@@ -44,7 +44,8 @@ const Navbar: FC<{
   };
 
   const goBackToLandingPage = () => {
-    const query = location.pathname.split("/").at(1)?.toLowerCase();
+    // const query = location.pathname.split("/").at(1)?.toLowerCase();
+    const query = sessionStorage.getItem("userType") || "";
     console.log(query);
     
     if (query) navigate(`/${query}`);
