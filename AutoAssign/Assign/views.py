@@ -660,7 +660,7 @@ class ChangeGraduateYear(APIView):
             grad_obj.year = grad_year
             grad_obj.save()
 
-        return Response({"code": 403, "status": False, "detail": "Has been Changed "})
+        return Response({"code": 200, "status": True, "detail": "Has been Changed "})
 
 
 class BatchRegister(APIView):

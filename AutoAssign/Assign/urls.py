@@ -36,7 +36,6 @@ urlpatterns = [
     path('home/hr/AddTeam/', views.BatchRegister.as_view(), name="Register"),
     path('home/hr/Register/', views.BatchRegister.as_view(), name="Register"),
     path('home/hr/DeleteYearTwo/', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
-    path('home/hr/DeleteYearTwo/', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
     path('home/skill/', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword/', views.ChangePassword.as_view(), name="ChangePassWord"),
 
