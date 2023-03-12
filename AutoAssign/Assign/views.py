@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 
 from ext.per import HrPermission, ManagerPermission, GradPermission
 from ext.jwt_auth import create_token
-from ext.Hash_encryption import hashEncryption
+from ext.encryption import Encryption
 
 from Assign import serializers
 from Assign import models
@@ -28,7 +28,7 @@ class LoginView(APIView):
         # 2.database validation
 
         # Hash Password and validation
-        hash_pwd = hashEncryption(pwd)
+        hash_pwd = Encryption.hash_encryption(pwd)
 
         manger_object = models.Manager.objects.filter(email=user, password=hash_pwd).first()
         hr_object = models.HR.objects.filter(email=user, password=hash_pwd).first()
@@ -89,7 +89,7 @@ class Register(APIView):
         email = register_obj.email
 
         # Hash the password
-        hash_pwd = hashEncryption(pwd2)
+        hash_pwd = Encryption.hash_encryption(pwd2)
 
         # Generating a register data
 
@@ -235,7 +235,7 @@ class HrViewCreate(APIView):
             role = ser_role.validated_data["role"]
 
             # Hashing encryption requires the stored password
-            hash_pwd = hashEncryption(request.data['password'])
+            hash_pwd = Encryption.hash_encryption(request.data['password'])
             request.data['password'] = hash_pwd
 
         if role == 1:
@@ -275,7 +275,7 @@ class ChangePassword(APIView):
         pwd2 = request.data.get("pwd2")
 
         user = request.user
-        hash_pwd = hashEncryption(pwd)
+        hash_pwd = Encryption.hash_encryption(pwd)
 
         if pwd1 != pwd2:
             return Response({"code": 400,
@@ -284,7 +284,7 @@ class ChangePassword(APIView):
         if hash_pwd != user.password:
             return Response({"code": 403, "status": False, 'error': 'password error'})
 
-        hash_pwd = hashEncryption(pwd1)
+        hash_pwd = Encryption.hash_encryption(pwd1)
         user.password = hash_pwd
         user.save()
 
@@ -699,7 +699,7 @@ class BatchRegister(APIView):
 
             # Generate tokens
             token_id = str(email_obj.id)
-            token = hashEncryption(token_id)
+            token = Encryption.hash_encryption(token_id)
 
             email_obj.token = token
             email_obj.save()
@@ -750,7 +750,7 @@ class ResetPasswordByEmail(APIView):
 
         # Generate tokens
         user_id = str(user_obj.id)
-        token = hashEncryption(user_id)
+        token = Encryption.hash_encryption(user_id)
 
         user_obj.token = token
         user_obj.save()
@@ -783,7 +783,7 @@ class ResetPasswordByEmail(APIView):
             return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
 
         # Hash the new password
-        hash_pwd = hashEncryption(pwd2)
+        hash_pwd = Encryption.hash_encryption(pwd2)
 
         # Generating updated information
         password_dic = {"password": hash_pwd}
@@ -923,10 +923,22 @@ class TeamAndDepartment(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-
         team_obj = models.Team.objects.filter().all()
 
         ser = serializers.TeamAndDepartment(instance=team_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AllYearOneGrad(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+        grad_obj = models.Graduate.objects.filter(year=1).all()
+
+        ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
 
         context = {"code": 200, "status": True, "data": ser.data}
 
