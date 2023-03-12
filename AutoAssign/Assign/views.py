@@ -917,3 +917,17 @@ class DeleteDepartment(APIView):
             context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
         return Response(context)
+
+
+class TeamAndDepartment(APIView):
+    permission_classes = [HrPermission, ]
+
+    def get(self, request):
+
+        team_obj = models.Team.objects.filter().all()
+
+        ser = serializers.TeamAndDepartment(instance=team_obj, many=True)
+
+        context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)

@@ -380,3 +380,28 @@ class CreateNewTeamSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "team_name": {"max_length": 100, "write_only": True},
         }
+
+
+class TeamAndDepartment(serializers.ModelSerializer):
+    """
+        Serialize the output Team's and Dep information
+    """
+    depart_name = serializers.SerializerMethodField()
+
+    team_id = serializers.SerializerMethodField()
+
+    def get_depart_name(self, obj):
+        dep_id = obj.depart_id
+
+        if dep_id:
+            return dep_id.depart_name
+
+        return "Null"
+
+    def get_team_id(self, obj):
+        return obj.id
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "team_id", "depart_name", "depart_id"]
+        list_serializer_class = serializers.ListSerializer
