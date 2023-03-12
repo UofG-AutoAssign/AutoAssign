@@ -9,31 +9,11 @@ import { ManagerTableInterface } from "../constants/Interfaces";
 import {
   experienceOptions,
   interestOptions,
-  techOptions,
 } from "../constants/Options";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
 import { toast } from "react-toastify";
-
-export const ExperienceDropdown = (): JSX.Element => (
-  <Select
-    className="min-w-[200px] relative w-full h-10 text-black"
-    options={experienceOptions}
-  />
-);
-export const InterestDropdown = (): JSX.Element => (
-  <Select
-    className="min-w-[200px] relative w-full h-10 text-black"
-    options={interestOptions}
-  />
-);
-export const TechnologyDropdown = (): JSX.Element => (
-  <Select
-    className="min-w-[200px] relative w-full h-10 text-black"
-    options={[]}
-  />
-);
 
 const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   initialComponent,
