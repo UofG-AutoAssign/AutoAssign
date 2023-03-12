@@ -25,9 +25,7 @@ def locateUser(payload):
 
 class JwtQueryParamAuthentication(BaseAuthentication):
     """
-   The user needs to transfer the parameters in the url to transfer tokens, for example:
-    http://www.abc.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
-    """
+   The user needs to transfer the parameters in the url to transfer tokens"""
 
     def authenticate(self, request):
         token = request.query_params.get('token')
@@ -41,8 +39,7 @@ class JwtQueryParamAuthentication(BaseAuthentication):
 
 class JwtAuthorizationAuthentication(BaseAuthentication):
     """
-       Users need to transfer tokens in the form of request headers, for example:
-       Authorization:jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
+       Users need to transfer tokens in the form of request headers
        """
 
     def authenticate(self, request):

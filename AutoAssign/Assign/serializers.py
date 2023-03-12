@@ -380,3 +380,54 @@ class CreateNewTeamSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "team_name": {"max_length": 100, "write_only": True},
         }
+
+
+class TeamAndDepartment(serializers.ModelSerializer):
+    """
+        Serialize the output Team's and Dep information
+    """
+    depart_name = serializers.SerializerMethodField()
+
+    team_id = serializers.SerializerMethodField()
+
+    man_name = serializers.SerializerMethodField()
+
+    team_members = serializers.SerializerMethodField()
+
+    def get_depart_name(self, obj):
+        dep_id = obj.depart_id
+
+        if dep_id:
+            return dep_id.depart_name
+
+        return "Null"
+
+    def get_team_id(self, obj):
+        return obj.id
+
+    def get_man_name(self, obj):
+
+        man_id = obj.man_id
+
+        if man_id:
+            return man_id.first_name + " " + man_id.second_name
+
+        return "Null"
+
+    def get_team_members(self, obj):
+
+        grad_obj = models.Graduate.objects.filter(team_id=obj.id).all()
+
+        if grad_obj:
+            return [
+                {"grad_id": i.id,
+                 "grad_name": i.first_name + " " + i.second_name, "grad_email": i.email}
+                for i in grad_obj]
+
+        return "Null"
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "team_id", "depart_name",
+                  "depart_id", "man_id", "man_name", "team_members"]
+        list_serializer_class = serializers.ListSerializer
