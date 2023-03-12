@@ -21,6 +21,7 @@ urlpatterns = [
     path('home/hr/GradView/', views.AllGradView.as_view(), name="AllGrad"),
     path('home/hr/DepartmentView/', views.AllDepartmentView.as_view(), name="AllDepartmentView"),
     path('home/hr/AllYearTwoGrad/', views.AllYearTwoGrad.as_view(), name="AllYearTwoGrad"),
+    path('home/hr/AllYearOneGrad/', views.AllYearOneGrad.as_view(), name="AllYearOneGrad"),
     path('home/hr/AllTeamAndDep/', views.TeamAndDepartment.as_view(), name="AllTeamAndDep"),
     path('home/hr/UnGradView/', views.AllUnGradView.as_view(), name="AllUnAssignGrad"),
     path('home/hr/UnManView/', views.AllUnManView.as_view(), name="AllUnAssignMan"),
