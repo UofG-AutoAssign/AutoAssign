@@ -4,8 +4,8 @@ import Select from "react-select";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
-import { interestOptions } from "../constants/Options";
-import { toast } from "react-toastify";
+import { experienceOptions, interestOptions } from "../constants/Options";
+import { toast, ToastContainer } from "react-toastify";
 
 export type selectedDataType = {
   selectedTechnology: {
@@ -22,10 +22,10 @@ const PreferenceFormTable: FC = () => {
     [rowId: number]: selectedDataType;
   }>({
     0: {
-      selectedExperience: 0,
-      selectedInterest: 0,
+      selectedExperience: -1,
+      selectedInterest: -1,
       selectedTechnology: {
-        value: 0,
+        value: -1,
         label: "...",
       },
     },
@@ -35,6 +35,8 @@ const PreferenceFormTable: FC = () => {
   const [allSkills, setAllSkills] = useState<any[]>([
     { value: 1, label: "Python" },
   ]);
+
+  const [graduateIdForSubmission, setGraduateIdForSubmission] = useState<number>(-1)
 
   const [curRowId, setCurRowId] = useState<number>(100);
 
@@ -52,10 +54,10 @@ const PreferenceFormTable: FC = () => {
       return {
         ...prevState,
         [curRowId]: {
-          selectedExperience: 0,
-          selectedInterest: 0,
+          selectedExperience: -1,
+          selectedInterest: -1,
           selectedTechnology: {
-            value: 0,
+            value: -1,
             label: "...",
           },
         },
@@ -101,34 +103,120 @@ const PreferenceFormTable: FC = () => {
     );
   };
 
-  const ExperienceDropdown = ({}: {}) => {
+  const ExperienceDropdown = ({
+    selectedExperience,
+    rowId,
+  }: {
+    selectedExperience: number;
+    rowId: string;
+  }): JSX.Element => {
+    const handleSelectChange = (
+      value: any,
+      property: string,
+      rowId: number
+    ) => {
+      console.log(value);
+
+      setSelectedData((prevData) => ({
+        ...prevData,
+        [rowId]: {
+          ...prevData[rowId],
+          [property]: value,
+        },
+      }));
+    };
+
     return (
       <Select
         className="min-w-[200px] relative w-full h-10 text-black"
-        // value={selectedTechnology}
-        // onChange={(value) =>
-        //   handleSelectChange(value, "selectedTechnology", Number(rowId))
-        // }
+        value={selectedExperience}
+        onChange={(value) =>
+          handleSelectChange(value, "selectedExperience", Number(rowId))
+        }
+        options={experienceOptions}
+      />
+    );
+  };
+
+  const InterestDropdown = ({
+    selectedInterest,
+    rowId,
+  }: {
+    selectedInterest: number;
+    rowId: string;
+  }): JSX.Element => {
+    const handleSelectChange = (
+      value: any,
+      property: string,
+      rowId: number
+    ) => {
+      console.log(value);
+
+      setSelectedData((prevData) => ({
+        ...prevData,
+        [rowId]: {
+          ...prevData[rowId],
+          [property]: value,
+        },
+      }));
+    };
+
+    return (
+      <Select
+        className="min-w-[200px] relative w-full h-10 text-black"
+        value={selectedInterest}
+        onChange={(value) =>
+          handleSelectChange(value, "selectedInterest", Number(rowId))
+        }
         options={interestOptions}
       />
     );
   };
 
-  const InterestDropdown = () => {
-    return <div>yo</div>;
-  };
-
   const handleFormSubmission = async (): Promise<boolean> => {
-    // @Todo replace the mock data
+    const postBody: {
+      experience: number;
+      interest: number;
+      skill_id: number;
+      graduate: number;
+    }[] = []
+
+    const seenTechnologies: number[] = []
+
+    for (const rowId in selectedData) {
+      const {
+        selectedExperience,
+        selectedInterest,
+        selectedTechnology,
+      } = selectedData[Number(rowId)];
+
+      // Prevent empty fields
+      if (selectedExperience === -1 || selectedInterest === -1 || selectedTechnology.label === "..." || selectedTechnology.value === -1) {
+        toast.error("Make sure all fields are filled in");
+        return false;
+      }
+
+      // Prevent duplicates
+      if (seenTechnologies.includes(selectedTechnology.value)) {
+        toast.error("No duplicate technologies are allowed");
+        return false;
+      }
+      seenTechnologies.push(selectedTechnology.value);
+
+      postBody.push({
+        experience: (selectedExperience as any).value,
+        interest: (selectedInterest as any).value,
+        skill_id: selectedTechnology.value,
+        graduate: graduateIdForSubmission
+      })
+      
+    }
+
+    console.log(postBody);
+
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/grad/form/`,
-      [
-        { interest: 1, experience: 2, skill_id: 16, graduate: 1 },
-        { interest: 2, experience: 3, skill_id: 2, graduate: 1 },
-        { interest: 4, experience: 1, skill_id: 3, graduate: 1 },
-        { interest: 4, experience: 5, skill_id: 4, graduate: 1 },
-        { interest: 4, experience: 2, skill_id: 5, graduate: 1 },
-      ],
+      postBody,
       {
         headers: {
           AUTHORIZATION: authStore.authToken,
@@ -139,10 +227,10 @@ const PreferenceFormTable: FC = () => {
     console.log(data);
 
     if (data.status === true) {
-      toast.success("Form saved to database!")
+      toast.success("Form saved to database!");
       return true;
     } else {
-      toast.error("Form failed to deliver...")
+      toast.error("Form failed to deliver...");
       return false;
     }
   };
@@ -178,23 +266,30 @@ const PreferenceFormTable: FC = () => {
         })
         .then((response) => {
           const data = response.data.data.form_information;
-          console.log(data);
+          const graduateId = response.data.data.grad_id;
+          console.log(data, graduateId);
 
           if (data === undefined) {
             toast.error("Data undefined");
             return;
           }
 
+          setGraduateIdForSubmission(graduateId);
+
           data.forEach(
             (
               { Form_id, Skill_id, skill_name, Interest, Experience }: any,
               idx: number
             ) => {
+              // console.log(Interest, Experience);
+              // console.log(interestOptions[Interest], experienceOptions[Experience]);
+              
+
               setSelectedData((prevSelectedData) => ({
                 ...prevSelectedData,
                 [idx]: {
-                  selectedExperience: Experience,
-                  selectedInterest: Interest,
+                  selectedExperience: experienceOptions[experienceOptions.length - Experience - 1],
+                  selectedInterest: interestOptions[interestOptions.length - Interest - 1],
                   selectedTechnology: {
                     value: Skill_id,
                     label: skill_name,
@@ -261,10 +356,16 @@ const PreferenceFormTable: FC = () => {
                     />
                   </td>
                   <td className="w-1/3 py-4 px-6">
-                    <ExperienceDropdown />
+                    <ExperienceDropdown
+                      rowId={rowId}
+                      selectedExperience={selectedExperience}
+                    />
                   </td>
                   <td className="w-1/3 py-4 px-6">
-                    <InterestDropdown />
+                    <InterestDropdown
+                      rowId={rowId}
+                      selectedInterest={selectedInterest}
+                    />
                   </td>
                 </tr>
               );
@@ -286,7 +387,7 @@ const PreferenceFormTable: FC = () => {
           type="button"
           className="my-5 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
           onClick={() => {
-           handleFormSubmission();
+             handleFormSubmission();
           }}
         >
           Save

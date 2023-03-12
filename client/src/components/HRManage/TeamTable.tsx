@@ -1,8 +1,11 @@
-import { FC, useRef, useState, Fragment } from "react";
+import { FC, useRef, useState, Fragment, useEffect } from "react";
 import ManageTeamsTable from "../ManageTeamsTable";
 import { toast } from "react-toastify";
 import { Combobox, Transition } from "@headlessui/react";
-import { managerType } from "../../pages/HRManagePage";
+import { managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
+import axios from "axios";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
+import authStore from "../../context/authStore";
 
 export type departmentAndTeamListHRType = {
   departmentName: string;
@@ -187,6 +190,40 @@ const TeamTable: FC<{ allManagerList: managerType[] }> = ({
       </div>
     );
   };
+
+  const effectRanOnFirstLoad = useRef<boolean>(false);
+  useEffect(() => {
+    const getAllTeamsAndDepartmentsForHR = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/AllTeamAndDep/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedTeamList = data.data;
+      console.log(fetchedTeamList);
+
+      if (data.status === false) {
+        toast.error("Failed to fetch departments and teams list");
+        return;
+      }
+
+      // setDepartmentAndTeamListHR(fetchedTeamList);
+    };
+
+
+    if (effectRanOnFirstLoad.current === false) {
+      getAllTeamsAndDepartmentsForHR();
+    }
+
+    return () => {
+      effectRanOnFirstLoad.current = true;
+    };
+  }, []);
+
 
   return (
     <div className="relative wrap w-full">
