@@ -410,7 +410,7 @@ class TeamAndDepartment(serializers.ModelSerializer):
         man_id = obj.man_id
 
         if man_id:
-            return man_id.first_name + man_id.second_name
+            return man_id.first_name + " " + man_id.second_name
 
         return "Null"
 
