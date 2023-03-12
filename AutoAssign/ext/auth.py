@@ -1,13 +1,28 @@
+"""
+Authentication component that verifies user identity,
+and determines whether they have the appropriate permissions.
+"""
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import exceptions
 
+# pylint: disable=E0401
 from Assign import models
 
+# pylint: disable=E0401
 from ext.jwt_auth import parse_payload
 
 
-def locateUser(payload):
+def locate_user(payload):
+    """
+        Locate the user in the database based on the given payload.
+
+        Args:
+            payload (dict): A dictionary containing the user data.
+
+        Returns:
+            The user object in the database.
+    """
     data = payload['data']
     user = data['email']
 
@@ -17,33 +32,33 @@ def locateUser(payload):
 
     if manger_object:
         return manger_object
-    elif hr_object:
+    if hr_object:
         return hr_object
-    elif grad_object:
+    if grad_object:
         return grad_object
+
+    return None
 
 
 class JwtQueryParamAuthentication(BaseAuthentication):
     """
-   The user needs to transfer the parameters in the url to transfer tokens, for example:
-    http://www.abc.com?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
+    The user needs to transfer the parameters in the url to transfer tokens, for example:
     """
 
     def authenticate(self, request):
         token = request.query_params.get('token')
         payload = parse_payload(token)
         if not payload['status']:
-            return
+            return None
 
-        user_object = locateUser(payload)
+        user_object = locate_user(payload)
         return user_object, token
 
 
 class JwtAuthorizationAuthentication(BaseAuthentication):
     """
        Users need to transfer tokens in the form of request headers, for example:
-       Authorization:jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzM1NTU1NzksInVzZXJuYW1lIjoid3VwZWlxaSIsInVzZXJfaWQiOjF9.xj-7qSts6Yg5Ui55-aUOHJS4KSaeLq5weXMui2IIEJU
-       """
+    """
 
     def authenticate(self, request):
         # Verification token is required for non-login pages
@@ -52,11 +67,14 @@ class JwtAuthorizationAuthentication(BaseAuthentication):
         if not payload['status']:
             raise exceptions.AuthenticationFailed(payload)
 
-        user_object = locateUser(payload)
+        user_object = locate_user(payload)
         return user_object, token
 
 
 class NoAuthentication(BaseAuthentication):
+    """
+        Unauthorized
+    """
 
     def authenticate(self, request):
         raise AuthenticationFailed({"status": False, 'msg': "Authentication failed"})
