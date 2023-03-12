@@ -463,7 +463,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <TeamTable allManagerList={managerList}/>;
+      return <TeamTable allManagerList={managerList} teamAndDepartmentList={teamAndDepartmentList}/>;
     }
     if (currentTab === "Delete Team") {
       return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList} />;
