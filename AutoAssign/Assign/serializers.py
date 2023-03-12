@@ -420,12 +420,14 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
         if grad_obj:
             return [
-                {"grad_id": i.id, "grad_name": i.first_name + " " + i.second_name, "grad_email": i.email}
+                {"grad_id": i.id,
+                 "grad_name": i.first_name + " " + i.second_name, "grad_email": i.email}
                 for i in grad_obj]
 
         return "Null"
 
     class Meta:
         model = models.Team
-        fields = ["team_name", "team_id", "depart_name", "depart_id", "man_id", "man_name", "team_members"]
+        fields = ["team_name", "team_id", "depart_name",
+                  "depart_id", "man_id", "man_name", "team_members"]
         list_serializer_class = serializers.ListSerializer

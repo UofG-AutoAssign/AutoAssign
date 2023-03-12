@@ -624,4 +624,4 @@ init-import=no
 redefining-builtins-modules=six.moves,past.builtins,future.builtins,builtins,io
 
 [pylint]
-disable=C0114,C0115,R0903,C0116,E1101,W0105
+disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401
