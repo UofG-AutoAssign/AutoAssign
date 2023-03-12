@@ -420,7 +420,7 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
         if grad_obj:
             return [
-                {"grad_id": i.id, "name": i.first_name + i.second_name}
+                {"grad_id": i.id, "grad_name": i.first_name + " " + i.second_name, "grad_email": i.email}
                 for i in grad_obj]
 
         return "Null"
