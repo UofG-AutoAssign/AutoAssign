@@ -62,11 +62,11 @@ backend_code_quality_pylint:
     - pip install pylint pylint-django
   script:
     # Run pylint to check for coding style issues and other code quality problems
-    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 path/to/ext
+    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 ext
     - cd "Assign"
-    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 path/to/views.py
-    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 path/to/serializers.py
-    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 path/to/models.py
+    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 views.py
+    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 serializers.py
+    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 models.py
 
   artifacts:
     paths:
