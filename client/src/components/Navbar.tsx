@@ -1,11 +1,11 @@
 import { useEffect, FC } from "react";
 import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
 import { Link, useLocation } from "react-router-dom";
-import { RiReactjsFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdOutlineSwitchAccount } from "react-icons/md";
 import themeStore from "../context/themeStore";
+import logo from "../assets/logo.svg"
 
 const Navbar: FC<{
   hideLogoutButton?: boolean;
@@ -26,6 +26,7 @@ const Navbar: FC<{
       </>
     );
   };
+
 
   const ThemeToggleButton = (): JSX.Element => {
     return (
@@ -53,7 +54,7 @@ const Navbar: FC<{
   }
 
   useEffect(() => {
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -61,7 +62,7 @@ const Navbar: FC<{
       <div className="navbar bg-gray-100 text-black dark:bg-gray-600 dark:text-white px-7 py-3 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
         <div className="gap-5 scale-90 sm:scale-100">
           <BackButton />
-          <RiReactjsFill className="max-w-lg hover:animate-spin text-5xl text-teal-400 dark:text-teal-800 saturate-200" />
+          <img src={logo} alt="the Auto Assign Logo" className="w-16 hover:animate-spin" onClick={() => goBackToLandingPage()} />
           <div onClick={() => goBackToLandingPage()} className="btn btn-ghost normal-case text-xl">AutoAssign</div>
         </div>
         <div className="gap-10 text-3xl">
