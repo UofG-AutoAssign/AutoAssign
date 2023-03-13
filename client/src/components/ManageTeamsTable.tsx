@@ -20,7 +20,7 @@ const ManageTeamsTable: FC<{
     teamName,
     teamMembers,
   } = departmentAndTeamListHR;
-
+  
   return (
     <div className="w-full min-w-min rounded-2xl bg-white p-2">
       <Disclosure>
@@ -73,14 +73,19 @@ const ManageTeamsTable: FC<{
                   <div className="grid grid-cols-2 w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <div className="px-6 py-3 font-black">Name</div>
                     <div className="px-6 py-3 font-black">Email</div>
-                    {teamMembers.map(({ first_name, second_name, email }) => (
-                      <Fragment key={email}>
-                        <div className="px-6 py-4 border-b">
-                          {first_name} {second_name}
-                        </div>
-                        <div className="px-6 py-4 border-b">{email}</div>
+                    {teamMembers.length === 0 ? (
+                      <Fragment>
+                        <div className="px-6 py-4 border-b">Empty</div>
+                        <div className="px-6 py-4 border-b">Empty</div>
                       </Fragment>
-                    ))}
+                    ) : (
+                      teamMembers.map(({ grad_id, grad_name, grad_email }) => (
+                        <Fragment key={grad_id}>
+                          <div className="px-6 py-4 border-b">{grad_name}</div>
+                          <div className="px-6 py-4 border-b">{grad_email}</div>
+                        </Fragment>
+                      ))
+                    )}
                   </div>
                   <div className="flex flex-col items-center bg-white dark:bg-gray-800">
                     <form>
