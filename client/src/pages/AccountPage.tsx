@@ -19,23 +19,23 @@ const AccountPage: FC = () => {
   const routerNavigator = useNavigate();
 
   // Conditionally display the component depending on the active tab
-  const displayComponent = (): JSX.Element => {
+  const DisplayComponent = (): JSX.Element => {
     const data = [
-      `Firstname: ${userFirstName}`,
-      `Surname: ${userLastName}`,
-      `Email: ${userEmail}`,      
+      userFirstName,
+      userLastName,
+      userEmail,      
     ]
 
-    if (userYear) data.push(`Year: ${userYear}`);
+    if (userYear) data.push(String(userYear));
 
     if (currentTab === "Settings")
       return (
         <AccountTable
-          data={data}
+        data={data}
         />
       );
     else {
-      return passwordSetting();
+      return <PasswordSetting />;
     }
   };
 
@@ -103,7 +103,7 @@ const AccountPage: FC = () => {
       });
   };
 
-  const passwordSetting = (): JSX.Element => {
+  const PasswordSetting = (): JSX.Element => {
     return (
       <div className="w-full pr-5">
         <div className="mb-7 text-black dark:text-white">
@@ -174,7 +174,7 @@ const AccountPage: FC = () => {
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            {reassureModal2()}
+            {ConfirmChangePasswordModal()}
           </div>
         </form>
       </div>
@@ -182,7 +182,7 @@ const AccountPage: FC = () => {
   };
 
   // Displays pop-up if user is sure of changing their password
-  const reassureModal2 = (): JSX.Element => {
+  const ConfirmChangePasswordModal = (): JSX.Element => {
     return (
       <>
         <div className="modal z-50 overflow-y-auto">
@@ -280,7 +280,7 @@ const AccountPage: FC = () => {
             Change Password
           </button>
         </div>
-        <div className="w-3/4 ">{displayComponent()}</div>
+        <div className="w-3/4 "><DisplayComponent /></div>
       </section>
     </div>
   );
