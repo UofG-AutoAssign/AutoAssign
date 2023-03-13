@@ -267,7 +267,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
         toast.error("Failed to fetch departments and teams list");
         return;
       }
-      console.log(data);
+      // console.log(data);
       const fetchedTeamList = data.data;
 
       // @Todo get manager eamil, team capacity
