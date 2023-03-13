@@ -9,13 +9,13 @@ import AssignManager from "../components/HRManage/AssignManager";
 import DeleteTeam from "../components/HRManage/DeleteTeam";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
+import TeamTable from "../components/HRManage/TeamTable";
 import UnassignedGraduateTable from "../components/HRManage/UnassignedGraduatesTable";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
 import { initialComponentHR } from "../constants/Types";
 import authStore from "../context/authStore";
-
 
 export type gradType = {
   id: number;
@@ -38,6 +38,11 @@ export type teamAndDepartmentType = {
 };
 
 export type managerType = gradType;
+
+export type departmentType = {
+  id: number;
+  depart_name: string;
+}
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
@@ -69,6 +74,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       },
     },
   ]);
+
+  const [departmentOnlyList, setDepartmentOnlyList] = useState<departmentType[]>([]);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -117,75 +124,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
     //remove all year 1s
     setYearOneGrads([]);
-  };
-
-  // Displays the managers team members
-  const TeamTable = (): JSX.Element => {
-    return (
-      <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap w-3/4">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Team & Department
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Manager Email
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-              {
-                team_department: "Team 1 - Cyber Security",
-                manager_email: "Jack@yahoo.com",
-              },
-            ].map(({ team_department, manager_email }, idx) => (
-              <tr
-                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={idx}
-              >
-                <th
-                  scope="row"
-                  className="flex flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {team_department}
-                </th>
-                <td className="px-6 py-4">{manager_email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
   };
 
   // Creates a table of graduates in a specific year
@@ -425,8 +363,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
-        <div className="py-8 flex flex-row justify-between">
-          <div className="flex flex-col  w-96">
+        <div className="py-8 flex flex-col md:flex-row justify-between">
+          <div className="flex flex-col w-96 justify-center text-center">
             <label
               htmlFor="Total Team Capacity : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
@@ -532,7 +470,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <TeamTable />;
+      return <TeamTable allManagerList={managerList} departmentList={departmentOnlyList}/>;
     }
     if (currentTab === "Delete Team") {
       return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList} />;
@@ -610,12 +548,33 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       console.log(fetchedTeamList);
 
       if (data.status === false) {
-        toast.error("Failed to fetch departments and teams list");
+        toast.error("Failed to fetch teams list");
         return;
       }
 
       setTeamAndDepartmentList(fetchedTeamList);
     };
+
+    const getAllDepartsList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/DepartmentView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedDepartmentList: departmentType[] = data.data;
+      console.log(fetchedDepartmentList);
+
+      if (data.status === false) {
+        toast.error("Failed to fetch departments list");
+        return;
+      }
+
+      setDepartmentOnlyList(fetchedDepartmentList);
+    }
 
     const getAllGradList = async () => {
       const { data } = await axios.get(
@@ -679,24 +638,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setAllGradList(fetchedUnassignedManagersList);
     };
 
-    const getTeamSizes = async () => {
-      // @Todo use a real endpoint !
-      const { data } = await axios.get(
-        `${environmentalVariables.backend}home/hr/GradView/`,
-        {
-          headers: {
-            AUTHORIZATION: authStore.authToken,
-          },
-        }
-      );
-
-      const fetchedTeamSizes = data.data;
-      console.log(fetchedTeamSizes);
-      setAllGradList(fetchedTeamSizes);
-    };
-
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
+      getAllDepartsList();
       getAllGradList();
       getAllManagerList();
       // @Todo send team_id to receive member list of each team

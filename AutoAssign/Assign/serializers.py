@@ -261,6 +261,16 @@ class AllManSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "first_name", "second_name"]
 
 
+class AllDepSerializer(serializers.ModelSerializer):
+    """
+       Serializes the output of all Department information
+    """
+
+    class Meta:
+        model = models.Department
+        fields = ["id", "depart_name"]
+
+
 class AssignGraduate(serializers.ModelSerializer):
     """
        Assign Gradute into Team
@@ -357,3 +367,67 @@ class CheckPasswordFormat(serializers.Serializer):
         lambda value: len(value) <= 64
                       or serializers.ValidationError("The password format is incorrect")
     ])
+
+
+class CreateNewTeamSerializer(serializers.ModelSerializer):
+    """
+        Check that the data used to create the Team is formatted
+    """
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "man_id", "depart_id", "num_positions"]
+        extra_kwargs = {
+            "team_name": {"max_length": 100, "write_only": True},
+        }
+
+
+class TeamAndDepartment(serializers.ModelSerializer):
+    """
+        Serialize the output Team's and Dep information
+    """
+    depart_name = serializers.SerializerMethodField()
+
+    team_id = serializers.SerializerMethodField()
+
+    man_name = serializers.SerializerMethodField()
+
+    team_members = serializers.SerializerMethodField()
+
+    def get_depart_name(self, obj):
+        dep_id = obj.depart_id
+
+        if dep_id:
+            return dep_id.depart_name
+
+        return "Null"
+
+    def get_team_id(self, obj):
+        return obj.id
+
+    def get_man_name(self, obj):
+
+        man_id = obj.man_id
+
+        if man_id:
+            return man_id.first_name + " " + man_id.second_name
+
+        return "Null"
+
+    def get_team_members(self, obj):
+
+        grad_obj = models.Graduate.objects.filter(team_id=obj.id).all()
+
+        if grad_obj:
+            return [
+                {"grad_id": i.id,
+                 "grad_name": i.first_name + " " + i.second_name, "grad_email": i.email}
+                for i in grad_obj]
+
+        return "Null"
+
+    class Meta:
+        model = models.Team
+        fields = ["team_name", "team_id", "depart_name",
+                  "depart_id", "man_id", "man_name", "team_members", "num_positions"]
+        list_serializer_class = serializers.ListSerializer
