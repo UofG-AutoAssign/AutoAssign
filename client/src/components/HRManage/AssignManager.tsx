@@ -240,7 +240,7 @@ const AssignManager: FC<{
                 htmlFor="last_name"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Team & Department
+                Team
               </label>
               <DropdownTeamAndDepartmentList />
             </div>

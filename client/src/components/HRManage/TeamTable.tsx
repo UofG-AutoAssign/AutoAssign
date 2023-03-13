@@ -2,7 +2,7 @@ import { FC, useRef, useState, Fragment, useEffect } from "react";
 import ManageTeamsTable from "../ManageTeamsTable";
 import { toast } from "react-toastify";
 import { Combobox, Transition } from "@headlessui/react";
-import { managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
+import { departmentType, managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
 import axios from "axios";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import authStore from "../../context/authStore";
@@ -22,10 +22,9 @@ export type departmentAndTeamListHRType = {
   }[];
 };
 
-const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: teamAndDepartmentType[]; }> = ({
-  allManagerList, teamAndDepartmentList
+const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentType[]; }> = ({
+  allManagerList, departmentList
 }) => {
-  const departmentInputRef = useRef<HTMLInputElement>(null);
   const maxCapacityInputRef = useRef<HTMLInputElement>(null);
   const teamNameInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,7 +63,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
     console.log(postBody);
 
     const { data } = await axios.post(
-      `${environmentalVariables.backend}home/hr/CreateTeam`,
+      `${environmentalVariables.backend}home/hr/CreateTeam/`,
       [postBody],
       {
         headers: {
@@ -75,13 +74,20 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
 
     console.log(data);
 
+    if (data.status === true) {
+      toast.success("New Team Saved to Database!")
+      setTimeout(() => {
+        location.reload(); // Force refresh page
+      }, 1000);
+    } else {
+      toast.error(`Failed to Create New Team ${data.error[0].man_id}`)
+    }
+
     return;
   };
 
-  const [curId, setCurId] = useState<number>(100);
-
   const [selectedManager, setSelectedManager] = useState<string>("");
-  const [selectedTeam, setSelectedTeam] = useState<string>("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
   const DropdownManagerList = (): JSX.Element => {
     const [query, setQuery] = useState<string>("");
@@ -164,14 +170,14 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
     );
   };
 
-  const DropdownTeamAndDepartmentList = (): JSX.Element => {
+  const DropdownDepartmentList = (): JSX.Element => {
     const [query, setQuery] = useState<string>("");
 
     const filteredTeam =
       query === ""
-        ? teamAndDepartmentList
-        : teamAndDepartmentList.filter((team) =>
-            team.team_name
+        ? departmentList
+        : departmentList.filter((dep) =>
+            dep.depart_name
               .toLowerCase()
               .replace(/\s+/g, "")
               .includes(query.toLowerCase().replace(/\s+/g, ""))
@@ -179,7 +185,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
 
     return (
       <div className="relative min-w-[72px] w-full z-40">
-        <Combobox value={selectedTeam} onChange={setSelectedTeam}>
+        <Combobox value={selectedDepartment} onChange={setSelectedDepartment}>
           <div className="relative mt-1">
             <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
               <Combobox.Input
@@ -204,7 +210,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
                     Nothing found.
                   </div>
                 ) : (
-                  filteredTeam.map((team, idx) => (
+                  filteredTeam.map((dep, idx) => (
                     <Combobox.Option
                       key={idx}
                       className={({ active }) =>
@@ -212,7 +218,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
                           active ? "bg-blue-600 text-white" : "text-gray-900"
                         }`
                       }
-                      value={team.team_name}
+                      value={dep.depart_name}
                     >
                       {({ selected, active }) => (
                         <>
@@ -221,7 +227,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
                               selected ? "font-medium" : "font-normal"
                             }`}
                           >
-                            {team.team_name}
+                            {dep.depart_name}
                           </span>
                           {selected ? (
                             <span
@@ -261,7 +267,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
         toast.error("Failed to fetch departments and teams list");
         return;
       }
-
+      console.log(data);
       const fetchedTeamList = data.data;
 
       // @Todo get manager eamil, team capacity
@@ -312,7 +318,7 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Team & Department
+                Team
               </th>
             </tr>
           </thead>
@@ -334,9 +340,6 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
           </tbody>
         </table>
       </div>
-
-      
-      
       <div className="flex flex-col justify-center gap-4 items-center w-full my-10 relative wrap shadow-2xl p-5 rounded-btn">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
         <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
@@ -350,9 +353,9 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
           </thead>
         </table>
         <div className="label-text w-full font-black text-black">
-          Enter New Department Name
+          Pick a Department
         </div>
-        <DropdownTeamAndDepartmentList />
+        <DropdownDepartmentList />
 
         <div className="label-text w-full font-black text-balck text-black">
           Enter New Team Name
@@ -365,12 +368,12 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
           required
         ></input>
         <div className="label-text w-full font-black text-balck text-black">
-          Enter Manager Email
+          Pick a Manager
         </div>
         <DropdownManagerList />
 
         <div className="label-text w-full font-black text-balck text-black">
-          Enter MaxCapacity
+          Enter Team's Max Headcount
         </div>
         <input
           ref={maxCapacityInputRef}
@@ -383,10 +386,10 @@ const TeamTable: FC<{ allManagerList: managerType[], teamAndDepartmentList: team
           type="button"
           className="my-10 gap-1000 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           onClick={() => {
-            const depId = teamAndDepartmentList.find((team) => team.team_name === selectedTeam)?.team_information.dep_id;
-            
+            const depId = departmentList.find((dep) => dep.depart_name === selectedDepartment)?.id;
+
             if (
-              selectedTeam === "" || selectedManager === "" || depId === undefined ||
+              selectedDepartment === "" || selectedManager === "" || depId === undefined ||
               maxCapacityInputRef.current?.value === undefined ||
               !maxCapacityInputRef.current?.value ||
               teamNameInputRef.current?.value === undefined ||

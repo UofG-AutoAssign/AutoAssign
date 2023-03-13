@@ -39,6 +39,11 @@ export type teamAndDepartmentType = {
 
 export type managerType = gradType;
 
+export type departmentType = {
+  id: number;
+  depart_name: string;
+}
+
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
 }) => {
@@ -69,6 +74,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       },
     },
   ]);
+
+  const [departmentOnlyList, setDepartmentOnlyList] = useState<departmentType[]>([]);
 
   const [yearOneGrads, setYearOneGrads] = useState<string[]>([
     "bob@barclays.com",
@@ -463,7 +470,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <TeamTable allManagerList={managerList} teamAndDepartmentList={teamAndDepartmentList}/>;
+      return <TeamTable allManagerList={managerList} departmentList={departmentOnlyList}/>;
     }
     if (currentTab === "Delete Team") {
       return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList} />;
@@ -541,12 +548,33 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       console.log(fetchedTeamList);
 
       if (data.status === false) {
-        toast.error("Failed to fetch departments and teams list");
+        toast.error("Failed to fetch teams list");
         return;
       }
 
       setTeamAndDepartmentList(fetchedTeamList);
     };
+
+    const getAllDepartsList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/DepartmentView/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedDepartmentList: departmentType[] = data.data;
+      console.log(fetchedDepartmentList);
+
+      if (data.status === false) {
+        toast.error("Failed to fetch departments list");
+        return;
+      }
+
+      setDepartmentOnlyList(fetchedDepartmentList);
+    }
 
     const getAllGradList = async () => {
       const { data } = await axios.get(
@@ -610,24 +638,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setAllGradList(fetchedUnassignedManagersList);
     };
 
-    const getTeamSizes = async () => {
-      // @Todo use a real endpoint !
-      const { data } = await axios.get(
-        `${environmentalVariables.backend}home/hr/GradView/`,
-        {
-          headers: {
-            AUTHORIZATION: authStore.authToken,
-          },
-        }
-      );
-
-      const fetchedTeamSizes = data.data;
-      console.log(fetchedTeamSizes);
-      setAllGradList(fetchedTeamSizes);
-    };
-
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
+      getAllDepartsList();
       getAllGradList();
       getAllManagerList();
       // @Todo send team_id to receive member list of each team
