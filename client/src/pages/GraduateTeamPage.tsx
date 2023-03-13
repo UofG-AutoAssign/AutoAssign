@@ -89,7 +89,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else setCurrentTab("Preference Form");
 
-    return () => {};
+    return () => { };
   }, [location]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
@@ -116,7 +116,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
       setTeammateList(newTeammateList)
 
       if (data.status === false) toast.error(data.error)
-      
+
     };
 
     if (effectRanOnFirstLoad.current === false) getTeammateList();
@@ -144,7 +144,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
           <button
             onClick={() => navigate("/graduate/team/preference_form")}
             type="button"
-            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            className="w-full border-white border-b-2 rounded-br-2xl text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Preference Form
           </button>

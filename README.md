@@ -128,6 +128,21 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 
 ## User: Manager
 
+-	You will be sent an e-mail to your company account asking you to register.
+-	You must provide your name, and create a password.
+-	After you have created your account, you will be able to log in, where you have two choices, Team Settings and Your Team.
+
+- Team Settings 
+	- The Team settings page will allow you to select which technologies you would like team members to be interested in.
+	- Also on this page is a slider which will let you decide how much you want to prioritse a graduate's prior skill or enthuseasm to learn.
+	- You can select as many technologies as you want from the searchable dropdown lists
+	- When you are finished, press save to make sure that the data is correctly stored
+
+- Your Team
+	- This page lets you view a list of all the current members of your team
+	- It shows a table containing their full name and e-mail adress
+
+
 ## User: HR
 
 -	You would be given an account with email and password by the developers to log on.
