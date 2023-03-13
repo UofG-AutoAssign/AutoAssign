@@ -429,5 +429,5 @@ class TeamAndDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["team_name", "team_id", "depart_name",
-                  "depart_id", "man_id", "man_name", "team_members"]
+                  "depart_id", "man_id", "man_name", "team_members", "num_positions"]
         list_serializer_class = serializers.ListSerializer
