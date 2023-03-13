@@ -120,13 +120,14 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       value: typeof selectedTechnology,
       property: string,
       rowId: number
-    ) => {      
-      let newData = {...selectedData, 
-      [rowId]: {
-        value: value.value,
-        label: value.label
-      }
-    };
+    ) => {
+      let newData = {
+        ...selectedData,
+        [rowId]: {
+          value: value.value,
+          label: value.label
+        }
+      };
       setSelectedData(newData);
     };
 
@@ -232,7 +233,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
 
-    () => {};
+    () => { };
   }, [location]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
@@ -255,9 +256,9 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
     Object.keys(selectedData).forEach((rowId) => {
       const value = selectedData[Number(rowId)].value;
-    
+
       if (value === 0 || skill.includes(value)) return;
-    
+
       skill.push(value);
     });
 
@@ -277,7 +278,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       }
     );
     console.log(data);
-    
+
 
     if (data.status === true) {
       toast.success("Data successfully delivered!")
@@ -422,7 +423,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
               navigate("/manager/team/team_preference");
             }}
             type="button"
-            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            className="w-full border-white border-b-2 rounded-br-2xl text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Team Settings
           </button>
