@@ -693,7 +693,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     const getAllUnassignedGraduatesList = async () => {
       // @Todo use a real endpoint !
       const { data } = await axios.get(
-        `${environmentalVariables.backend}home/hr/GradView/`,
+        `${environmentalVariables.backend}home/hr/UnGradView/`,
         {
           headers: {
             AUTHORIZATION: authStore.authToken,
