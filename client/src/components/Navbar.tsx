@@ -59,7 +59,7 @@ const Navbar: FC<{
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
-      <div className="navbar bg-gray-100 text-black dark:bg-gray-600 dark:text-white px-7 py-3 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl">
+      <div className="navbar bg-gray-100 text-black dark:bg-gray-600 dark:text-white px-7 py-3 border-b-slate-200 flex flex-col justify-between sm:flex-row transition-all duration-150 shadow-xl z-30">
         <div className="gap-5 scale-90 sm:scale-100">
           <BackButton />
           <img src={logo} alt="the Auto Assign Logo" className="w-16 hover:animate-spin" onClick={() => goBackToLandingPage()} />
