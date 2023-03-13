@@ -61,7 +61,15 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     { email: "...", first_name: "...", id: 0, second_name: "..." },
   ]);
 
+  const [unAssignedManagersList, setUnAssignedManagersList] = useState<managerType[]>([
+    { email: "...", first_name: "...", id: 0, second_name: "..." },
+  ]);
+
   const [allGradList, setAllGradList] = useState<gradType[]>([
+    { email: "...", first_name: "...", id: 0, second_name: "..." },
+  ]);
+
+  const [unAssignedGradList, setUnAssignedGradList] = useState<gradType[]>([
     { email: "...", first_name: "...", id: 0, second_name: "..." },
   ]);
 
@@ -175,7 +183,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   }
 
   // Creates a table of graduates in a specific year
-  const GradListTable = ({
+  const GradListTableForSwapping = ({
     gradList,
     yearNumber,
   }: {
@@ -250,7 +258,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
-  const ManagerListTable = ({
+  const StaticListDisplayTable = ({
     managerList,
   }: {
     managerList: string[];
@@ -319,11 +327,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Year 1
-            <GradListTable gradList={yearOneGrads} yearNumber={1} />
+            <GradListTableForSwapping gradList={yearOneGrads} yearNumber={1} />
           </div>
           <div>
             Year 2
-            <GradListTable gradList={yearTwoGrads} yearNumber={2} />
+            <GradListTableForSwapping gradList={yearTwoGrads} yearNumber={2} />
           </div>
         </div>
         <div className="py-8">
@@ -359,7 +367,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Managers
-            <ManagerListTable
+            <StaticListDisplayTable
               managerList={managerList.map((manager) => manager.email)}
             />
           </div>
@@ -409,49 +417,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       }
     };
 
-    return (
-      <div className="w-3/4 pr-5 flex flex-col items-center">
-        <div className="py-8 flex flex-col md:flex-row justify-between">
-          <div className="flex flex-col w-96 justify-center text-center">
-            <label
-              htmlFor="Total Team Capacity : "
-              className="w-full block mb-2 text-gray-900 dark:text-white"
-            >
-              Total Grads Created : {gradsCreated}
-            </label>
-
-            <label
-              htmlFor="Total Team Capacity : "
-              className="w-full block mb-2 text-gray-900 dark:text-white"
-            >
-              Total Team Capacity : {teamCapacity}
-            </label>
-          </div>
-          <div className="flex flex-col w-96">
-            <button
-              type="button"
-              //htmlFor={confirmGraduateToTeamModalId2}
-              onClick={openModal}
-              className={`text-white ${
-                teamCapacity >= gradsCreated ? "bg-green-500" : "bg-red-500"
-              } ${
-                teamCapacity >= gradsCreated
-                  ? "hover:bg-green-800"
-                  : "hover:bg-red-800"
-              } focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
-              //disabled={teamCapacity >= gradsCreated ? false : true}
-            >
-              AUTO ASSIGN
-            </button>
-            {/* <AutoAssignModal handleAutoAssign={handleAutoAssign} /> */}
-            <label className="break-words text-center dark:text-white">
-              {teamCapacity >= gradsCreated
-                ? "Ready To assign"
-                : "Warning! team capacity is too low, graduates will be left unassigned"}{" "}
-            </label>
-          </div>
-          <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+    const AutoAssignModal = (): JSX.Element => {
+      return (
+        <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-50" onClose={closeModal}>
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -518,16 +487,60 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
               </div>
             </Dialog>
           </Transition>
+
+      );
+    }
+
+    return (
+      <div className="w-3/4 pr-5 flex flex-col items-center">
+        <div className="py-8 flex flex-col md:flex-row justify-between">
+          <div className="flex flex-col w-96 justify-center text-center">
+            <label
+              htmlFor="Total Team Capacity : "
+              className="w-full block mb-2 text-gray-900 dark:text-white"
+            >
+              Total Grads Created : {gradsCreated}
+            </label>
+
+            <label
+              htmlFor="Total Team Capacity : "
+              className="w-full block mb-2 text-gray-900 dark:text-white"
+            >
+              Total Team Capacity : {teamCapacity}
+            </label>
+          </div>
+          <div className="flex flex-col w-96">
+            <button
+              type="button"
+              onClick={openModal}
+              className={`text-white ${
+                teamCapacity >= gradsCreated ? "bg-green-500" : "bg-red-500"
+              } ${
+                teamCapacity >= gradsCreated
+                  ? "hover:bg-green-800"
+                  : "hover:bg-red-800"
+              } focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
+            >
+              AUTO ASSIGN
+            </button>
+            <label className="break-words text-center dark:text-white">
+              {teamCapacity >= gradsCreated
+                ? "Ready To assign"
+                : "Warning! team capacity is too low, graduates will be left unassigned"}{" "}
+            </label>
+          </div>
+          <AutoAssignModal />
         </div>
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Unassigned Graduates
-            {/* <UnassignedGraduateTable graduateList={allGradList} /> */}
+            {/* <UnassignedGraduateTable graduateList={unAssignedGradList} /> */}
+            <StaticListDisplayTable managerList={unAssignedGradList.map((manager) => manager.email)}/>
           </div>
           <div>
             Unassigned Managers
-            <ManagerListTable
-              managerList={managerList.map((manager) => manager.email)}
+            <StaticListDisplayTable
+              managerList={unAssignedManagersList.map((manager) => manager.email)}
             />
           </div>
         </div>
@@ -677,7 +690,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setManagerList(fetchedManagerList);
     };
 
-    const getUnassignedGraduatesList = async () => {
+    const getAllUnassignedGraduatesList = async () => {
       // @Todo use a real endpoint !
       const { data } = await axios.get(
         `${environmentalVariables.backend}home/hr/GradView/`,
@@ -690,13 +703,13 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
       const fetchedUnassignedGradList = data.data;
       console.log(fetchedUnassignedGradList);
-      setAllGradList(fetchedUnassignedGradList);
+      setUnAssignedGradList(fetchedUnassignedGradList);
     };
 
     const getAllUnassignedManagersList = async () => {
       // @Todo use a real endpoint !
       const { data } = await axios.get(
-        `${environmentalVariables.backend}home/hr/GradView/`,
+        `${environmentalVariables.backend}home/hr/UnManView/`,
         {
           headers: {
             AUTHORIZATION: authStore.authToken,
@@ -704,9 +717,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         }
       );
 
-      const fetchedUnassignedManagersList = data.data;
+      const fetchedUnassignedManagersList: gradType[] = data.data;
       console.log(fetchedUnassignedManagersList);
-      setAllGradList(fetchedUnassignedManagersList);
+      setUnAssignedManagersList(fetchedUnassignedManagersList);
     };
 
     const getAllYearOneGradList = async () => {
@@ -720,7 +733,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedYearOneGradList = data.data;
-      console.log(fetchedYearOneGradList);
       setYearOneGrads(fetchedYearOneGradList);
     };
 
@@ -735,7 +747,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedYearTwoGradList = data.data;
-      console.log(fetchedYearTwoGradList);
       setYearTwoGrads(fetchedYearTwoGradList);
     };
 
@@ -746,6 +757,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       getAllManagerList();
       getAllYearOneGradList();
       getAllYearTwoGradList();
+      getAllUnassignedGraduatesList();
+      getAllUnassignedManagersList();
     }
 
     return () => {

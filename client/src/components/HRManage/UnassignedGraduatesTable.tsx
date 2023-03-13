@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { gradType } from "../../pages/HRManagePage";
 
 const UnassignedGraduateTable = ({
     graduateList,
 }: {
-    graduateList: string[];
+    graduateList: gradType[];
 }): JSX.Element => {
     const [query, setQuery] = useState<string>("");
 
@@ -11,7 +12,7 @@ const UnassignedGraduateTable = ({
         query === ""
             ? graduateList
             : graduateList.filter((graduateName) => {
-                return graduateName.toLowerCase().includes(query.toLowerCase());
+                return graduateName.email.toLowerCase().includes(query.toLowerCase());
             });
 
     return (
@@ -36,14 +37,14 @@ const UnassignedGraduateTable = ({
                             <td className="py-4 px-6 text-right"></td>
                         </tr>
                     ) : (
-                        filteredPeople.map((managerName) => {
+                        filteredPeople.map((gradName) => {
                             return (
                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th
                                         scope="row"
                                         className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {managerName}
+                                        {gradName.email}
                                     </th>
                                 </tr>
                             );
