@@ -558,21 +558,18 @@ class testHrApi(APITestCase):
         new_response = self.client.get("/home/hr/AllTeamAndDep/", format="json")
 
         validate_data = [
-            OrderedDict([
-                ('team_name', 'Team'),
-                ('team_id', 1),
-                ('depart_name', 'Department'),
-                ('depart_id', 1),
-                ('man_id', 1),
-                ('man_name', 'Manager Test'),
-                ('team_members', [
-                    OrderedDict([
-                        ('grad_id', 1),
-                        ('grad_name', 'Graduate Test'),
-                        ('grad_email', 'Graduate@email.com')
-                    ])
-                ])
-            ])
+            {
+                'team_name': 'Team',
+                'team_id': 1,
+                'depart_name': 'Department',
+                'depart_id': 1,
+                'man_id': 1,
+                'man_name': 'Manager Test',
+                'team_members': [
+                    {'grad_id': 1, 'grad_name': 'Graduate Test', 'grad_email': 'Graduate@email.com'}
+                ],
+                'num_positions': 0
+            }
         ]
 
         self.assertEqual(new_response.data["data"], validate_data)
