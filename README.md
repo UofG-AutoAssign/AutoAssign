@@ -103,6 +103,7 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 - ``` python3 manage.py makemigrations ```  
 - ``` python3 manage.py migrate ```
 - ``` python3 populate.py ```
+- Try replacing ```python3``` with ```py``` it the above steps do not work
 
 #### React
 3) Setup React react using: ```npm install``` inside [client](client/)

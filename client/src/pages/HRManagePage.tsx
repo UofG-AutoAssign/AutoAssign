@@ -42,7 +42,14 @@ export type managerType = gradType;
 export type departmentType = {
   id: number;
   depart_name: string;
-}
+};
+
+export type gradYearOneTwoType = {
+  email: string;
+  first_name: string;
+  id: number;
+  second_name: string;
+};
 
 const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   initialState,
@@ -75,39 +82,42 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     },
   ]);
 
-  const [departmentOnlyList, setDepartmentOnlyList] = useState<departmentType[]>([]);
+  const [departmentOnlyList, setDepartmentOnlyList] = useState<
+    departmentType[]
+  >([]);
 
-  const [yearOneGrads, setYearOneGrads] = useState<string[]>([
-    "bob@barclays.com",
-    "jack@barclays.com",
-    "johnathon@barclays.com",
-    "hana@barclays.com",
-    "chris@barclays.com",
-    "johny@barclays.com",
-    "michael@barclays.com",
-    "thompson@barclays.com",
-    "joey@barclays.com",
+  const [yearOneGrads, setYearOneGrads] = useState<gradYearOneTwoType[]>([
+    {
+      email: "...",
+      first_name: "...",
+      second_name: "...",
+      id: -1,
+    },
   ]);
-  const [yearTwoGrads, setYearTwoGrads] = useState<string[]>([
-    "sam@barclays.com",
-    "dequan@barclays.com",
+  const [yearTwoGrads, setYearTwoGrads] = useState<gradYearOneTwoType[]>([
+    {
+      email: "...",
+      first_name: "...",
+      second_name: "...",
+      id: -1,
+    }
   ]);
 
   // Swaps the graduate to the other year table
-  const swapYear = (gradEmail: string, currentYear: number): void => {
+  const swapYear = (graduate: gradYearOneTwoType, currentYear: number): void => {
     if (currentYear === 1) {
-      let yearOneDummy = [...yearOneGrads].filter((grad) => grad !== gradEmail);
+      let yearOneDummy = [...yearOneGrads].filter((grad) => grad.id !== graduate.id);
       setYearOneGrads(yearOneDummy);
 
       let yearTwoDummy = [...yearTwoGrads];
-      yearTwoDummy.push(gradEmail);
+      yearTwoDummy.push(graduate);
       setYearTwoGrads(yearTwoDummy);
     } else if (currentYear === 2) {
-      let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad !== gradEmail);
+      let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad.id !== graduate.id);
       setYearTwoGrads(yearTwoDummy);
 
       let yearOneDummy = [...yearOneGrads];
-      yearOneDummy.push(gradEmail);
+      yearOneDummy.push(graduate);
       setYearOneGrads(yearOneDummy);
     } else {
       console.warn("You should not be here");
@@ -115,7 +125,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   };
 
   // add all year 1s to year 2s
-  const shiftYear = (): void => {
+  const shiftAllYearOnesToTwo = (): void => {
     let yearTwoDummy = [...yearTwoGrads];
     for (let idx = 0; idx < yearOneGrads.length; idx++) {
       yearTwoDummy.push(yearOneGrads[idx]);
@@ -126,12 +136,50 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     setYearOneGrads([]);
   };
 
+  const handleSaveGradYears = async (): Promise<void> => {
+    const postBody: {
+      grad_id: number;
+      year: number;
+    }[] = []
+
+    yearOneGrads.forEach(({ id }) => {
+      postBody.push({ grad_id: id, year: 1 })
+    })
+
+    yearTwoGrads.forEach(({ id }) => {
+      postBody.push({ grad_id: id, year: 2 })
+    })
+
+    console.log(postBody);
+    
+    const { data } = await axios.post(
+      `${environmentalVariables.backend}home/hr/ChangeGraduateYear/`,
+      postBody,
+      {
+        headers: {
+          AUTHORIZATION: authStore.authToken,
+        },
+      }
+    );
+
+    console.log(data);
+    
+    if (data.status === true) {
+      toast.success("Graduate Years Updated!")
+      setTimeout(() => {
+        location.reload(); // Force refresh page
+      }, 1000);
+    } else {
+      toast.error("Update failed :(")
+    }
+  }
+
   // Creates a table of graduates in a specific year
   const GradListTable = ({
     gradList,
     yearNumber,
   }: {
-    gradList: string[];
+    gradList: gradYearOneTwoType[];
     yearNumber: number;
   }): JSX.Element => {
     const [query, setQuery] = useState<string>("");
@@ -140,8 +188,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? gradList
         : gradList.filter((gradName) => {
-          return gradName.toLowerCase().includes(query.toLowerCase());
-        });
+            const gradFullname = `${gradName.first_name}  ${gradName.second_name}`;
+
+            return gradFullname.toLowerCase().includes(query.toLowerCase());
+          });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -154,7 +204,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"></thead>
           <tbody>
-            {gradList.length === 0 ? (
+            {filteredPeople.length === 0 ? (
               <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
@@ -163,31 +213,32 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
                   Empty
                 </th>
                 <td className="py-4 px-6 text-right">
-                  <a
-                    href="#"
+                  <button
+                    type="button"
                     className="invisible font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     swap
-                  </a>
+                  </button>
                 </td>
               </tr>
             ) : (
-              filteredPeople.map((gradName) => {
+              filteredPeople.map((grad) => {
                 return (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {gradName}
+                      {grad.first_name} {grad.second_name}
                     </th>
                     <td className="py-4 px-6 text-right">
-                      <div
+                      <button
+                        type="button"
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        onClick={() => swapYear(gradName, yearNumber)}
+                        onClick={() => swapYear(grad, yearNumber)}
                       >
                         swap
-                      </div>
+                      </button>
                     </td>
                   </tr>
                 );
@@ -210,8 +261,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? managerList
         : managerList.filter((managerName) => {
-          return managerName.toLowerCase().includes(query.toLowerCase());
-        });
+            return managerName.toLowerCase().includes(query.toLowerCase());
+          });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -279,7 +330,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
           <button
             type="button"
             className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
-            onClick={shiftYear}
+            onClick={() => shiftAllYearOnesToTwo()}
           >
             Shift Year 1 Grads to Year 2 Grads
           </button>
@@ -287,6 +338,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <button
           type="button"
           className="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
+          onClick={() => handleSaveGradYears()}
         >
           Save
         </button>
@@ -307,7 +359,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Managers
-            <ManagerListTable managerList={managerList.map((manager) => manager.email)} />
+            <ManagerListTable
+              managerList={managerList.map((manager) => manager.email)}
+            />
           </div>
         </div>
       </div>
@@ -315,25 +369,19 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   };
 
   const AutoAssign = (): JSX.Element => {
-
     const [gradsCreated, setGradsCreated] = useState<number>(10);
     const [teamCapacity, setTeamCapacity] = useState<number>(2);
 
-    let [isOpen, setIsOpen] = useState(false)
+    let [isOpen, setIsOpen] = useState(false);
 
-    function closeModal() {
-      setIsOpen(false)
-    }
+    const closeModal = () => setIsOpen(false);
 
-    function openModal() {
-      setIsOpen(true)
-    }
+    const openModal = () => setIsOpen(true);
 
     const handleAutoAssign = async (): Promise<boolean> => {
       try {
-
         if (teamCapacity < gradsCreated) {
-          toast.warning("Not enough capacity")
+          toast.warning("Not enough capacity");
           return false;
         }
         // @Todo run assignment algorithm
@@ -384,15 +432,23 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
               type="button"
               //htmlFor={confirmGraduateToTeamModalId2}
               onClick={openModal}
-              className={`text-white ${teamCapacity >= gradsCreated ? 'bg-green-500' : 'bg-red-500'} ${teamCapacity >= gradsCreated ? 'hover:bg-green-800' : 'hover:bg-red-800'} focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
-            //disabled={teamCapacity >= gradsCreated ? false : true}
+              className={`text-white ${
+                teamCapacity >= gradsCreated ? "bg-green-500" : "bg-red-500"
+              } ${
+                teamCapacity >= gradsCreated
+                  ? "hover:bg-green-800"
+                  : "hover:bg-red-800"
+              } focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
+              //disabled={teamCapacity >= gradsCreated ? false : true}
             >
               AUTO ASSIGN
-
             </button>
             {/* <AutoAssignModal handleAutoAssign={handleAutoAssign} /> */}
-            <label className="break-words text-center dark:text-white" >{teamCapacity >= gradsCreated ? 'Ready To assign' : 'Warning! team capacity is too low, graduates will be left unassigned'} </label>
-
+            <label className="break-words text-center dark:text-white">
+              {teamCapacity >= gradsCreated
+                ? "Ready To assign"
+                : "Warning! team capacity is too low, graduates will be left unassigned"}{" "}
+            </label>
           </div>
           <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -428,21 +484,32 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          {teamCapacity >= gradsCreated ? 'Are you sure you want to assign teams? This action can not be reversed.' : 'team capacity is too low, some graduates will be left unassigned.  This action cannot be undone'}
-
+                          {teamCapacity >= gradsCreated
+                            ? "Are you sure you want to assign teams? This action can not be reversed."
+                            : "team capacity is too low, some graduates will be left unassigned.  This action cannot be undone"}
                         </p>
                       </div>
 
                       <div className="mt-4">
                         <button
                           type="button"
-                          className={`inline-flex justify-center rounded-md border border-transparent  ${teamCapacity >= gradsCreated ? "bg-blue-600" : "bg-red-500"}  px-4 py-2 text-sm font-medium text-white ${teamCapacity >= gradsCreated ? "hover:bg-blue-200" : "hover:bg-red-800"} focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
+                          className={`inline-flex justify-center rounded-md border border-transparent  ${
+                            teamCapacity >= gradsCreated
+                              ? "bg-blue-600"
+                              : "bg-red-500"
+                          }  px-4 py-2 text-sm font-medium text-white ${
+                            teamCapacity >= gradsCreated
+                              ? "hover:bg-blue-200"
+                              : "hover:bg-red-800"
+                          } focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
                           onClick={() => {
                             handleAutoAssign();
                             setIsOpen(false);
                           }}
                         >
-                          {teamCapacity >= gradsCreated ? "Assign Teams" : "Assign Anyway"}
+                          {teamCapacity >= gradsCreated
+                            ? "Assign Teams"
+                            : "Assign Anyway"}
                         </button>
                       </div>
                     </Dialog.Panel>
@@ -455,22 +522,27 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Unassigned Graduates
-            <UnassignedGraduateTable graduateList={yearOneGrads} />
+            {/* <UnassignedGraduateTable graduateList={allGradList} /> */}
           </div>
           <div>
             Unassigned Managers
-            <ManagerListTable managerList={managerList.map((manager) => manager.email)} />
+            <ManagerListTable
+              managerList={managerList.map((manager) => manager.email)}
+            />
           </div>
         </div>
-
-      </div >
-
+      </div>
     );
   };
 
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
-      return <TeamTable allManagerList={managerList} departmentList={departmentOnlyList}/>;
+      return (
+        <TeamTable
+          allManagerList={managerList}
+          departmentList={departmentOnlyList}
+        />
+      );
     }
     if (currentTab === "Delete Team") {
       return <DeleteTeam teamAndDepartmentList={teamAndDepartmentList} />;
@@ -510,10 +582,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   };
 
   const navigate = useNavigate();
-  let location = useLocation();
+  let currentUrl = useLocation();
 
   useEffect(() => {
-    const query = location.pathname.split("/").at(-1);
+    const query = currentUrl.pathname.split("/").at(-1);
 
     if (query === "view_team") setCurrentTab("Teams");
     else if (query === "delete_team") setCurrentTab("Delete Team");
@@ -525,12 +597,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setCurrentTab("Create Graduate Account");
     else if (query === "create_manager_account")
       setCurrentTab("Create Manager Account");
-    else if (query === "auto_assign")
-      setCurrentTab("Auto Assign");
+    else if (query === "auto_assign") setCurrentTab("Auto Assign");
     else setCurrentTab("Teams");
 
-    () => { };
-  }, [location]);
+    () => {};
+  }, [currentUrl]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
@@ -545,7 +616,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedTeamList: teamAndDepartmentType[] = data.data;
-      console.log(fetchedTeamList);
+      // console.log(fetchedTeamList);
 
       if (data.status === false) {
         toast.error("Failed to fetch teams list");
@@ -566,7 +637,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedDepartmentList: departmentType[] = data.data;
-      console.log(fetchedDepartmentList);
+      // console.log(fetchedDepartmentList);
 
       if (data.status === false) {
         toast.error("Failed to fetch departments list");
@@ -574,7 +645,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       }
 
       setDepartmentOnlyList(fetchedDepartmentList);
-    }
+    };
 
     const getAllGradList = async () => {
       const { data } = await axios.get(
@@ -587,7 +658,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedGradList = data.data;
-      console.log(fetchedGradList);
+      // console.log(fetchedGradList);
       setAllGradList(fetchedGradList);
     };
 
@@ -602,7 +673,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedManagerList = data.data;
-      console.log(fetchedManagerList);
+      // console.log(fetchedManagerList);
       setManagerList(fetchedManagerList);
     };
 
@@ -638,12 +709,43 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setAllGradList(fetchedUnassignedManagersList);
     };
 
+    const getAllYearOneGradList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/AllYearOneGrad/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedYearOneGradList = data.data;
+      console.log(fetchedYearOneGradList);
+      setYearOneGrads(fetchedYearOneGradList);
+    };
+
+    const getAllYearTwoGradList = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/AllYearTwoGrad/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const fetchedYearTwoGradList = data.data;
+      console.log(fetchedYearTwoGradList);
+      setYearTwoGrads(fetchedYearTwoGradList);
+    };
+
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
       getAllDepartsList();
       getAllGradList();
       getAllManagerList();
-      // @Todo send team_id to receive member list of each team
+      getAllYearOneGradList();
+      getAllYearTwoGradList();
     }
 
     return () => {
