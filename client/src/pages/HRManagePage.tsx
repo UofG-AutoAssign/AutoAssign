@@ -363,8 +363,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
-        <div className="py-8 flex flex-row justify-between">
-          <div className="flex flex-col  w-96">
+        <div className="py-8 flex flex-col md:flex-row justify-between">
+          <div className="flex flex-col w-96 justify-center text-center">
             <label
               htmlFor="Total Team Capacity : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
