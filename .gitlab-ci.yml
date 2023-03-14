@@ -1,4 +1,4 @@
-image: node:16.5.0
+image: python:3.8-alpine
 
 # Define the pipeline stages
 stages:
@@ -9,12 +9,12 @@ stages:
 # Define the jobs
 build-backend:
   stage: build
-  image: python:3.8 
   before_script:
     # Install dependencies
+    - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
-    - pip install -r requirements.txt
+    - pip install --no-cache-dir -r requirements.txt
   script:
     # Build the Django backend
     - python manage.py makemigrations
@@ -29,6 +29,7 @@ build-frontend:
       prefix: npm
     paths:
       - client/node_modules/
+  image: node:16.5.0-alpine
   script:
     - cd "client"
     - npm install
@@ -41,25 +42,24 @@ build-frontend:
 
 test-backend:
   stage: test
-  image: python:3.8 
   before_script:
     # Install dependencies
+    - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
-    - pip install -r requirements.txt
+    - pip install --no-cache-dir -r requirements.txt
   script:
     # Run the Django backend tests
     - python manage.py test
 
 backend_code_quality_pylint:
   stage: quality
-  image: python:3.8
   before_script:
     # Install dependencies
+    - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
-    - pip install -r requirements.txt
-    - pip install pylint pylint-django
+    - pip install --no-cache-dir pylint pylint-django
   script:
     # Run pylint to check for coding style issues and other code quality problems
     - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 ext
@@ -72,3 +72,14 @@ backend_code_quality_pylint:
   artifacts:
     paths:
       - htmlcov/
+      
+frontend_code_quality_eslint:
+  stage: quality
+  image: node:16.5.0
+  before_script:
+    # Install dependencies
+    - cd "client"
+    - npm install
+    - npm install eslint eslint-plugin-react @typescript-eslint/parser @typescript-eslint/eslint-plugin
+  script:
+    - npx eslint --ext .tsx --ext .ts
