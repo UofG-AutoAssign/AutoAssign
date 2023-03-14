@@ -100,20 +100,27 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       first_name: "...",
       second_name: "...",
       id: -1,
-    }
+    },
   ]);
 
   // Swaps the graduate to the other year table
-  const swapYear = (graduate: gradYearOneTwoType, currentYear: number): void => {
+  const swapYear = (
+    graduate: gradYearOneTwoType,
+    currentYear: number
+  ): void => {
     if (currentYear === 1) {
-      let yearOneDummy = [...yearOneGrads].filter((grad) => grad.id !== graduate.id);
+      let yearOneDummy = [...yearOneGrads].filter(
+        (grad) => grad.id !== graduate.id
+      );
       setYearOneGrads(yearOneDummy);
 
       let yearTwoDummy = [...yearTwoGrads];
       yearTwoDummy.push(graduate);
       setYearTwoGrads(yearTwoDummy);
     } else if (currentYear === 2) {
-      let yearTwoDummy = [...yearTwoGrads].filter((grad) => grad.id !== graduate.id);
+      let yearTwoDummy = [...yearTwoGrads].filter(
+        (grad) => grad.id !== graduate.id
+      );
       setYearTwoGrads(yearTwoDummy);
 
       let yearOneDummy = [...yearOneGrads];
@@ -140,18 +147,18 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     const postBody: {
       grad_id: number;
       year: number;
-    }[] = []
+    }[] = [];
 
     yearOneGrads.forEach(({ id }) => {
-      postBody.push({ grad_id: id, year: 1 })
-    })
+      postBody.push({ grad_id: id, year: 1 });
+    });
 
     yearTwoGrads.forEach(({ id }) => {
-      postBody.push({ grad_id: id, year: 2 })
-    })
+      postBody.push({ grad_id: id, year: 2 });
+    });
 
     console.log(postBody);
-    
+
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/hr/ChangeGraduateYear/`,
       postBody,
@@ -163,16 +170,16 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
 
     console.log(data);
-    
+
     if (data.status === true) {
-      toast.success("Graduate Years Updated!")
+      toast.success("Graduate Years Updated!");
       setTimeout(() => {
         location.reload(); // Force refresh page
       }, 1000);
     } else {
-      toast.error("Update failed :(")
+      toast.error("Update failed :(");
     }
-  }
+  };
 
   // Creates a table of graduates in a specific year
   const GradListTable = ({
@@ -771,7 +778,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
           <button
             onClick={() => navigate("/hr/manage/delete_team")}
             type="button"
-            className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Delete Team
           </button>
