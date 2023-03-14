@@ -183,9 +183,6 @@ class Team(models.Model):
                                  unique=True,
                                  )
 
-    team_profile = models.JSONField(verbose_name="team's profile ",
-                                    null=True)
-
     # One to One Link to Manger
 
     man_id = models.OneToOneField(to="Manager", on_delete=models.CASCADE, null=True)
