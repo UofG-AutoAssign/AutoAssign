@@ -194,7 +194,7 @@ class Team(models.Model):
     depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)
 
     ratio = models.FloatField(verbose_name="Ratio",
-                              null=True)
+                              null=True, default=0.5)
 
     skill = models.ManyToManyField(to="Skill")
 
