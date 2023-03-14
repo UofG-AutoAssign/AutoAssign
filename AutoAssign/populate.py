@@ -306,10 +306,13 @@ def populate():
                                            second_name=Grad['second_name'], password=Grad['password'],
                                            role=Grad['role'])
 
-        for i in range(5):
-            L1 = random.randint(0, 42)
+        skill_id = 1
 
-            skill_obj = Skill.objects.filter(id=L1).first()
+        for i in range(5):
+
+            skill_id = skill_id + 1
+
+            skill_obj = Skill.objects.filter(id=skill_id).first()
             new_Form = Form.objects.create(interest=i, experience=j, skill_id=skill_obj, graduate=new_grad)
             new_Form.save()
 

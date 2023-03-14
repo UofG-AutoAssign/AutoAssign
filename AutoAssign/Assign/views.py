@@ -11,6 +11,8 @@ from ext.encryption import Encryption
 from Assign import serializers
 from Assign import models
 
+from Assign import alg
+
 
 # Create your views here.
 
@@ -138,7 +140,6 @@ class HrView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-
         # Retrieve the user's information and serialize it using the HrSerializer
         ser = serializers.HrSerializer(instance=request.user)
 
@@ -149,7 +150,6 @@ class HrView(APIView):
         return Response(context)
 
     def put(self, request):
-
         # Update the user's information with the data provided in the request
         ser = serializers.HrSerializer(instance=request.user, data=request.data)
 
@@ -168,7 +168,6 @@ class GradView(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-
         # Retrieve the user's information and serialize it using the GradSerializer
         ser = serializers.GradSerializer(instance=request.user)
 
@@ -179,7 +178,6 @@ class GradView(APIView):
         return Response(context)
 
     def put(self, request):
-
         # Update the user's information with the data provided in the request
         ser = serializers.GradSerializer(instance=request.user, data=request.data)
 
@@ -200,7 +198,6 @@ class ViewGradTeamInfo(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-
         # Retrieve the current graduate's object
         grad_obj = request.user
 
@@ -297,7 +294,6 @@ class SkillView(APIView):
 
     # Retrieve a list of all available skills
     def get(self, request):
-
         # Retrieve all Skill objects from the database and serialize them using the SkillSerializer
         skill_queryset = models.Skill.objects.all()
 
@@ -389,7 +385,6 @@ class TeamMemberView(APIView):
         # If the current user has a team, retrieve all graduate members of the team
         # and serialize them using TeamViewSerializer
         if team_obj:
-
             grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
             ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
 
@@ -1021,5 +1016,15 @@ class AllYearOneGrad(APIView):
         ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
 
         context = {"code": 200, "status": True, "data": ser.data}
+
+        return Response(context)
+
+
+class AutoAssignAlg(APIView):
+
+    def get(self, request):
+        alg.assign_graduates_to_teams()
+
+        context = {"code": 200, "status": True, "detail": "Has been Assign"}
 
         return Response(context)
