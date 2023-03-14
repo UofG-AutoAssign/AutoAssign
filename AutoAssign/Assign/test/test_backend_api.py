@@ -565,6 +565,7 @@ class testHrApi(APITestCase):
                 ('depart_id', 1),
                 ('man_id', 1),
                 ('man_name', 'Manager Test'),
+                ('man_email', 'Manager@email.com'),
                 ('team_members', [
                     {'grad_id': 1, 'grad_name': 'Graduate Test', 'grad_email': 'Graduate@email.com'}
                 ]),
