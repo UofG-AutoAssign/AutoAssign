@@ -67,6 +67,7 @@ backend_code_quality_pylint:
     - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 views.py
     - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 serializers.py
     - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 models.py
+    - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 alg.py
 
   artifacts:
     paths:
