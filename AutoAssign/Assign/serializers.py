@@ -394,6 +394,8 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
     team_members = serializers.SerializerMethodField()
 
+    man_email = serializers.SerializerMethodField()
+
     def get_depart_name(self, obj):
         dep_id = obj.depart_id
 
@@ -414,6 +416,15 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
         return "Null"
 
+    def get_man_email(self, obj):
+
+        man_id = obj.man_id
+
+        if man_id:
+            return man_id.email
+
+        return "Null"
+
     def get_team_members(self, obj):
 
         grad_obj = models.Graduate.objects.filter(team_id=obj.id).all()
@@ -429,5 +440,5 @@ class TeamAndDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["team_name", "team_id", "depart_name",
-                  "depart_id", "man_id", "man_name", "team_members", "num_positions"]
+                  "depart_id", "man_id", "man_name", "man_email", "team_members", "num_positions"]
         list_serializer_class = serializers.ListSerializer
