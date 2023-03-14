@@ -16,14 +16,13 @@ const RemoveGraduate: FC<{
   const [selectedGrad, setSelectedGrad] = useState<string>("");
   const [allYearTwoGrads, setAllYearTwoGrads] = useState<gradType[]>([])
 
-  const handleRemoveGrad = async (): Promise<boolean> => {
+  const handleRemoveGrad = async (): Promise<void> => {
     try {
       const gradId = (selectedGrad as any).id;
       console.log(gradId);
 
       if (!selectedGrad || !gradId) {
         toast.error("No empty input fields allowed")
-        return false;
       }
 
       const { data } = await axios.post(
@@ -41,15 +40,16 @@ const RemoveGraduate: FC<{
 
       if (data.status === true) {
         toast.success("Graduate successfully deleted!");
-        return true;
+
+        setTimeout(() => {
+          location.reload();
+        }, 1500)
       } else {
         toast.error(`Failed to delete graduate: ${data.status}`);
-        return false;
       }
     } catch (error) {
       console.log(error);
       toast.error(`Failed to send deletion request`);
-      return false;
     }
   };
 

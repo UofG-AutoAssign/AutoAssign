@@ -2,7 +2,7 @@ import { FC } from "react";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 
 const AssignGraduateModal: FC<{
-  handleAssignGrad: () => Promise<boolean>;
+  handleAssignGrad: () => Promise<void>;
 }> = ({ handleAssignGrad }) => {
   return (
     <>

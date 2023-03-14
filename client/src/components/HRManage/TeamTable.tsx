@@ -78,7 +78,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
       toast.success("New Team Saved to Database!")
       setTimeout(() => {
         location.reload(); // Force refresh page
-      }, 1000);
+      }, 1500);
     } else {
       toast.error(`Failed to Create New Team ${data.error[0].man_id}`)
     }

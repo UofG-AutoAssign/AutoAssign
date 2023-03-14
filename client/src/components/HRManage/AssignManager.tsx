@@ -17,7 +17,7 @@ const AssignManager: FC<{
   const [selectedManager, setSelectedManager] = useState<string>("");
   const [selectedTeam, setSelectedTeam] = useState<string>("");
 
-  const handleAssignManager = async (): Promise<boolean> => {
+  const handleAssignManager = async (): Promise<void> => {
     try {
       const managerId = (selectedManager as any).id;
       const teamId = teamAndDepartmentList.find((team) => team.team_name === selectedTeam)?.team_id;
@@ -25,7 +25,6 @@ const AssignManager: FC<{
 
       if (!selectedManager || !selectedTeam || !managerId || !teamId) {
         toast.error("No empty input fields allowed")
-        return false;
       }
       
       const { data } = await axios.put(
@@ -44,15 +43,16 @@ const AssignManager: FC<{
 
       if (data.status === true) {
         toast.success("Manager successfully assigned!");
-        return true;
+        
+        setTimeout(() => {
+          location.reload();
+        }, 1500)
       } else {
         toast.error(`Failed to assign manager: ${data.status}`);
-        return false;
       }
     } catch (error) {
       console.log(error);
       toast.error(`Failed to send request`);
-      return false;
     }
   };
 
