@@ -20,20 +20,11 @@ const AccountPage: FC = () => {
 
   // Conditionally display the component depending on the active tab
   const DisplayComponent = (): JSX.Element => {
-    const data = [
-      userFirstName,
-      userLastName,
-      userEmail,      
-    ]
+    const data = [userFirstName, userLastName, userEmail];
 
     if (userYear) data.push(String(userYear));
 
-    if (currentTab === "Settings")
-      return (
-        <AccountTable
-        data={data}
-        />
-      );
+    if (currentTab === "Settings") return <AccountTable data={data} />;
     else {
       return <PasswordSetting />;
     }
@@ -230,7 +221,6 @@ const AccountPage: FC = () => {
       } else if (authStore.userType === "Hr") {
         userTypeQuery = "hr";
       }
-      
 
       axios
         .get(`${environmentalVariables.backend}home/${userTypeQuery}`, {
@@ -267,7 +257,7 @@ const AccountPage: FC = () => {
           <button
             onClick={() => setCurrentTab("Settings")}
             type="button"
-            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            className="w-full border-white border-b-2 rounded-tr-2xl rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Contact Details
           </button>
@@ -275,12 +265,14 @@ const AccountPage: FC = () => {
           <button
             onClick={() => setCurrentTab("Password")}
             type="button"
-            className="w-full border-white border-b-2 rounded-l-none text-white bg-loginBlue hover:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
+            className="w-full border-white border-b-2 rounded-br-2xl text-white bg-loginBlue hover:bg-loginBlueBold focus:bg-loginBlueBold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium text-lg px-5 py-2.5 text-center mb-0"
           >
             Change Password
           </button>
         </div>
-        <div className="w-3/4 "><DisplayComponent /></div>
+        <div className="w-3/4 ">
+          <DisplayComponent />
+        </div>
       </section>
     </div>
   );
