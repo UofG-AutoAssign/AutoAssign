@@ -10,7 +10,6 @@ import DeleteTeam from "../components/HRManage/DeleteTeam";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
 import TeamTable from "../components/HRManage/TeamTable";
-import UnassignedGraduateTable from "../components/HRManage/UnassignedGraduatesTable";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
