@@ -1037,11 +1037,33 @@ class AutoAssignAlg(APIView):
         for team_obj in team_objs:
             max_capacity = max_capacity + team_obj.num_positions
 
-        context = {"code": 200, "status": True, "max_capacity": max_capacity}
+        for team_obj in team_objs:
+            skill_obj = team_obj.skill.all()
+            ratio = team_obj.ratio
+
+            if not skill_obj or not ratio:
+                context = {"code": 200, "status": True,
+                           "status_code": 0,
+                           "max_capacity": max_capacity,
+                           "detail": "There are team that have not completed the setup."}
+
+                return Response(context)
+
+        context = {"code": 200, "status": True,
+                   "status_code": 1,
+                   "max_capacity": max_capacity,
+                   "detail": "Teams are ready to AutoAssign."}
 
         return Response(context)
 
     def post(self, request):
+
+        check_num = request.data['check_num']
+
+        if check_num != 1:
+            context = {"code": 200, "status": False, "detail": "Fail to delete"}
+
+            return Response(context)
 
         alg.assign_graduates_to_teams()
 
