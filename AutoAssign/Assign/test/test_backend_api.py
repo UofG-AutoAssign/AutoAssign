@@ -136,15 +136,20 @@ class testGraduateApi(APITestCase):
         # Get Team Information
         new_response = self.client.get("/home/grad/team/", format="json")
 
-        validate_data = OrderedDict([
-            ('email', 'Graduate@email.com'),
-            ('first_name', 'Graduate'),
-            ('second_name', 'Test')
-        ])
+        validate_data = {
+            'team_name': 'Team',
+            'man_information': [
+                {'man_id': 1, 'man_name': 'Manager Test', 'man_email': 'Manager@email.com'}
+            ],
+            'depart_information': 'Null',
+            'team_members': [
+                {'grad_id': 1, 'grad_name': 'Graduate Test'}
+            ]
+        }
 
         self.assertEqual(new_response.data['code'], 200)
         self.assertEqual(new_response.data['status'], True)
-        self.assertEqual(new_response.data['data'], [validate_data])
+        self.assertEqual(new_response.data['data'], validate_data)
 
         # Get Graduate Form Information
         new_response = self.client.get("/home/grad/form/", format="json")
@@ -288,18 +293,25 @@ class testManGerApi(APITestCase):
 
         # Get Team information:
 
-        new_response = self.client.get("/home/man/Team/", format="json")
+        new_response = self.client.get("/home/man/team/", format="json")
 
-        ordered_dict = OrderedDict()
-        ordered_dict['email'] = 'Graduate@email.com'
-        ordered_dict['first_name'] = 'Graduate'
-        ordered_dict['second_name'] = 'Test'
+        data = {
+            'team_name': 'Team',
+            'man_information': [
+                {'man_id': 1, 'man_name': 'Manager Test', 'man_email': 'Manager@email.com'}
+            ],
+            'depart_information': 'Null',
+            'team_members': [
+                {'grad_id': 1, 'grad_name': 'Graduate Test'}
+            ]
+        }
 
         validate_data = {
             'code': 200,
             'status': True,
-            'data': [ordered_dict]
+            'data': data
         }
+
         self.assertEqual(new_response.data, validate_data)
 
         # View Team Setting

@@ -207,8 +207,7 @@ class ViewGradTeamInfo(APIView):
         # If the current graduate has a team,
         # retrieve all graduates on the team and serialize the data
         if team_obj:
-            grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
-            ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
+            ser = serializers.TeamViewSerializer(instance=team_obj)
 
             # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
@@ -385,9 +384,7 @@ class TeamMemberView(APIView):
         # If the current user has a team, retrieve all graduate members of the team
         # and serialize them using TeamViewSerializer
         if team_obj:
-            grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
-            ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
-
+            ser = serializers.TeamViewSerializer(instance=team_obj)
             # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
 
