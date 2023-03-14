@@ -155,9 +155,50 @@ class TeamViewSerializer(serializers.ModelSerializer):
         Serialize the output Team information
     """
 
+    team_members = serializers.SerializerMethodField()
+
+    man_information = serializers.SerializerMethodField()
+
+    depart_information = serializers.SerializerMethodField()
+
+    def get_man_information(self, obj):
+
+        man_obj = obj.man_id
+
+        if man_obj:
+            return [
+                {"man_id": man_obj.id,
+                 "man_name": man_obj.first_name + " " + man_obj.second_name,
+                 "man_email": man_obj.email}
+            ]
+
+        return "Null"
+
+    def get_team_members(self, obj):
+        grad_obj = models.Graduate.objects.filter(team_id=obj).all()
+
+        if grad_obj:
+            return [
+                {"grad_id": i.id, "grad_name": i.first_name + " " + i.second_name, }
+                for i in grad_obj]
+
+        return "Null"
+
+    def get_depart_information(self, obj):
+
+        depart_obj = obj.depart_id
+
+        if depart_obj:
+            return [
+                {"dep_id": depart_obj.id,
+                 "dep_name": depart_obj.depart_name}
+            ]
+
+        return "Null"
+
     class Meta:
-        model = models.Graduate
-        fields = ["email", "first_name", "second_name"]
+        model = models.Team
+        fields = ["team_name", "man_information", "depart_information","team_members"]
         list_serializer_class = serializers.ListSerializer
 
 
@@ -394,6 +435,8 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
     team_members = serializers.SerializerMethodField()
 
+    man_email = serializers.SerializerMethodField()
+
     def get_depart_name(self, obj):
         dep_id = obj.depart_id
 
@@ -414,6 +457,15 @@ class TeamAndDepartment(serializers.ModelSerializer):
 
         return "Null"
 
+    def get_man_email(self, obj):
+
+        man_id = obj.man_id
+
+        if man_id:
+            return man_id.email
+
+        return "Null"
+
     def get_team_members(self, obj):
 
         grad_obj = models.Graduate.objects.filter(team_id=obj.id).all()
@@ -429,5 +481,5 @@ class TeamAndDepartment(serializers.ModelSerializer):
     class Meta:
         model = models.Team
         fields = ["team_name", "team_id", "depart_name",
-                  "depart_id", "man_id", "man_name", "team_members", "num_positions"]
+                  "depart_id", "man_id", "man_name", "man_email", "team_members", "num_positions"]
         list_serializer_class = serializers.ListSerializer

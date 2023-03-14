@@ -207,8 +207,7 @@ class ViewGradTeamInfo(APIView):
         # If the current graduate has a team,
         # retrieve all graduates on the team and serialize the data
         if team_obj:
-            grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
-            ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
+            ser = serializers.TeamViewSerializer(instance=team_obj)
 
             # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
@@ -385,9 +384,7 @@ class TeamMemberView(APIView):
         # If the current user has a team, retrieve all graduate members of the team
         # and serialize them using TeamViewSerializer
         if team_obj:
-            grad_queryset = models.Graduate.objects.filter(team_id=team_obj).all()
-            ser = serializers.TeamViewSerializer(instance=grad_queryset, many=True)
-
+            ser = serializers.TeamViewSerializer(instance=team_obj)
             # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
 
@@ -553,6 +550,15 @@ class AssignGradToTeam(APIView):
         grad_obj = models.Graduate.objects.filter(id=grad_id).first()
         team_id = data['team_id']
         team_obj = models.Team.objects.filter(id=team_id).first()
+
+        # Check Team Capacity
+        num_graduates = models.Graduate.objects.filter(team_id=team_obj).count()
+        max_capacity = team_obj.num_positions
+
+        if num_graduates + 1 > max_capacity:
+            return Response(
+                {"code": 403, "status": False,
+                 'error': "Assign Grad failed", "detail": "The team is full"})
 
         # If either the Graduate or Team object was not found, return an error response
         if not grad_obj:
@@ -1024,6 +1030,19 @@ class AutoAssignAlg(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
+        team_objs = models.Team.objects.all()
+
+        max_capacity = 0
+
+        for team_obj in team_objs:
+            max_capacity = max_capacity + team_obj.num_positions
+
+        context = {"code": 200, "status": True, "max_capacity": max_capacity}
+
+        return Response(context)
+
+    def post(self, request):
+
         alg.assign_graduates_to_teams()
 
         context = {"code": 200, "status": True, "detail": "Has been Assign"}

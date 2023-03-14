@@ -70,8 +70,8 @@ def calculate_match_score(graduate, team):
     # Construct interest and experience vectors
     for form in graduate.form_set.all():
         skill_id = form.skill_id
-        interest = form.interest / 5  # Normalize interest to range 0 to 1
-        experience = form.experience / 5   # Normalize experience to range 0 to 1
+        interest = form.interest / 4  # Normalize interest to range 0 to 1
+        experience = form.experience / 4   # Normalize experience to range 0 to 1
         interest_vec[skill_id] = interest
         experience_vec[skill_id] = experience
 

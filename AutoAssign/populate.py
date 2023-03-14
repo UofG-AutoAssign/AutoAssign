@@ -300,8 +300,8 @@ def populate():
 
     for Grad in GraduateList:
 
-        i = random.randint(0, 5)
-        j = random.randint(0, 5)
+        i = random.randint(0, 4)
+        j = random.randint(0, 4)
 
         new_grad = Graduate.objects.create(email=Grad['email'], first_name=Grad['first_name'],
                                            second_name=Grad['second_name'], password=Grad['password'],
