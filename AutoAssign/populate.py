@@ -135,7 +135,6 @@ def populate():
          'role': 2,
          },
 
-
     ]
 
     HRList = [
@@ -217,42 +216,42 @@ def populate():
 
     TeamList = [
         {'team_name': 'Cloud Analyst', 'Skill_One': 1, 'Skill_Two': 2, 'Skill_Three': 3, 'Skill_Four': 4,
-         'Skill_Five': 5,
+         'Skill_Five': 5, 'ratio': 0.3
          },
         {'team_name': 'CSharp Developer', 'Skill_One': 6, 'Skill_Two': 7, 'Skill_Three': 8, 'Skill_Four': 9,
-         'Skill_Five': 10,
+         'Skill_Five': 10, 'ratio': 0.4
          },
         {'team_name': 'Equities Flow Derivatives Production Support', 'Skill_One': 11, 'Skill_Two': 12,
          'Skill_Three': 13, 'Skill_Four': 14,
-         'Skill_Five': 15,
+         'Skill_Five': 15, 'ratio': 0.6
          },
         {'team_name': 'AVP Software Develop', 'Skill_One': 16, 'Skill_Two': 17,
          'Skill_Three': 18, 'Skill_Four': 19,
-         'Skill_Five': 20,
+         'Skill_Five': 20, 'ratio': 0.7
          },
         {'team_name': 'Credit Strategy and Implementation', 'Skill_One': 21, 'Skill_Two': 15,
          'Skill_Three': 22, 'Skill_Four': 23,
-         'Skill_Five': 24,
+         'Skill_Five': 24, 'ratio': 1
          },
         {'team_name': 'Deals and Forecasting', 'Skill_One': 21, 'Skill_Two': 25,
          'Skill_Three': 26, 'Skill_Four': 27,
-         'Skill_Five': 28,
+         'Skill_Five': 28, 'ratio': 0.1
          },
         {'team_name': 'Acquisition Marketing Analytics - AVP', 'Skill_One': 23, 'Skill_Two': 29,
          'Skill_Three': 28, 'Skill_Four': 30,
-         'Skill_Five': 31,
+         'Skill_Five': 31, 'ratio': 0.5
          },
         {'team_name': 'Global Surveillance Transaction Monitoring', 'Skill_One': 32, 'Skill_Two': 33,
          'Skill_Three': 31, 'Skill_Four': 34,
-         'Skill_Five': 28,
+         'Skill_Five': 28, 'ratio': 0.4
          },
         {'team_name': 'Regulatory Reporting', 'Skill_One': 28, 'Skill_Two': 26,
          'Skill_Three': 35, 'Skill_Four': 36,
-         'Skill_Five': 37,
+         'Skill_Five': 37, 'ratio': 0.3
          },
         {'team_name': 'Internal Auditor', 'Skill_One': 38, 'Skill_Two': 39,
          'Skill_Three': 40, 'Skill_Four': 41,
-         'Skill_Five': 42,
+         'Skill_Five': 42, 'ratio': 0.2
          },
 
     ]
@@ -272,7 +271,6 @@ def populate():
 
     i = 1
     for team in TeamList:
-
         skill_one = Skill.objects.filter(id=int(team['Skill_One'])).first()
         skill_two = Skill.objects.filter(id=int(team['Skill_Two'])).first()
         skill_three = Skill.objects.filter(id=int(team['Skill_Three'])).first()
@@ -282,7 +280,8 @@ def populate():
         Man_obj = Manager.objects.filter(id=i).first()
         Depart_obj = Department.objects.filter(id=i).first()
 
-        new_team = Team.objects.create(team_name=team['team_name'], man_id=Man_obj, depart_id=Depart_obj)
+        new_team = Team.objects.create(team_name=team['team_name'], man_id=Man_obj,
+                                       depart_id=Depart_obj, ratio=team['ratio'])
         new_team.skill.add(skill_one)
         new_team.skill.add(skill_two)
         new_team.skill.add(skill_three)
@@ -297,6 +296,8 @@ def populate():
                                    password=Hr['password'], role=Hr['role'])
         new_hr.save()
 
+    skill_id = 1
+
     for Grad in GraduateList:
 
         i = random.randint(0, 5)
@@ -305,11 +306,7 @@ def populate():
         new_grad = Graduate.objects.create(email=Grad['email'], first_name=Grad['first_name'],
                                            second_name=Grad['second_name'], password=Grad['password'],
                                            role=Grad['role'])
-
-        skill_id = 1
-
         for i in range(5):
-
             skill_id = skill_id + 1
 
             skill_obj = Skill.objects.filter(id=skill_id).first()

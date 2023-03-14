@@ -19,7 +19,7 @@ def cosine_similarity(vec1, vec2):
     return dot_product / (vec1_length ** 0.5 * vec2_length ** 0.5)
 
 
-def get_graduates_by_skill(skill_id: int, grad_year: int) -> list[models.Graduate]:
+def get_graduates_by_skill(skill_id, grad_year):
     """
     Get a list of graduates with specific skill requirements.
     """

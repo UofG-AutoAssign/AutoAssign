@@ -1021,6 +1021,7 @@ class AllYearOneGrad(APIView):
 
 
 class AutoAssignAlg(APIView):
+    permission_classes = [HrPermission, ]
 
     def get(self, request):
         alg.assign_graduates_to_teams()
