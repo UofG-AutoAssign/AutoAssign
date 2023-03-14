@@ -554,6 +554,15 @@ class AssignGradToTeam(APIView):
         team_id = data['team_id']
         team_obj = models.Team.objects.filter(id=team_id).first()
 
+        # Check Team Capacity
+        num_graduates = models.Graduate.objects.filter(team_id=team_obj).count()
+        max_capacity = team_obj.num_positions
+
+        if num_graduates + 1 > max_capacity:
+            return Response(
+                {"code": 403, "status": False,
+                 'error': "Assign Grad failed", "detail": "The team is full"})
+
         # If either the Graduate or Team object was not found, return an error response
         if not grad_obj:
             return Response(

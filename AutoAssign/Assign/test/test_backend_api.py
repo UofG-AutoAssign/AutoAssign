@@ -709,13 +709,26 @@ class testHrApi(APITestCase):
 
         self.assertEqual(new_response.data, validate_data)
 
-        # Assign Grad to one Team
+        # Assign Grad to one Team (Case One : Team is not full)
 
         update_information = {"grad_id": 1, "team_id": 2}
 
         new_response = self.client.put("/home/hr/AssignGrad/", update_information, format="json")
 
         validate_data = {'code': 200, 'status': True, 'Grad_id': 1, 'Team_id': 2, 'detail': 'Updated'}
+
+        self.assertEqual(new_response.data, validate_data)
+
+        # Assign Grad to one Team (Team is full)
+
+        models.Team.objects.create(team_name='full_team',
+                                   ratio=0.5, num_positions=0)
+
+        update_information = {"grad_id": 1, "team_id": 3}
+
+        new_response = self.client.put("/home/hr/AssignGrad/", update_information, format="json")
+
+        validate_data = {'code': 403, 'status': False, 'error': 'Assign Grad failed', 'detail': 'The team is full'}
 
         self.assertEqual(new_response.data, validate_data)
 
