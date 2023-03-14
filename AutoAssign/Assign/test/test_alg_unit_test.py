@@ -10,7 +10,7 @@ class CosineSimilarityTestCase(TestCase):
     def test_cosine_similarity(self):
         vec1 = {1: 1, 2: 2, 3: 3}
         vec2 = {2: 2, 3: 3, 4: 4}
-        self.assertAlmostEqual(alg.cosine_similarity(vec1, vec2), 0.6451791670811048, places=5)
+        self.assertAlmostEqual(alg.cosine_similarity(vec1, vec2), 0.6451791670811048)
 
 
 class GetGraduatesBySkillTestCase(TestCase):
@@ -57,7 +57,8 @@ class GraduateModelTest(TestCase):
         self.team = models.Team.objects.create(team_name='Test Team', depart_id=self.department)
 
     def test_is_assigned_to_department(self):
-        graduate = models.Graduate.objects.create(email='test@example.com', first_name='John', second_name='Doe', year=1)
+        graduate = models.Graduate.objects.create(email='test@example.com', first_name='John', second_name='Doe',
+                                                  year=1)
         self.assertFalse(alg.is_assigned_to_department(graduate, self.department))
 
         # Assign the graduate to the department
@@ -128,7 +129,7 @@ class CalculateMatchScoreTestCase(TestCase):
         self.form3 = models.Form.objects.create(interest=4, experience=2, skill_id=self.skill3)
 
         self.graduate = models.Graduate.objects.create(email='test@example.com', first_name='John', second_name='Doe',
-                                                password='password', role=1, year=1)
+                                                       password='password', role=1, year=1)
         self.graduate.form_set.set([self.form1, self.form2, self.form3])
 
         self.team1.skill.add(self.skill1, self.skill2)
@@ -146,9 +147,11 @@ class CalculateMatchScoreTestCase(TestCase):
         self.assertEqual(alg.calculate_match_score(self.graduate, team3), 0)
 
         # Test with a graduate who has no common skills with the team
-        form4 = models.Form.objects.create(interest=3, experience=4, skill_id=models.Skill.objects.create(skill_name='PHP'))
+        form4 = models.Form.objects.create(interest=3, experience=4,
+                                           skill_id=models.Skill.objects.create(skill_name='PHP'))
         self.graduate.form_set.add(form4)
         self.assertEqual(alg.calculate_match_score(self.graduate, self.team1), 0)
+
 
 class TestSortTeamsByPreference(TestCase):
     def test_sort_teams_by_preference(self):
@@ -164,6 +167,7 @@ class TestSortTeamsByPreference(TestCase):
         self.assertEqual(sorted_teams[0][0], 1)
         self.assertEqual(sorted_teams[1][0], 3)
         self.assertEqual(sorted_teams[2][0], 2)
+
 
 class MatchGraduatesToTeamsTestCase(TestCase):
 
@@ -243,7 +247,8 @@ class MatchGraduatesToTeamsTestCase(TestCase):
 
     def test_match_graduates_to_teams(self):
         # Call the function to be tested
-        alg.match_graduates_to_teams([(self.team1.id, self.team1.ratio), (self.team2.id, self.team2.ratio)], grad_year=1)
+        alg.match_graduates_to_teams([(self.team1.id, self.team1.ratio), (self.team2.id, self.team2.ratio)],
+                                     grad_year=1)
 
         # Check that graduates have been assigned to teams
         self.graduate1.refresh_from_db()
@@ -255,4 +260,3 @@ class MatchGraduatesToTeamsTestCase(TestCase):
         # Check that team positions have been filled appropriately
         self.assertEqual(self.team1.graduate_set.count(), 1)
         self.assertEqual(self.team2.graduate_set.count(), 1)
-
