@@ -125,6 +125,20 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 - Accounts Page: 
 
 ## User: Graduate
+-	You will be sent an e-mail to your company account asking you to register.
+-	You must provide your name, and create a password.
+-	After you have created your account, you will be able to log in, where you have two choices, Skills Preference Form and Your Team.
+
+- Skills Preference Form
+	- The Skills Preference Form page will allow you to express which technologies you have experience and interest in.
+	- You can select as many technologies as you want from the searchable dropdown lists
+	- Make sure all fields are filled in.
+	- No duplicate technologies are not allowed
+	- When you are finished, press save to make sure that the data is correctly stored
+
+- Your Team
+	- This page lets you view a list of all the current members of your team
+	- It shows a table containing their full name and e-mail adress
 
 ## User: Manager
 
@@ -173,8 +187,12 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 -	How the AutoAssign Algorithm works
 
 ## User Registration after HR creates an account
-
-
+- You will receive an email which prompts you with a sign up link. It should look like this:
+![image info](./images/sign-up-mail.jpg)
+- Following the link—you will be redirected to our sign up page.
+![image info](./images/sign-up-credentials.jpg)
+- Enter your credentials. There will be a notification on the top right to let you know if successful or not.
+- If successful, you will be redirected bacak to the log in page. Use your previously submitted credentials.
 
 # Contributing
 
