@@ -10,7 +10,6 @@ import DeleteTeam from "../components/HRManage/DeleteTeam";
 import RemoveGraduate from "../components/HRManage/RemoveGraduate";
 import RemoveManager from "../components/HRManage/RemoveManager";
 import TeamTable from "../components/HRManage/TeamTable";
-import UnassignedGraduateTable from "../components/HRManage/UnassignedGraduatesTable";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
@@ -377,7 +376,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   };
 
   const AutoAssign = (): JSX.Element => {
-    const [gradsCreated, setGradsCreated] = useState<number>(10);
+    const [gradsCreated, setGradsCreated] = useState<number>(allGradList.length);
     const [teamCapacity, setTeamCapacity] = useState<number>(2);
 
     let [isOpen, setIsOpen] = useState(false);
@@ -389,12 +388,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     const handleAutoAssign = async (): Promise<boolean> => {
       try {
         if (teamCapacity < gradsCreated) {
-          toast.warning("Not enough capacity");
-          return false;
+          toast.warning("Headcount exceeds vacancy. Some graduates will not be assigned to teams");
         }
-        // @Todo run assignment algorithm
-        const { data } = await axios.post(
-          `${environmentalVariables.backend}home/hr/REPLACE_LATER`,
+        
+        const { data } = await axios.get(
+          `${environmentalVariables.backend}home/hr/AutoAssign/`,
           {
             headers: {
               AUTHORIZATION: authStore.authToken,
@@ -496,17 +494,17 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="py-8 flex flex-col md:flex-row justify-between">
           <div className="flex flex-col w-96 justify-center text-center">
             <label
-              htmlFor="Total Team Capacity : "
+              htmlFor="Total Vacancy : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
             >
-              Total Grads Created : {gradsCreated}
+              Total Grads Created: {gradsCreated}
             </label>
 
             <label
-              htmlFor="Total Team Capacity : "
+              htmlFor="Total Vacancy : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
             >
-              Total Team Capacity : {teamCapacity}
+              Total Vacancy: {teamCapacity}
             </label>
           </div>
           <div className="flex flex-col w-96">
