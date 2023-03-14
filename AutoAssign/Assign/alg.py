@@ -122,6 +122,7 @@ def match_graduates_to_teams(sorted_teams, grad_year):
     Match graduates to teams.
     """
     # Loop through each team
+    # pylint: disable=W0640, W0612
     for team_id, preference_ratio in sorted_teams:
         team = models.Team.objects.get(id=team_id)
         skill_objs = team.skill.all()
@@ -133,7 +134,8 @@ def match_graduates_to_teams(sorted_teams, grad_year):
         )
 
         # Exclude graduates who have already been assigned to this team or other teams
-        candidates = [g for g in common_skill_graduates if not g.team_id or is_assigned_to_department(g, team.depart_id)]
+        candidates = [g for g in common_skill_graduates
+                      if not g.team_id or is_assigned_to_department(g, team.depart_id)]
 
         # Sort candidates by match score in descending order
         candidates = sorted(candidates, key=lambda g: calculate_match_score(g, team), reverse=True)
