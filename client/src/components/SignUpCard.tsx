@@ -52,7 +52,7 @@ const SignUpCard: FC = () => {
       toast.success("Sucessfully registered!");
       navigate("/")
     } else {
-      toast.error(`Failed to register new password: ${data.detail.email}`);
+      toast.error(`Failed to register new password: ${data.error}`);
     }
   };
 

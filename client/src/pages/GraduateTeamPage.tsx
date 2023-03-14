@@ -23,10 +23,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
 
   // List of team members
   const [teammateList, setTeammateList] = useState<ManagerTableInterface[]>([
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
-    { name: "Jack", email: "Jack@yahoo.com" },
+    { name: "...", email: "..." },
   ]);
 
   // Displays the table for the graduate to view their team
@@ -104,6 +101,11 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
         }
       );
 
+      if (data.code !== 200) {
+        toast.error("[Team members] " + data.error);
+        return;
+      }
+
       const fetchedTeamList = data.data;
       console.log(data, fetchedTeamList);
 
@@ -130,7 +132,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     <div>
       <nav className="sticky top-0 z-50">
         <Navbar />
-        <div className="hi-text dark:text-white">My Team</div>
+        <div className="hi-text dark:text-white">{currentTab === "Preference Form" ? "Skills Preference Form" : "My Team"}</div>
       </nav>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">

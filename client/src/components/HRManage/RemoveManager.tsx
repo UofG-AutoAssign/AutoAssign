@@ -93,14 +93,13 @@ const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }
     );
   };
 
-  const handleRemoveManager = async (): Promise<boolean> => {
+  const handleRemoveManager = async (): Promise<void> => {
     try {
       const gradId = (selectedManager as any).id;
       console.log(gradId);
 
       if (!selectedManager || !gradId) {
         toast.error("No empty input fields allowed")
-        return false;
       }
 
       const { data } = await axios.post(
@@ -118,15 +117,16 @@ const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }
 
       if (data.status === true) {
         toast.success("Manager successfully deleted!");
-        return true;
+
+        setTimeout(() => {
+          location.reload();
+        }, 1500)
       } else {
         toast.error(`Failed to delete manager: ${data.status}`);
-        return false;
       }
     } catch (error) {
       console.log(error);
       toast.error(`Failed to send deletion request`);
-      return false;
     }
   };
 

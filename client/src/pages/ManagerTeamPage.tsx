@@ -264,6 +264,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
     console.log(skill)
 
+    if (skill.length < 1) {
+      toast.error("At least 1 technology is required");
+      return false;
+    }
+
     // @Todo fix this (still 403)
     const { data } = await axios.put(
       `${environmentalVariables.backend}home/man/Team/UpdateSetting/`,
@@ -283,7 +288,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     if (data.status === true) {
       toast.success("Data successfully delivered!")
     } else {
-      toast.error(`Data failed to be delivered! ${data.detail.skill}`)
+      toast.error(`Data failed to be delivered! ${data.detail}`)
     }
 
     return data.status;
@@ -299,8 +304,14 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           },
         })
         .then((response) => {
-          const subordinateList = response.data.data;
+          if (response.data.code !== 200) {
+            toast.error("[Team members] " + response.data.error);
+            return;
+          }
 
+          const subordinateList = response.data.data;
+          console.log(subordinateList);
+          
           let newSubordinateList: any[] = [];
 
           subordinateList.forEach((member: any) => {
@@ -311,7 +322,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           });
 
           setSubordinateList(newSubordinateList);
-        });
+        }).catch((error) => console.log(error))
     };
 
     const getTeamPreferenceInfo = async () => {
@@ -322,6 +333,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           },
         })
         .then((response) => {
+          if (response.data.code !== 200) {
+            toast.error("[Team Preference] " + response.data.error);
+            return;
+          }
+
           const { team_name, ratio, skill_information } = response.data.data;
           console.log(team_name, ratio, skill_information);
 

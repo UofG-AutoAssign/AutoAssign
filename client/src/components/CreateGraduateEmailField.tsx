@@ -14,6 +14,12 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
     const splitEmailList = emails.join(" ").split(" ");
     console.log(splitEmailList);
 
+    if (splitEmailList.length < 1 || (splitEmailList.length === 1 && splitEmailList[0] === "")) {
+      toast.error("Enter at least 1 email");
+      location.reload();
+      return false;
+    }
+
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/hr/Register/`,
       {

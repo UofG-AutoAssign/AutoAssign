@@ -7,7 +7,7 @@ import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 //   | { type: "Remove-graduate"; graduateName: string };
 
 const RemoveManagerModal: FC<{
-  handleRemoveManager: () => Promise<boolean>;
+  handleRemoveManager: () => Promise<void>;
 }> = ({ handleRemoveManager }) => {
   return (
     <>

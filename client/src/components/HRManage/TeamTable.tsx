@@ -78,7 +78,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
       toast.success("New Team Saved to Database!")
       setTimeout(() => {
         location.reload(); // Force refresh page
-      }, 1000);
+      }, 1500);
     } else {
       toast.error(`Failed to Create New Team ${data.error[0].man_id}`)
     }
@@ -269,7 +269,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
       }
       // console.log(data);
       const fetchedTeamList = data.data;
-
+      console.log(data)
       // @Todo get manager eamil, team capacity
       let newData = {};
       let idx = 0;
@@ -283,6 +283,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           team_id,
           team_name,
           team_members,
+          num_positions
         }: any) => {
           newData = {
             ...newData,
@@ -291,7 +292,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
               departmentName: depart_name,
               capacity: team_members === "Null" ? 0 : team_members.length,
               managerEmail: man_name,
-              maxCapacity: "50",
+              maxCapacity: num_positions,
               teamMembers: team_members === "Null" ? [] : team_members,
             },
           };
