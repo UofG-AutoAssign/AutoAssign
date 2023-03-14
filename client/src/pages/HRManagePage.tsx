@@ -382,9 +382,12 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     );
   };
 
+  const [gradsCreated, setGradsCreated] = useState<number>(allGradList.length);
+  const [teamCapacity, setTeamCapacity] = useState<number>(0);
+  const [infoMessageForAutoAssign, setInfoMessageForAutoAssign] = useState<string | null>(null);
+  const showToastOnFirstLoad = useRef<boolean>(false);
+
   const AutoAssign = (): JSX.Element => {
-    const [gradsCreated, setGradsCreated] = useState<number>(allGradList.length);
-    const [teamCapacity, setTeamCapacity] = useState<number>(2);
 
     let [isOpen, setIsOpen] = useState(false);
 
@@ -398,8 +401,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
           toast.warning("Headcount exceeds vacancy. Some graduates will not be assigned to teams");
         }
         
-        const { data } = await axios.get(
+        const { data } = await axios.post(
           `${environmentalVariables.backend}home/hr/AutoAssign/`,
+          {
+            check_num: 1
+          },
           {
             headers: {
               AUTHORIZATION: authStore.authToken,
@@ -496,22 +502,36 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
     }
 
+    // Show toast if when the auto assign component loads
+    useEffect(() => {
+      if (showToastOnFirstLoad.current === false) {
+        console.log(showToastOnFirstLoad.current)
+        toast.info(infoMessageForAutoAssign);
+        showToastOnFirstLoad.current = true;
+      }
+    
+      return () => {
+        showToastOnFirstLoad.current = true;
+      };
+    }, [infoMessageForAutoAssign]);
+    
+
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
         <div className="py-8 flex flex-col md:flex-row justify-between">
           <div className="flex flex-col w-96 justify-center text-center">
             <label
-              htmlFor="Total Vacancy : "
+              htmlFor="Total Number of Team Slots : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
             >
               Total Grads Created: {gradsCreated}
             </label>
 
             <label
-              htmlFor="Total Vacancy : "
+              htmlFor="Total Number of Team Slots : "
               className="w-full block mb-2 text-gray-900 dark:text-white"
             >
-              Total Vacancy: {teamCapacity}
+              Total Number of Team Slots : {teamCapacity}
             </label>
           </div>
           <div className="flex flex-col w-96">
@@ -539,7 +559,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Unassigned Graduates
-            {/* <UnassignedGraduateTable graduateList={unAssignedGradList} /> */}
             <StaticListDisplayTable managerList={unAssignedGradList.map((manager) => manager.email)}/>
           </div>
           <div>
@@ -618,7 +637,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     else if (query === "auto_assign") setCurrentTab("Auto Assign");
     else setCurrentTab("Teams");
 
-    () => {};
+    return () => {};
   }, [currentUrl]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
@@ -678,6 +697,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       const fetchedGradList = data.data;
       // console.log(fetchedGradList);
       setAllGradList(fetchedGradList);
+      setGradsCreated(fetchedGradList.length)
     };
 
     const getAllManagerList = async () => {
@@ -755,6 +775,22 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       setYearTwoGrads(fetchedYearTwoGradList);
     };
 
+    const getTeamCap = async () => {
+      const { data } = await axios.get(
+        `${environmentalVariables.backend}home/hr/AutoAssign/`,
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      );
+
+      const { detail: description, max_capacity: maxCap } = data;
+      console.log(data);
+      setTeamCapacity(maxCap);
+      setInfoMessageForAutoAssign(description);
+    }
+
     if (effectRanOnFirstLoad.current === false) {
       getAllTeamsList();
       getAllDepartsList();
@@ -764,6 +800,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       getAllYearTwoGradList();
       getAllUnassignedGraduatesList();
       getAllUnassignedManagersList();
+      getTeamCap();
+
+      effectRanOnFirstLoad.current = true;
     }
 
     return () => {

@@ -218,8 +218,8 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             <span>|</span>
           </div>
           <div className="flex flex-row justify-between w-full">
-            <span>Prioritise Skill</span>
-            <span>Prioritise Enthusiasm</span>
+            <span>Prioritise Experience</span>
+            <span>Prioritise Interest</span>
           </div>
         </div>
       </div>
