@@ -198,7 +198,7 @@ class Team(models.Model):
 
     skill = models.ManyToManyField(to="Skill")
 
-    num_positions = models.IntegerField(default=0)
+    num_positions = models.IntegerField(default=10)
 
 
 class Skill(models.Model):
