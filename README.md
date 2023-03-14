@@ -120,9 +120,16 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 3) Finally, open the URL provided by the frontend server, usually [http://localhost:5173](http://localhost:5173)
 
 ## General features for all users
-- Login Page:
-- Light/Dark Mode Page:
-- Accounts Page: 
+Login Page:
+- On the right side of the login page, there is a “Sign in to your account” interface. You can enter your email address and your password to log in.
+  
+
+Light/Dark Mode:
+- On the right side of the top navigation bar, you will find the icon of the sun, click on it to switch between light and dark mode. 
+
+Accounts Page (after logged on):
+- Click the avatar icon in the top navigation bar to go to the accounts page interface. It will take you to the contact details subpage by default and can edit you first and last name by clicking the edit button.
+- You can go to the change you password subpage by clicking on the section in the sidenav bar. You can change you password by entering your current password and your new password twice.
 
 ## User: Graduate
 -	You will be sent an e-mail to your company account asking you to register.
