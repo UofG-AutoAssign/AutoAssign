@@ -1033,6 +1033,19 @@ class AutoAssignAlg(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
+        team_objs = models.Team.objects.all()
+
+        max_capacity = 0
+
+        for team_obj in team_objs:
+            max_capacity = max_capacity + team_obj.num_positions
+
+        context = {"code": 200, "status": True, "max_capacity": max_capacity}
+
+        return Response(context)
+
+    def post(self, request):
+
         alg.assign_graduates_to_teams()
 
         context = {"code": 200, "status": True, "detail": "Has been Assign"}
