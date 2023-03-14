@@ -71,26 +71,37 @@ def calculate_match_score(graduate, team):
     for form in graduate.form_set.all():
         skill_id = form.skill_id
         interest = form.interest / 4  # Normalize interest to range 0 to 1
-        experience = form.experience / 4   # Normalize experience to range 0 to 1
+        experience = form.experience / 4  # Normalize experience to range 0 to 1
         interest_vec[skill_id] = interest
         experience_vec[skill_id] = experience
+
+    # If the team has no required skills, return 0
+    team_skills = set(s.id for s in team.skill.all())
+    if not team_skills:
+        return 0
 
     # Calculate skill match
     skills = set(interest_vec.keys())
     team_skills = set(s.id for s in team.skill.all())
+
     common_skills = skills & team_skills
+
+    # If graduate has no common skills with the team, return 0
+    if not common_skills:
+        return 0
+
     skill_match = len(common_skills) / len(team_skills)
 
     # Calculate experience match
     experience_match = cosine_similarity(experience_vec,
-                                         {s.id: (1-ratio) for s in team.skill.all()})
+                                         {s.id: (1 - ratio) for s in team.skill.all()})
 
     # Calculate interest match
     interest_match = cosine_similarity(interest_vec, {s.id: ratio for s in team.skill.all()})
 
     # Weighted sum to get the overall match score
     # pylint: disable=C0301
-    match_score = skill_match * 0.4 + experience_match * 0.3 * (1-ratio) + interest_match * 0.3 * ratio
+    match_score = skill_match * 0.4 + experience_match * 0.3 * (1 - ratio) + interest_match * 0.3 * ratio
     return match_score
 
 
@@ -111,25 +122,22 @@ def match_graduates_to_teams(sorted_teams, grad_year):
     Match graduates to teams.
     """
     # Loop through each team
-
-    candidates = None
-
-    # pylint: disable=W0612
+    # pylint: disable=W0640, W0612
     for team_id, preference_ratio in sorted_teams:
         team = models.Team.objects.get(id=team_id)
         skill_objs = team.skill.all()
 
-        # Get all graduates who meet the skill requirements
-        candidates = get_graduates_by_skill(skill_objs[0].id, grad_year)
-        for skill in skill_objs[1:]:
-            candidates = set(get_graduates_by_skill(skill.id, grad_year)) & set(candidates)
+        # Get all graduates who have at least one common skill with the team
+        common_skill_graduates = models.Graduate.objects.filter(
+            year=grad_year,
+            form__skill_id__in=skill_objs
+        )
 
         # Exclude graduates who have already been assigned to this team or other teams
-        # pylint: disable=C0301
-        candidates = [g for g in candidates if not g.team_id or is_assigned_to_department(g, team.depart_id)]
+        candidates = [g for g in common_skill_graduates
+                      if not g.team_id or is_assigned_to_department(g, team.depart_id)]
 
         # Sort candidates by match score in descending order
-        # pylint: disable=W0640
         candidates = sorted(candidates, key=lambda g: calculate_match_score(g, team), reverse=True)
 
         # Assign graduates to the team
@@ -160,10 +168,10 @@ def assign_graduates_to_teams():
 
     # Match graduates to teams
     match_graduates_to_teams(sorted_teams, grad_year=1)
-    match_graduates_to_teams(sorted_teams, grad_year=2)
+    # match_graduates_to_teams(sorted_teams, grad_year=2)
 
     # Get all unassigned graduates
-    unassigned_graduates = models.Graduate.objects.filter(team_id__isnull=True)
+    unassigned_graduates = models.Graduate.objects.filter(team_id__isnull=True, form__isnull=False)
 
     # Get current member counts for all teams
     team_member_counts = {}
