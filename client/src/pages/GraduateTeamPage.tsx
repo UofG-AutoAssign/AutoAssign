@@ -14,6 +14,9 @@ import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
 import { toast } from "react-toastify";
+import { AiOutlineTeam } from "react-icons/ai";
+import { FcDepartment } from "react-icons/fc";
+
 
 const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   initialComponent,
@@ -25,6 +28,9 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   const [teammateList, setTeammateList] = useState<ManagerTableInterface[]>([
     { name: "...", email: "..." },
   ]);
+
+  const [teamName, setTeamName] = useState<string>("...");
+  const [depName, setDepName] = useState<string>("...");
 
   // Displays the table for the graduate to view their team
   const YourTeamTable = (): JSX.Element => {
@@ -106,16 +112,21 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
         return;
       }
 
-      const fetchedTeamList = data.data;
-      console.log(data, fetchedTeamList);
+      const { depart_information: depInfo, man_information: manInfo, team_members: memberList, team_name: teamName } = data.data;
+      console.log(manInfo[0], memberList);
 
-      let newTeammateList: ManagerTableInterface[] = [];
+      setTeamName(teamName);
+      setDepName(depInfo[0].dep_name);
 
-      fetchedTeamList.forEach(({ email, first_name, second_name }: any) => {
-        newTeammateList.push({ email, name: `${first_name} ${second_name}` })
+      let newTeamList: ManagerTableInterface[] = []; // This includes the manager at the top of the list
+
+      newTeamList.push({ email: manInfo[0].man_id, name: `[Manager] ${manInfo[0].man_name}` })
+
+      memberList.forEach(({ grad_id, grad_name }: any) => {
+        newTeamList.push({ email: String(grad_id), name: grad_name })
       });
 
-      setTeammateList(newTeammateList)
+      setTeammateList(newTeamList)
 
       if (data.status === false) toast.error(data.error)
 
@@ -132,7 +143,15 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     <div>
       <nav className="sticky top-0 z-50">
         <Navbar />
-        <div className="hi-text dark:text-white">{currentTab === "Preference Form" ? "Skills Preference Form" : "My Team"}</div>
+        <div className="hi-text dark:text-white">{currentTab === "Preference Form" ? "Skills Preference Form" : `Your Team`}</div>
+        <div className="hi-text dark:text-white text-3xl flex flex-row justify-center items-center">
+        <AiOutlineTeam className="text-3xl mr-3 bg-teal-100 rounded-full dark:text-blue-500" />
+          Team — {teamName}
+          </div>
+        <div className="hi-text dark:text-white text-2xl flex flex-row justify-center items-center">
+        <FcDepartment className="text-3xl mr-3" />
+          Department — {depName}
+          </div>
       </nav>
       <section className="flex flex-row gap-5 py-5">
         <div className="w-1/4 bg-loginBlue rounded-r-2xl h-fit">

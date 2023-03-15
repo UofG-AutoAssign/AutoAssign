@@ -5,9 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { departmentAndTeamListHRType } from "./HRManage/TeamTable";
 import { FcDepartment } from "react-icons/all";
-import { AiOutlineTeam } from "react-icons/all";
-import { AiOutlineMail } from "react-icons/all";
-import { AiOutlineSetting } from "react-icons/all";
+import { AiOutlineTeam, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
 
 const ManageTeamsTable: FC<{
   departmentAndTeamListHR: departmentAndTeamListHRType;
