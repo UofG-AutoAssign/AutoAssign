@@ -1,7 +1,31 @@
-Table of Contents
-
-__[TOC]__
-
+# Table of Contents
+- [Authors and Support](#authors-and-support)
+- [AutoAssign - Project Summary](#autoassign---project-summary)
+  * [Visuals](#visuals)
+  * [Links](#links)
+  * [Badges](#badges)
+  * [Project status](#project-status)
+  * [Roadmap / Releases](#roadmap---releases)
+    + [Release 0.1 – November 30th 2022](#release-01---november-30th-2022)
+    + [Release 0.2 – January 17th 2022](#release-02---january-17th-2022)
+    + [Release 0.3 – February 15th 2023](#release-03---february-15th-2023)
+    + [Release 1.0 – March 17th 2023](#release-10---march-17th-2023)
+- [User Guide](#user-guide)
+  * [Installation](#installation)
+    + [Automated](#automated)
+    + [Manual](#manual)
+      - [Django](#django)
+      - [React](#react)
+  * [Usage](#usage)
+    + [Automated](#automated-1)
+    + [Manual](#manual-1)
+  * [General features for all users](#general-features-for-all-users)
+  * [User: Graduate](#user--graduate)
+  * [User: Manager](#user--manager)
+  * [User: HR](#user--hr)
+  * [User Registration after HR creates an account](#user-registration-after-hr-creates-an-account)
+- [Contributing](#contributing)
+- [License](#license)
 
 # Authors and Support
 
