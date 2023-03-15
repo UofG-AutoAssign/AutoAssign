@@ -7,7 +7,6 @@ import axios from "axios";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import authStore from "../../context/authStore";
 import { AiFillSetting } from "react-icons/all";
-import { number } from "prop-types";
 
 export type departmentAndTeamListHRType = {
   departmentName: string;
@@ -280,6 +279,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           depart_name,
           man_id,
           man_name,
+          man_email,
           team_id,
           team_name,
           team_members,
@@ -291,7 +291,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
               teamName: team_name,
               departmentName: depart_name,
               capacity: team_members === "Null" ? 0 : team_members.length,
-              managerEmail: man_name,
+              managerEmail: `${man_name} / ${man_email}`,
               maxCapacity: num_positions,
               teamMembers: team_members === "Null" ? [] : team_members,
             },
