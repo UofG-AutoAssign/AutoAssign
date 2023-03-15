@@ -70,6 +70,7 @@ class LoginView(APIView):
 class Register(APIView):
     authentication_classes = []
 
+    # pylint: disable=R0911
     def post(self, request):
 
         token = request.data.get('token')
@@ -274,7 +275,8 @@ class ManView(APIView):
 #             request.data['password'] = hash_pwd
 #
 #             if not hash_pwd:
-#                 return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+#                 return Response({"code": 406, "status": False,
+#                 'error': "Please check your parameters"})
 #
 #         # Based on the role type, serialize the request data
 #         # using the appropriate serializer and create a response
@@ -751,7 +753,8 @@ class ChangeGraduateYear(APIView):
             grad_year = grad.get("year")
 
             if not grad_id or not grad_year:
-                return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
 
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
 
@@ -765,7 +768,8 @@ class ChangeGraduateYear(APIView):
             grad_year = grad.get("year")
 
             if not grad_id or not grad_year:
-                return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
 
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
 
@@ -1004,7 +1008,8 @@ class CrateTeam(APIView):
             capacity = data.get("num_positions")
 
             if not capacity:
-                return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
 
             if 7 < capacity < 1:
                 return Response({"code": 403, "status": False, 'error': "Please Check Capacity "})
