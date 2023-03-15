@@ -752,6 +752,7 @@ class BatchRegister(APIView):
         # Get Email List and role
         email_list = request.data['email']
         role = request.data['role']
+        url = request.data['url']
 
         # Generating a registration list
         registration_list = []
@@ -787,7 +788,7 @@ class BatchRegister(APIView):
 
             # send the email
 
-            register_url = '127.0.0.1:5173/sign_up/' + token
+            register_url = url + token
 
             send_mail(
                 subject='Registration link from AutoAssign',
@@ -807,6 +808,7 @@ class ResetPasswordByEmail(APIView):
     def post(self, request):
         # Get Email List and role
         email = request.data['email']
+        url = request.data['url']
 
         # Find the User
         manger_object = models.Manager.objects.filter(email=email).first()
@@ -837,7 +839,7 @@ class ResetPasswordByEmail(APIView):
         user_obj.save()
 
         # send the email
-        register_url = '127.0.0.1:5173/forget_password/' + token
+        register_url = url + token
 
         send_mail(
             subject='Registration link from AutoAssign',

@@ -179,7 +179,8 @@ class TeamViewSerializer(serializers.ModelSerializer):
 
         if grad_obj:
             return [
-                {"grad_id": i.id, "grad_name": i.first_name + " " + i.second_name, }
+                {"grad_id": i.id, "grad_email": i.email,
+                 "grad_name": i.first_name + " " + i.second_name, }
                 for i in grad_obj]
 
         return "Null"
@@ -198,7 +199,7 @@ class TeamViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Team
-        fields = ["team_name", "man_information", "depart_information","team_members"]
+        fields = ["team_name", "man_information", "depart_information", "team_members"]
         list_serializer_class = serializers.ListSerializer
 
 
