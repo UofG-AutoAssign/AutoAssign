@@ -11,7 +11,7 @@ from Assign.models import Graduate, Manager, Department, HR, Form, Team, Skill
 
 
 def populate():
-    GraduateList = [
+    grad_list = [
         {'email': 'Graduate@email.com',
          'depart_id': 0,
          'first_name': "Graduate",
@@ -63,7 +63,7 @@ def populate():
          }
     ]
 
-    ManagerList = [
+    man_list = [
         {'email': 'Manger@email.com',
          'depart_id': 0,
          'first_name': "Manger",
@@ -137,7 +137,7 @@ def populate():
 
     ]
 
-    HRList = [
+    hr_list = [
         {'email': 'Hr@email.com',
          'first_name': "HR",
          'second_name': "One",
@@ -153,124 +153,107 @@ def populate():
 
     ]
 
-    SkillList = [
-        {'skill_name': "Python"}, {'skill_name': "AWS Lambda"}, {'skill_name': "API Gateway"},
-        {'skill_name': "software design"},
-        {'skill_name': "REST services"}, {'skill_name': "Full stack C#"}, {'skill_name': "Angular Web UI programming"},
-        {'skill_name': "CI/CD tools"},
-        {'skill_name': "Agile development"}, {'skill_name': "Web API"}, {'skill_name': "Production support"},
-        {'skill_name': "Trade floor support role"}, {'skill_name': "Equity Derivatives technology experience"}
-        , {'skill_name': "ITIL knowledge"}
-        , {'skill_name': "UNIX platforms"}
-        , {'skill_name': "MSSQL"}
-        , {'skill_name': "Java"}
-        , {'skill_name': "ReactJS"}
-        , {'skill_name': "Spring"}
-        , {'skill_name': "Hibernate"}
-        , {'skill_name': " SAS/SQL"}
-        , {'skill_name': "MS Office required"}
-        , {'skill_name': "analytical"}
-        , {'skill_name': "Data Validation"}
-        , {'skill_name': "Hadoop and Excel"}
-        , {'skill_name': "Good communication"}
-        , {'skill_name': "Management"}
-        , {'skill_name': "Financial"}
-        , {'skill_name': "Consulting"}
-        , {'skill_name': "statistical skills"}
-        , {'skill_name': "Risk management"}
-        , {'skill_name': "organizational skills"}
-        , {'skill_name': "Transaction Monitoring systems"}
-        , {'skill_name': "governance frameworks"}
-        , {'skill_name': "MS Office products"}
-        , {'skill_name': "software packages"}
-        , {'skill_name': "stakeholder management"}
-        , {'skill_name': "Extensive experience in risk"}
-        , {'skill_name': "Private Banking or Wealth Management"}
-        , {'skill_name': "CIA"}
-        , {'skill_name': "Financial Crime"}
-        , {'skill_name': "MIIA"}
-    ]
+    skill_lists = [{'skill_name': 'Python'}, {'skill_name': 'R'}, {'skill_name': 'SQL'}, {'skill_name': 'Tableau'},
+                   {'skill_name': 'Hadoop'}, {'skill_name': 'Spark'}, {'skill_name': 'Scala'},
+                   {'skill_name': 'TensorFlow'}, {'skill_name': 'PyTorch'}, {'skill_name': 'Scikit-learn'},
+                   {'skill_name': 'AWS'}, {'skill_name': 'Microsoft Azure'}, {'skill_name': 'Google Cloud Platform'},
+                   {'skill_name': 'Docker'}, {'skill_name': 'Kubernetes'}, {'skill_name': 'Terraform'},
+                   {'skill_name': 'Ansible'}, {'skill_name': 'Linux'}, {'skill_name': 'Shell Scripting'},
+                   {'skill_name': 'JavaScript'}, {'skill_name': 'React'}, {'skill_name': 'Angular'},
+                   {'skill_name': 'Vue'}, {'skill_name': 'Node.js'}, {'skill_name': 'HTML/CSS'},
+                   {'skill_name': 'Ruby on Rails'}, {'skill_name': 'MongoDB'}, {'skill_name': 'Kafka'},
+                   {'skill_name': 'Cassandra'}, {'skill_name': 'Apache Airflow'}, {'skill_name': 'Swift'},
+                   {'skill_name': 'Kotlin'}, {'skill_name': 'Java'}, {'skill_name': 'React Native'},
+                   {'skill_name': 'Flutter/Dart'}, {'skill_name': 'Android SDK'}, {'skill_name': 'iOS SDK'},
+                   {'skill_name': 'RESTful APIs'}, {'skill_name': 'Git'}, {'skill_name': 'Agile Methodologies'},
+                   {'skill_name': 'Power BI'}, {'skill_name': 'SAP BusinessObjects'}, {'skill_name': 'Microsoft Excel'},
+                   {'skill_name': 'ETL Tools'}, {'skill_name': 'Data Warehousing'}, {'skill_name': 'Data Mining'},
+                   {'skill_name': 'Jenkins'}, {'skill_name': 'Keras'}, {'skill_name': 'NumPy'},
+                   {'skill_name': 'Pandas'},
+                   {'skill_name': 'Deep Learning'}, {'skill_name': 'Computer Vision'},
+                   {'skill_name': 'Natural Language Processing'}, {'skill_name': 'PHP'},
+                   {'skill_name': 'C++'}, {'skill_name': 'C#'}, {'skill_name': 'MySQL'}, {'skill_name': 'PostgresSQL'}]
 
-    DepartmentList = [
-        {'depart_name': 'Human Resources',
+    dep_list = [
+        {'depart_name': 'Advanced Analytics',
          },
-        {'depart_name': 'Finance',
+        {'depart_name': 'Cloud Solutions',
          },
-        {'depart_name': 'Marketing',
+        {'depart_name': 'Full Stack Development',
          },
-        {'depart_name': 'Sales',
+        {'depart_name': 'Data Engineering',
          },
-        {'depart_name': 'Technology',
+        {'depart_name': 'Mobile Development',
          },
-        {'depart_name': 'Research & Development',
+        {'depart_name': 'Business Intelligence',
          },
-        {'depart_name': 'Customer Service',
+        {'depart_name': 'DevOps & Automation',
          },
-        {'depart_name': 'Production',
+        {'depart_name': 'Machine Learning',
          },
-        {'depart_name': 'Procurement',
+        {'depart_name': 'Data Science & Analytics',
          },
-        {'depart_name': 'Administration',
+        {'depart_name': 'Backend Development',
          },
     ]
 
-    TeamList = [
-        {'team_name': 'Cloud Analyst', 'Skill_One': 1, 'Skill_Two': 2, 'Skill_Three': 3, 'Skill_Four': 4,
+    team_list = [
+        {'team_name': 'Data Wizards', 'Skill_One': 1, 'Skill_Two': 2, 'Skill_Three': 3, 'Skill_Four': 4,
          'Skill_Five': 5, 'ratio': 0.3
          },
-        {'team_name': 'CSharp Developer', 'Skill_One': 6, 'Skill_Two': 7, 'Skill_Three': 8, 'Skill_Four': 9,
+        {'team_name': 'Cloud Masters', 'Skill_One': 6, 'Skill_Two': 7, 'Skill_Three': 8, 'Skill_Four': 9,
          'Skill_Five': 10, 'ratio': 0.4
          },
-        {'team_name': 'Equities Flow Derivatives Production Support', 'Skill_One': 11, 'Skill_Two': 12,
+        {'team_name': 'Full Stack Heroes', 'Skill_One': 11, 'Skill_Two': 12,
          'Skill_Three': 13, 'Skill_Four': 14,
          'Skill_Five': 15, 'ratio': 0.6
          },
-        {'team_name': 'AVP Software Develop', 'Skill_One': 16, 'Skill_Two': 17,
+        {'team_name': 'Data Engineers', 'Skill_One': 16, 'Skill_Two': 17,
          'Skill_Three': 18, 'Skill_Four': 19,
          'Skill_Five': 20, 'ratio': 0.7
          },
-        {'team_name': 'Credit Strategy and Implementation', 'Skill_One': 21, 'Skill_Two': 15,
+        {'team_name': 'Mobile Mavericks', 'Skill_One': 21, 'Skill_Two': 15,
          'Skill_Three': 22, 'Skill_Four': 23,
          'Skill_Five': 24, 'ratio': 1
          },
-        {'team_name': 'Deals and Forecasting', 'Skill_One': 21, 'Skill_Two': 25,
+        {'team_name': 'BI Gurus', 'Skill_One': 21, 'Skill_Two': 25,
          'Skill_Three': 26, 'Skill_Four': 27,
          'Skill_Five': 28, 'ratio': 0.1
          },
-        {'team_name': 'Acquisition Marketing Analytics - AVP', 'Skill_One': 23, 'Skill_Two': 29,
+        {'team_name': 'DevOps Ninjas', 'Skill_One': 23, 'Skill_Two': 29,
          'Skill_Three': 28, 'Skill_Four': 30,
          'Skill_Five': 31, 'ratio': 0.5
          },
-        {'team_name': 'Global Surveillance Transaction Monitoring', 'Skill_One': 32, 'Skill_Two': 33,
+        {'team_name': 'ML Titans', 'Skill_One': 32, 'Skill_Two': 33,
          'Skill_Three': 31, 'Skill_Four': 34,
          'Skill_Five': 28, 'ratio': 0.4
          },
-        {'team_name': 'Regulatory Reporting', 'Skill_One': 28, 'Skill_Two': 26,
+        {'team_name': 'Data Science Dynamos', 'Skill_One': 28, 'Skill_Two': 26,
          'Skill_Three': 35, 'Skill_Four': 36,
          'Skill_Five': 37, 'ratio': 0.3
          },
-        {'team_name': 'Internal Auditor', 'Skill_One': 38, 'Skill_Two': 39,
+        {'team_name': 'Backend Builders', 'Skill_One': 38, 'Skill_Two': 39,
          'Skill_Three': 40, 'Skill_Four': 41,
          'Skill_Five': 42, 'ratio': 0.2
          },
 
     ]
 
-    for s in SkillList:
+    for s in skill_lists:
         new_skill = Skill.objects.create(skill_name=s['skill_name'])
         new_skill.save()
 
-    for de in DepartmentList:
-        new_de = Department.objects.create(depart_name=de['depart_name'])
+    for dep in dep_list:
+        new_de = Department.objects.create(depart_name=dep['depart_name'])
         new_de.save()
 
-    for Man in ManagerList:
-        new_man = Manager.objects.create(email=Man['email'], first_name=Man['first_name'],
-                                         second_name=Man['second_name'], password=Man['password'], role=Man['role'])
+    for man in man_list:
+        new_man = Manager.objects.create(email=man['email'], first_name=man['first_name'],
+                                         second_name=man['second_name'], password=man['password'], role=man['role'])
         new_man.save()
 
     i = 1
-    for team in TeamList:
+    for team in team_list:
         skill_one = Skill.objects.filter(id=int(team['Skill_One'])).first()
         skill_two = Skill.objects.filter(id=int(team['Skill_Two'])).first()
         skill_three = Skill.objects.filter(id=int(team['Skill_Three'])).first()
@@ -291,14 +274,14 @@ def populate():
         i = i + 1
         new_team.save()
 
-    for Hr in HRList:
+    for Hr in hr_list:
         new_hr = HR.objects.create(email=Hr['email'], first_name=Hr['first_name'], second_name=Hr['second_name'],
                                    password=Hr['password'], role=Hr['role'])
         new_hr.save()
 
     skill_id = 1
 
-    for Grad in GraduateList:
+    for Grad in grad_list:
 
         i = random.randint(0, 4)
         j = random.randint(0, 4)
@@ -307,9 +290,10 @@ def populate():
                                            second_name=Grad['second_name'], password=Grad['password'],
                                            role=Grad['role'])
         for i in range(5):
+            skill_obj = Skill.objects.filter(id=skill_id).first()
+
             skill_id = skill_id + 1
 
-            skill_obj = Skill.objects.filter(id=skill_id).first()
             new_Form = Form.objects.create(interest=i, experience=j, skill_id=skill_obj, graduate=new_grad)
             new_Form.save()
 
