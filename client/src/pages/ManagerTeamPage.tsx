@@ -10,6 +10,8 @@ import authStore from "../context/authStore";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import { selectedDataType } from "../components/PreferenceFormTable";
+import { AiOutlineTeam } from "react-icons/ai";
+import { FcDepartment } from "react-icons/fc";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
@@ -43,6 +45,9 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       label: "...",
     },
   });
+
+  const [teamName, setTeamName] = useState<string>("...");
+  const [depName, setDepName] = useState<string>("...");
 
   const [curRowId, setCurRowId] = useState<number>(100);
 
@@ -298,7 +303,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   useEffect(() => {
     const getSubordinateInfo = async () => {
       axios
-        .get(`${environmentalVariables.backend}home/man/Team`, {
+        .get(`${environmentalVariables.backend}home/man/team/`, {
           headers: {
             AUTHORIZATION: authStore.authToken,
           },
@@ -309,16 +314,17 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             return;
           }
 
-          const subordinateList = response.data.data;
-          console.log(subordinateList);
-          
-          let newSubordinateList: any[] = [];
+          const { depart_information: depInfo, man_information: manInfo, team_members: memberList, team_name: teamName } = response.data.data;
+          console.log(manInfo, memberList)
+          setTeamName(teamName);
+          setDepName(depInfo[0].dep_name);
 
-          subordinateList.forEach((member: any) => {
-            newSubordinateList.push({
-              name: `${member.first_name} ${member.second_name}`,
-              email: member.email,
-            });
+          let newSubordinateList: (typeof subordinateList) = []; // This includes the manager at the top of the list
+
+          newSubordinateList.push({ email: manInfo[0].man_name, name: `[You] ${manInfo[0].man_name}` })
+
+          memberList.forEach(({ grad_id, grad_name, grad_email }: any) => {
+            newSubordinateList.push({ email: grad_email, name: grad_name })
           });
 
           setSubordinateList(newSubordinateList);
@@ -339,7 +345,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           }
 
           const { team_name, ratio, skill_information } = response.data.data;
-          console.log(team_name, ratio, skill_information);
+          // console.log(team_name, ratio, skill_information);
 
           // @Todo display team name
 
@@ -351,7 +357,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             if (ratio === 1) setSliderValue("100");
           }
 
-          console.log(skill_information, ratio);
+          // console.log(skill_information, ratio);
 
           // @Todo fix this
           skill_information.forEach(
@@ -405,7 +411,15 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <Navbar />
       </nav>
       <div>
-        <div className="hi-text dark:text-white">Your Team</div>
+      <div className="hi-text dark:text-white">{currentTab === "Your Team" ? "Your Team" : `Subordinate Preference`}</div>
+        <div className="hi-text dark:text-white text-3xl flex flex-row justify-center items-center">
+        <AiOutlineTeam className="text-3xl mr-3 bg-teal-100 rounded-full dark:text-blue-500" />
+          Team — {teamName}
+          </div>
+        <div className="hi-text dark:text-white text-2xl flex flex-row justify-center items-center">
+        <FcDepartment className="text-3xl mr-3" />
+          Department — {depName}
+          </div>
         {currentTab !== "Your Team" && (
           <div className="flex flex-row items-center justify-center gap-5">
             <div className="hi-text dark:text-white text-xl">
