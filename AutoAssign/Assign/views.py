@@ -596,6 +596,10 @@ class AssignGradToTeam(APIView):
 
         if ser.is_valid():
             ser.save()
+
+            team_id = grad_id.team_id.id
+            grad_obj.old_team_id = team_id
+
             context = {"code": 200, "status": True,
                        "Grad_id": grad_obj.id, "Team_id": team_obj.id, "detail": "Updated"}
             return Response(context)
@@ -705,7 +709,7 @@ class DeleteTeam(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        team_id = request.data.load('Team_id')
+        team_id = request.data.get('Team_id')
 
         if not team_id:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
@@ -715,6 +719,11 @@ class DeleteTeam(APIView):
         context = {"code": 403, "status": False, "detail": "Fail to delete"}
 
         if team_obj:
+            grad_objs = models.Graduate.objects.filter(team_id=team_obj).all()
+            for grad in grad_objs:
+                grad.old_team_id = None
+                grad.save()
+
             team_obj.delete()
             context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
@@ -725,7 +734,7 @@ class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        check_num = request.data.load('check_num')
+        check_num = request.data.get('check_num')
 
         if not check_num:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
@@ -752,26 +761,33 @@ class ChangeGraduateYear(APIView):
         data = request.data
 
         for grad in data:
-            grad_id = grad.load("grad_id")
-            grad_year = grad.load("year")
+            grad_id = grad.get("grad_id")
+            grad_year = grad.get("year")
 
             if not grad_id or grad_year:
                 return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+            
             if grad_year < 1 or grad_year > 2:
                 return Response({"code": 403, "status": False, "detail": "Please Check year"})
             if not grad_obj:
                 return Response({"code": 403, "status": False, "detail": "grad_id wrong"})
 
         for grad in data:
-            grad_id = grad.load("grad_id")
-            grad_year = grad.load("year")
+            grad_id = grad.get("grad_id")
+            grad_year = grad.get("year")
 
             if not grad_id or grad_year:
                 return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+
+            if grad_year == 2:
+                team_id = grad_obj.team_id.id
+                grad_obj.old_team_id = team_id
+            else:
+                grad_obj.old_team_id = None
 
             grad_obj.year = grad_year
             grad_obj.save()
@@ -785,9 +801,9 @@ class BatchRegister(APIView):
     def post(self, request):
 
         # Get Email List and role
-        email_list = request.data.load('email')
-        role = request.data.load('role')
-        url = request.data.load('url')
+        email_list = request.data.get('email')
+        role = request.data.get('role')
+        url = request.data.get('url')
 
         if not email_list or role or url:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
@@ -845,8 +861,8 @@ class ResetPasswordByEmail(APIView):
 
     def post(self, request):
         # Get Email List and role
-        email = request.data.load('email')
-        url = request.data.load('url')
+        email = request.data.get('email')
+        url = request.data.get('url')
 
         if not email or url:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})        
@@ -896,11 +912,11 @@ class ResetPasswordByEmail(APIView):
     def put(self, request):
 
         # Get the token
-        token = request.data.load('token')
+        token = request.data.get('token')
 
-        pwd1 =  request.data.load('pwd1')
+        pwd1 =  request.data.get('pwd1')
 
-        pwd2 =  request.data.load('pwd2')
+        pwd2 =  request.data.get('pwd2')
 
         if not token or pwd1 or pwd2:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})       
@@ -1118,6 +1134,13 @@ class AutoAssignAlg(APIView):
             context = {"code": 200, "status": False, "detail": "Fail to delete"}
 
             return Response(context)
+
+        # Loop through all Graduates, saving the old team for them.
+        grad_objs = models.Graduate.objects.filter(year=1).all()
+        for grad in grad_objs:
+            team_id = grad.team_id.id
+            grad.old_team_id = team_id
+            grad.save()
 
         alg.assign_graduates_to_teams()
 

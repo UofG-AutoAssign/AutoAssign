@@ -36,9 +36,9 @@ class Graduate(models.Model):
 
     # One to Many Link to team
 
-    team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE,
-                                null=True,
-                                )
+    team_id = models.ForeignKey(to="Team", on_delete=models.SET_NULL, null=True)
+
+    old_team_id = models.IntegerField(verbose_name="old_team_id", max_length=30, null=True)
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)
