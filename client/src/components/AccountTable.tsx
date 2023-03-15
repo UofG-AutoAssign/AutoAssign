@@ -50,7 +50,7 @@ const AccountTable: FC<{ data: string[] }> = ({ data }) => {
                   ) : rowId === 1 ? (
                     lastName
                   ) : (
-                    data[2]
+                    rowId === 2 ? data[2] : data[3]
                   )}
                 </th>
               </tr>
