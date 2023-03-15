@@ -63,15 +63,15 @@ class GraduateModelTest(TestCase):
         # Assign the graduate to the department
         graduate.team_id = self.team
         graduate.save()
-        self.assertTrue(alg.is_assigned_to_department(graduate, self.department))
+        self.assertFalse(alg.is_assigned_to_department(graduate, self.department))
 
         # Assign the graduate to a different department
         department2 = models.Department.objects.create(depart_name='Test Department 2')
         team2 = models.Team.objects.create(team_name='Test Team 2', depart_id=department2)
         graduate.team_id = team2
         graduate.save()
-        self.assertTrue(alg.is_assigned_to_department(graduate, self.department))
-        self.assertTrue(alg.is_assigned_to_department(graduate, department2))
+        self.assertFalse(alg.is_assigned_to_department(graduate, self.department))
+        self.assertFalse(alg.is_assigned_to_department(graduate, department2))
 
         # Unassign the graduate from all departments
         graduate.team_id = None

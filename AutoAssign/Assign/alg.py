@@ -34,15 +34,20 @@ def is_assigned_to_department(graduate, department):
     :param department: department object
     :return: True if the graduate has been assigned to the department before, False otherwise.
     """
-    old_team_id = graduate.team_id
-    if not old_team_id:
+    grad_year = graduate.year
+
+    if grad_year == 1:
         return False
-    old_dep_id = old_team_id.depart_id
+
+    old_dep_id = graduate.old_dep_id
+
+    if not old_dep_id:
+        return False
 
     if old_dep_id != department.id:
-        return True
+        return False
 
-    return False
+    return True
 
 
 # Check if a graduate has the skills required by the team.
@@ -135,7 +140,7 @@ def match_graduates_to_teams(sorted_teams, grad_year):
 
         # Exclude graduates who have already been assigned to this team or other teams
         candidates = [g for g in common_skill_graduates
-                      if not g.team_id or is_assigned_to_department(g, team.depart_id)]
+                      if not g.team_id or not is_assigned_to_department(g, team.depart_id)]
 
         # Sort candidates by match score in descending order
         candidates = sorted(candidates, key=lambda g: calculate_match_score(g, team), reverse=True)
@@ -168,7 +173,7 @@ def assign_graduates_to_teams():
 
     # Match graduates to teams
     match_graduates_to_teams(sorted_teams, grad_year=1)
-    # match_graduates_to_teams(sorted_teams, grad_year=2)
+    match_graduates_to_teams(sorted_teams, grad_year=2)
 
     # Get all unassigned graduates
     unassigned_graduates = models.Graduate.objects.filter(team_id__isnull=True, form__isnull=False)
@@ -187,6 +192,11 @@ def assign_graduates_to_teams():
         # Loop through unassigned graduates and randomly assign them to the team with the fewest members
         for graduate in unassigned_graduates:
             for team in sorted_teams_by_member_count:
+
+                dep_id = team.dep_ip
+                if is_assigned_to_department(graduate, dep_id):
+                    continue
+
                 if team_member_counts[team.id] < team.num_positions:
                     with transaction.atomic():
                         models.Graduate.objects.filter(id=graduate.id).update(team_id=team.id)

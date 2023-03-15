@@ -38,7 +38,7 @@ class Graduate(models.Model):
 
     team_id = models.ForeignKey(to="Team", on_delete=models.SET_NULL, null=True)
 
-    old_team_id = models.IntegerField(verbose_name="old_team_id", max_length=30, null=True)
+    old_dep_id = models.IntegerField(verbose_name="old_dep_id", null=True)
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)
