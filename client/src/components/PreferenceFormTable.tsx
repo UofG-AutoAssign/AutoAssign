@@ -267,7 +267,7 @@ const PreferenceFormTable: FC = () => {
         .then((response) => {
           const data = response.data.data.form_information;
           const graduateId = response.data.data.grad_id;
-          console.log(data, graduateId);
+          // console.log(data, graduateId);
 
           if (data === undefined) {
             toast.error("Data undefined");
@@ -308,6 +308,8 @@ const PreferenceFormTable: FC = () => {
     if (effectRanOnFirstLoad.current === false) {
       getAllSkills();
       getFormList();
+      console.log("fetched")
+      effectRanOnFirstLoad.current = true;
     }
 
     return () => {

@@ -20,12 +20,15 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
       return false;
     }
 
+    const postBody = {
+      email: emails, role: createEmailFor === "Graduates" ? 1 : 2, url: location.host + "/enter_new_password/"
+    }
+    console.log(postBody);
+    
+
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/hr/Register/`,
-      {
-        email: emails,
-        role: createEmailFor === "Graduates" ? 1 : 2,
-      },
+      postBody,
       {
         headers: {
           AUTHORIZATION: authStore.authToken,
@@ -76,7 +79,7 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
             toast.promise(
                 handleEmailSubmission,
                 {
-                  pending: 'Delivering email(s) to server...',
+                  pending: 'Delivering email(s) to server... \n Please do not close this page',
                   success: 'Sucessfully delivered email(s) to server!',
                   error: 'Failed to send email(s) to server'
                 }

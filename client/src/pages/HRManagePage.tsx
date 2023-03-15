@@ -3,7 +3,7 @@ import axios from "axios";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CreateEmailField from "../components/CreateGraduateEmailField";
+import CreateEmailField from "../components/CreateEmailField";
 import AssignGraduate from "../components/HRManage/AssignGraduate";
 import AssignManager from "../components/HRManage/AssignManager";
 import DeleteTeam from "../components/HRManage/DeleteTeam";
@@ -786,7 +786,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const { detail: description, max_capacity: maxCap } = data;
-      console.log(data);
+      // console.log(data);
       setTeamCapacity(maxCap);
       setInfoMessageForAutoAssign(description);
     }
