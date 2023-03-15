@@ -2,13 +2,12 @@ image: python:3.8-alpine
 
 # Define the pipeline stages
 stages:
-  - build
-  - test
-  - quality
+  - backend_build_test_quality
+  - frontend_build_test_quality
 
-# Define the jobs
-build-backend:
-  stage: build
+# Define the backend jobs
+backend_build:
+  stage: backend_build_test_quality
   before_script:
     # Install dependencies
     - apk add --no-cache build-base
@@ -20,28 +19,8 @@ build-backend:
     - python manage.py makemigrations
     - python manage.py migrate
 
-build-frontend:
-  stage: build
-  cache:
-    key:
-      files:
-        - client/package-lock.json
-      prefix: npm
-    paths:
-      - client/node_modules/
-  image: node:16.5.0-alpine
-  script:
-    - cd "client"
-    - npm install
-    - npm run build
-    - cp -a dist/. ../public/
-    - cd ..
-  artifacts:
-    paths:
-      - public
-
-test-backend:
-  stage: test
+backend_test:
+  stage: backend_build_test_quality
   before_script:
     # Install dependencies
     - apk add --no-cache build-base
@@ -52,8 +31,8 @@ test-backend:
     # Run the Django backend tests
     - python manage.py test
 
-backend_code_quality_pylint:
-  stage: quality
+backend_quality:
+  stage: backend_build_test_quality
   before_script:
     # Install dependencies
     - apk add --no-cache build-base
@@ -72,9 +51,30 @@ backend_code_quality_pylint:
   artifacts:
     paths:
       - htmlcov/
-      
-frontend_code_quality_eslint:
-  stage: quality
+
+# Define the frontend jobs
+frontend_build:
+  stage: frontend_build_test_quality
+  cache:
+    key:
+      files:
+        - client/package-lock.json
+      prefix: npm
+    paths:
+      - client/node_modules/
+  image: node:16.5.0-alpine
+  script:
+    - cd "client"
+    - npm install
+    - npm run build
+    - cp -a dist/. ../public/
+    - cd ..
+  artifacts:
+    paths:
+      - public
+
+frontend_quality:
+  stage: frontend_build_test_quality
   image: node:16.5.0
   before_script:
     # Install dependencies
