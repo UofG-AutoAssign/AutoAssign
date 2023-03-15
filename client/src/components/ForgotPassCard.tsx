@@ -16,19 +16,20 @@ const ForgotPassCard: FC = () => {
         return;
       }
 
-      // @Todo change to actual token endpoint
       const { data } = await axios.post(
         `${environmentalVariables.backend}home/reset/`,
         {
           email: emailInputRef.current.value,
+          url: location.hostname + ":5173" + "/enter_new_password/"
         }
       );
       console.log(data);
 
       if (data.status === true) {
         toast.success("Sucessfully Sent!");
+
       } else {
-        toast.error(`Failed to register new password: ${data.detail.email}`);
+        toast.error(`Failed to register new password: ${data.error}`);
       }
     } catch (error) {
       console.log(error);

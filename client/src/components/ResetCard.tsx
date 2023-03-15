@@ -1,35 +1,48 @@
+import axios from "axios";
 import { MouseEvent, FC, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
 
 const ResetCard: FC = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const ConFirmpasswordInputRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
 
-  const routerNavigator = useNavigate();
+  const navigate = useNavigate();
 
   const handleSignin = async (e: MouseEvent) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    if (!passwordInputRef.current?.value || !ConFirmpasswordInputRef.current?.value)
-      return;
+      if (
+        !passwordInputRef.current?.value ||
+        !confirmPasswordInputRef.current?.value
+      )
+        return;
 
-    const userType = await authStore.loginUser(
-      passwordInputRef.current?.value,
-      ConFirmpasswordInputRef.current?.value
-    );
+      const token = location.pathname.split("/").at(-1);
 
-    if (userType === "Graduate") {
-      routerNavigator(`/graduate`)
-    }
-    else if (userType === "Manager"){
-      routerNavigator(`/manager`)
-    }
-    else if (userType === "Hr") {
-      routerNavigator(`/hr`)
-    }
+      const { data } = await axios.put(
+        `${environmentalVariables.backend}home/reset/`,
+        {
+          token,
+          pwd1: passwordInputRef.current.value,
+          pwd2: confirmPasswordInputRef.current.value
+        }
+      );
+      console.log(data);
 
+      if (data.status === true) {
+        toast.success("Sucessfully Sent!");
+
+        setTimeout(() => {
+          navigate("/")
+        }, 1000);
+      } else {
+        toast.error(`Failed to register new password: ${data.error}`);
+      }
+    } catch (error) {}
   };
 
   return (
@@ -62,10 +75,10 @@ const ResetCard: FC = () => {
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-               Confirm new Password
+                Confirm new Password
               </label>
               <input
-                ref={ConFirmpasswordInputRef}
+                ref={confirmPasswordInputRef}
                 type="password"
                 name="password"
                 id="password"
