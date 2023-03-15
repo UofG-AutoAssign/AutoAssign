@@ -5,14 +5,14 @@ const NotFoundPage: FC = () => {
   const navigate = useNavigate();
   const [text, setText] = useState("");
 
-  const placeholdertext = "Unauthorized personnel found"
+  const placeholdertext = "Unauthorized personnel found 🤡"
 
   useEffect(() => {
     let idx = 0
     setInterval(() => {
       setText(placeholdertext.substring(0, idx))
       idx += 1;
-    }, 50)
+    }, 30)
 
     setTimeout(() => {
       navigate("/");

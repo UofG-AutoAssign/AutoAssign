@@ -1075,18 +1075,18 @@ class AutoAssignAlg(APIView):
 
 class CheckHrPermission(APIView):
     permission_classes = [HrPermission, ]
-    
+
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'hr'})
-    
+
 class CheckManPermission(APIView):
     permission_classes = [ManagerPermission, ]
-    
+
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'Manager'})
-    
+
 class CheckGradPermission(APIView):
     permission_classes = [GradPermission, ]
-    
+
     def get(self, request):
-        return Response({"code": 200, 'status': True, 'user_type': 'hr'})
+        return Response({"code": 200, 'status': True, 'user_type': 'Graduate'})

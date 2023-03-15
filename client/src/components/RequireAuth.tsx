@@ -14,8 +14,8 @@ const RequireAuth: FC = () => {
     [key: string]: string
   } = {
     "Hr": "home/CheckHr/",
-    "Graduate": "home/CheckMan/",
-    "Manager": "home/CheckGrad/"
+    "Graduate": "home/CheckGrad/",
+    "Manager": "home/CheckMan/"
   }
 
   const userTypeMatchesUrl = (): boolean => {
@@ -43,7 +43,7 @@ const RequireAuth: FC = () => {
           },
         }
       ).then(({ data }) => {
-        if (data.status !== 200) {
+        if (data.status === false) {
           navigate("/unauthorized")
         }
 
@@ -53,8 +53,6 @@ const RequireAuth: FC = () => {
 
     if (useTokenAuthWhenAPrivateRouteIsLoaded.current === false) {
       authorizeWithTokenOnPageLoad();
-
-      console.log("AUTH CHECK WITH TOKEN")
     }
   
     return () => {
