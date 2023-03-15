@@ -1,5 +1,5 @@
 import { useEffect, FC } from "react";
-import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
+import { BsFillMoonStarsFill, BsSun } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";

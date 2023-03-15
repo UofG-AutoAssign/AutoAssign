@@ -66,7 +66,6 @@ class AuthStore {
       });
       
       const data = response.data;
-      console.log(data);
 
       if (data.status === false) {
         toast.error("Login Failed")
