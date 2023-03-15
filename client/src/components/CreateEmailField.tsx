@@ -21,7 +21,7 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
     }
 
     const postBody = {
-      email: emails, role: createEmailFor === "Graduates" ? 1 : 2, url: location.host + "/enter_new_password/"
+      email: emails, role: createEmailFor === "Graduates" ? 1 : 2, url: location.host + "/sign_up/"
     }
     console.log(postBody);
     
