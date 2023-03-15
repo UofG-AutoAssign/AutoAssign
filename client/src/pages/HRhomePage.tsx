@@ -4,7 +4,6 @@ import { FC, Fragment, useContext, useState } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
 import Navbar from "../components/Navbar";
-import LandingButtonModal from "../components/LandingButtonModal";
 import authStore from "../context/authStore";
 
 const HRHomePage: FC = () => {
