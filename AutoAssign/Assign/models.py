@@ -36,7 +36,7 @@ class Graduate(models.Model):
 
     # One to Many Link to team
 
-    team_id = models.ForeignKey(to="Team", on_delete=models.CASCADE,
+    team_id = models.ForeignKey(to="Team", on_delete=models.SET_NULL,
                                 null=True,
                                 )
 
