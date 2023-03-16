@@ -1,7 +1,7 @@
 import axios from "axios";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { FC, useState } from "react";
-import authStore from "../context/authStore";
+import authStore from "../../context/authStore";
 import { toast } from "react-toastify";
 
 const AccountTable: FC<{ data: string[] }> = ({ data }) => {
@@ -17,6 +17,52 @@ const AccountTable: FC<{ data: string[] }> = ({ data }) => {
     if (rowId === 1) return "Last Name: ";
     if (rowId === 2) return "Email: ";
     else return "Year: ";
+  };
+
+  const handleChangeFirstAndLastName = async (): Promise<void> => {
+    setIsCurrentlyEditingData(false);
+
+    //sends a put request to the database to change
+    let user = sessionStorage.getItem("userType")?.toLowerCase();
+
+    if (user === "graduate") {
+      user = "grad";
+    }
+    if (user === "manager") {
+      user = "man";
+    }
+    console.log(data);
+
+    axios
+      .put(
+        `${environmentalVariables.backend}home/${user}/`,
+        {
+          first_name: firstName,
+          second_name: lastName,
+          email: data[2],
+        },
+        {
+          headers: {
+            AUTHORIZATION: authStore.authToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+
+        if (response.data.code === 200) {
+          toast.success("Changes saved to database");
+
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        } else {
+          toast.error("Failed to make changes...");
+        }
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
   };
 
   return (
@@ -49,8 +95,10 @@ const AccountTable: FC<{ data: string[] }> = ({ data }) => {
                     firstName
                   ) : rowId === 1 ? (
                     lastName
+                  ) : rowId === 2 ? (
+                    data[2]
                   ) : (
-                    rowId === 2 ? data[2] : data[3]
+                    data[3]
                   )}
                 </th>
               </tr>
@@ -64,50 +112,7 @@ const AccountTable: FC<{ data: string[] }> = ({ data }) => {
           className="w-52 text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
           onClick={() => {
             if (isCurrentlyEditingData === true) {
-              setIsCurrentlyEditingData(false);
-
-              //sends a put request to the database to change
-
-              let user = sessionStorage.getItem("userType")?.toLowerCase();
-
-              if (user === "graduate") {
-                user = "grad";
-              }
-              if (user === "manager") {
-                user = "man";
-              }
-              console.log(data);
-
-              axios
-                .put(
-                  `${environmentalVariables.backend}home/${user}/`,
-                  {
-                    first_name: firstName,
-                    second_name: lastName,
-                    email: data[2],
-                  },
-                  {
-                    headers: {
-                      AUTHORIZATION: authStore.authToken,
-                    },
-                  }
-                )
-                .then((response) => {
-                  console.log(response);
-
-                  if (response.data.code === 200) {
-                    toast.success("Changes saved to database");
-
-                    setTimeout(() => {
-                      location.reload();
-                    }, 1000);
-                  } else {
-                    toast.error("Failed to make changes...");
-                  }
-                })
-                .catch((error) => {
-                  toast.error(error);
-                });
+              handleChangeFirstAndLastName();
             } else {
               setIsCurrentlyEditingData(true);
             }
