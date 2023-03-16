@@ -133,14 +133,16 @@ def match_graduates_to_teams(sorted_teams, grad_year):
         skill_objs = team.skill.all()
 
         # Get all graduates who have at least one common skill with the team
-        common_skill_graduates = models.Graduate.objects.filter(
+        common_skill_graduates = set(models.Graduate.objects.filter(
             year=grad_year,
             form__skill_id__in=skill_objs
-        )
+        ).distinct())
 
-        # Exclude graduates who have already been assigned to this team or other teams
+        # Exclude graduates who have already been assigned to this department or other teams
+
         candidates = [g for g in common_skill_graduates
-                      if not g.team_id or not is_assigned_to_department(g, team.depart_id)]
+                      if (not g.team_id or not is_assigned_to_department(g, team.depart_id))
+                      and g.old_dep_id != team.depart_id.id]
 
         # Sort candidates by match score in descending order
         candidates = sorted(candidates, key=lambda g: calculate_match_score(g, team), reverse=True)
@@ -191,9 +193,9 @@ def assign_graduates_to_teams():
         # pylint: disable=C0301
         # Loop through unassigned graduates and randomly assign them to the team with the fewest members
         for graduate in unassigned_graduates:
-            for team in sorted_teams_by_member_count:
 
-                dep_id = team.dep_ip
+            for team in sorted_teams_by_member_count:
+                dep_id = team.depart_id
                 if is_assigned_to_department(graduate, dep_id):
                     continue
 
