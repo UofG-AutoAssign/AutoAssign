@@ -122,7 +122,6 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 ## General features for all users
 Login Page:
 - On the right side of the login page, there is a “Sign in to your account” interface. You can enter your email address and your password to log in.
-- There is a 'remember me' checkbox on the bottom left of the password input, selecting this will remember your login details, allowing you to skip sign-in next time you visit the site. <b> DO NOT select this option on shared computers.</b>
 - On the bottom right of the password input there is a 'forgot password' button, this will take you to a separate page where you can reset your password.
 
 Forgot Password Page:
