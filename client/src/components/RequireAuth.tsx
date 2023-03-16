@@ -18,6 +18,8 @@ const RequireAuth: FC = () => {
   }
 
   const userTypeMatchesUrl = (): boolean => {
+    // if (!userType) return false;
+
     const query = location.pathname.split("/").at(1)?.toLowerCase();
 
     if (query === "account" && userType) return true;
