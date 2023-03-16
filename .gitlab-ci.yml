@@ -48,6 +48,7 @@ backend_test:
     - source venv/bin/activate
     - pip install --no-cache-dir -r requirements.txt
     # Run the Django backend tests
+    - pip install coverage
     - coverage run --source='.' manage.py test
     - coverage report -m
 
