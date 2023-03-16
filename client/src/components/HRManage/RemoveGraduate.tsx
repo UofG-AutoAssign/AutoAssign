@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { gradType } from "../../pages/HRManagePage";
-import RemoveGraduateModal from "../modals/RemoveGraduateModal";
+import AssignRemoveModal from "../modals/AssignRemoveModal";
 
 // Permanently delete a graduate account
 const RemoveGraduate: FC<{
@@ -271,7 +271,7 @@ const RemoveGraduate: FC<{
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            <RemoveGraduateModal handleRemoveGrad={handleRemoveGrad} />
+            <AssignRemoveModal handleSubmission={handleRemoveGrad} modalType="RemoveGraduate"/>
 
             <div className="my-5 p-5 w-full border-2 border-red-800 bg-red-500 bg-opacity-50 basis-1/2 rounded-3xl flex flex-col justify-center shadow-lg py-5">
               <div className="hi-text dark:text-white text-xl mb-5">All Year 2 Graduates</div>

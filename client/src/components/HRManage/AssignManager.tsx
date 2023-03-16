@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId3 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
-import AssignManagerModal from "../modals/AssignManagerModal";
+import AssignRemoveModal from "../modals/AssignRemoveModal";
 
 // Assigns a manager to a specific team/department
 const AssignManager: FC<{
@@ -258,7 +258,7 @@ const AssignManager: FC<{
               id={confirmGraduateToTeamModalId3}
               className="modal-toggle"
             />
-            <AssignManagerModal handleAssignManager={handleAssignManager}/>
+            <AssignRemoveModal handleSubmission={handleAssignManager} modalType="AssignManager"/>
           </div>
         </form>
       </div>
