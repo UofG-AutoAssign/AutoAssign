@@ -165,7 +165,7 @@ const AccountPage: FC = () => {
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            {ConfirmChangePasswordModal()}
+            <ConfirmChangePasswordModal />
           </div>
         </form>
       </div>
@@ -210,6 +210,7 @@ const AccountPage: FC = () => {
     );
   };
 
+  const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
     const getUserInfo = async () => {
       let userTypeQuery = "";
@@ -239,9 +240,14 @@ const AccountPage: FC = () => {
         });
     };
 
-    getUserInfo();
+    if (effectRanOnFirstLoad.current === false) {
+      getUserInfo();
+      console.log("EFFECT RAN")
+      effectRanOnFirstLoad.current = true;
+    }
 
-    return () => {};
+    return () => {
+    };
   }, []);
 
   return (

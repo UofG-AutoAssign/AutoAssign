@@ -3,7 +3,6 @@ import useAuth from "../hooks/useAuth";
 import { useLocation, Outlet, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import { toast } from "react-toastify";
 
 const RequireAuth: FC = () => {
   const { authToken, userType } = useAuth();
@@ -13,9 +12,9 @@ const RequireAuth: FC = () => {
   const mapUserTypeToAuthUrl: {
     [key: string]: string
   } = {
-    "Hr": "home/CheckHr/",
-    "Graduate": "home/CheckGrad/",
-    "Manager": "home/CheckMan/"
+    "Hr": "home/check/hr/",
+    "Graduate": "home/check/grad/",
+    "Manager": "home/check/man/"
   }
 
   const userTypeMatchesUrl = (): boolean => {
@@ -48,7 +47,10 @@ const RequireAuth: FC = () => {
         }
 
       })
-      .catch((error) => toast.error(error))
+      .catch((error) => {
+        console.warn(error);        
+        navigate("/unauthorized");
+      })
     }
 
     if (useTokenAuthWhenAPrivateRouteIsLoaded.current === false) {
