@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { gradType } from "../../pages/HRManagePage";
-import AssignRemoveModal from "../modals/AssignRemoveModal";
+import AssignRemoveModal from "../general/AssignRemoveModal";
 
 // Permanently delete a graduate account
 const RemoveGraduate: FC<{
