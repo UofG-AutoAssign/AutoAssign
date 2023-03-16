@@ -1,48 +1,34 @@
-import axios from "axios";
 import { MouseEvent, FC, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import authStore from "../context/authStore";
+import authStore from "../../context/authStore";
 
-const ResetCard: FC = () => {
+const LoginCard: FC = () => {
+  const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordInputRef = useRef<HTMLInputElement>(null);
 
-  const navigate = useNavigate();
+  const routerNavigator = useNavigate();
 
   const handleSignin = async (e: MouseEvent) => {
-    try {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (
-        !passwordInputRef.current?.value ||
-        !confirmPasswordInputRef.current?.value
-      )
-        return;
+    if (!emailInputRef.current?.value || !passwordInputRef.current?.value)
+      return;
 
-      const token = location.pathname.split("/").at(-1);
+    const userType = await authStore.loginUser(
+      emailInputRef.current?.value,
+      passwordInputRef.current?.value
+    );
 
-      const { data } = await axios.put(
-        `${environmentalVariables.backend}home/reset/`,
-        {
-          token,
-          pwd1: passwordInputRef.current.value,
-          pwd2: confirmPasswordInputRef.current.value
-        }
-      );
-      console.log(data);
+    if (userType === "Graduate") {
+      routerNavigator(`/graduate`)
+    }
+    else if (userType === "Manager"){
+      routerNavigator(`/manager`)
+    }
+    else if (userType === "Hr") {
+      routerNavigator(`/hr`)
+    }
 
-      if (data.status === true) {
-        toast.success("Sucessfully Sent!");
-
-        setTimeout(() => {
-          navigate("/")
-        }, 1000);
-      } else {
-        toast.error(`Failed to register new password: ${data.error}`);
-      }
-    } catch (error) {}
   };
 
   return (
@@ -50,7 +36,7 @@ const ResetCard: FC = () => {
       <div className="w-full bg-white rounded-lg dark:border md:mt-0 min-w-full xl:p-0 dark:bg-gray-800 dark:border-gray-700 shadow-lg p-5">
         <div className="space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Reset Password Page
+            Sign in to your account
           </h1>
           <form className="space-y-4 md:space-y-6" action="#">
             <div>
@@ -58,15 +44,15 @@ const ResetCard: FC = () => {
                 htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Your new Password
+                Your email
               </label>
               <input
-                ref={passwordInputRef}
+                ref={emailInputRef}
                 type="email"
                 name="email"
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder=""
+                placeholder="name@company.com"
                 required
               />
             </div>
@@ -75,24 +61,50 @@ const ResetCard: FC = () => {
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Confirm new Password
+                Password
               </label>
               <input
-                ref={confirmPasswordInputRef}
+                ref={passwordInputRef}
                 type="password"
                 name="password"
                 id="password"
-                placeholder=""
+                placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
               />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-start">
+                <div className="flex items-center h-5">
+                  <input
+                    id="remember"
+                    aria-describedby="remember"
+                    type="checkbox"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="remember"
+                    className="text-gray-500 dark:text-gray-300"
+                  >
+                    Remember me
+                  </label>
+                </div>
+              </div>
+              <Link
+                to="/forgot_password"
+                className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+              >
+                Forgot password?
+              </Link>
             </div>
             <button
               onClick={(e) => handleSignin(e)}
               type="submit"
               className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-5"
             >
-              Submit
+              Sign in
             </button>
           </form>
         </div>
@@ -101,4 +113,4 @@ const ResetCard: FC = () => {
   );
 };
 
-export default ResetCard;
+export default LoginCard;

@@ -1,9 +1,9 @@
 import { FC } from "react";
-import ForgotPassCard from "../components/ForgotPassCard";
-import LoginCard from "../components/LoginCard";
+import ForgotPassCard from "../components/LandingPageCards/ForgotPassCard";
+import LoginCard from "../components/LandingPageCards/LoginCard";
+import ResetCard from "../components/LandingPageCards/ResetCard";
+import SignUpCard from "../components/LandingPageCards/SignUpCard";
 import Navbar from "../components/Navbar";
-import ResetCard from "../components/ResetCard";
-import SignUpCard from "../components/SignUpCard";
 
 type LandingPageProps = {
   pageType: "Login" | "Signup" | "SendEmail" | "ResetPassword";

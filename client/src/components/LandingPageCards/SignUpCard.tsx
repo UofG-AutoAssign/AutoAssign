@@ -2,7 +2,7 @@ import axios from "axios";
 import { MouseEvent, FC, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 
 const SignUpCard: FC = () => {
   const firstNameInputRef = useRef<HTMLInputElement>(null);
