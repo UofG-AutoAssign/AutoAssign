@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { managerType } from "../../pages/HRManagePage";
-import RemoveManagerModal from "../modals/RemoveManagerModal";
+import AssignRemoveModal from "../modals/AssignRemoveModal";
 
 // Permanently delete a manager account
 const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }) => {
@@ -158,7 +158,7 @@ const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            <RemoveManagerModal handleRemoveManager={handleRemoveManager}/>
+            <AssignRemoveModal handleSubmission={handleRemoveManager} modalType="RemoveManager" />
           </div>
         </div>
       </form>

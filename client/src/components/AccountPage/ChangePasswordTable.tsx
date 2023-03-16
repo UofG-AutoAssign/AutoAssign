@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const ChangePasswordTable = (): JSX.Element => {
-  const confirmChangePasswordModalId: string = "confirm-graduate2";
+  const confirmChangePasswordModalId = "confirm-graduate2";
   const currentPasswordRef = useRef<HTMLInputElement>(null);
   const newPasswordRef = useRef<HTMLInputElement>(null);
   const confirmNewPasswordRef = useRef<HTMLInputElement>(null);
@@ -99,7 +99,7 @@ const ChangePasswordTable = (): JSX.Element => {
                 className="btn bg-blue-800 text-white"
                 onClick={() => handleChangePassword()}
               >
-                Yes, I'm sure
+                Yes, I am sure
               </label>
             </div>
           </div>
