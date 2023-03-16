@@ -1,6 +1,6 @@
 import { FC } from "react";
-import LandingButtonLink from "../components/LandingButtonLink";
-import Navbar from "../components/Navbar";
+import LandingButtonLink from "../components/general/LandingButtonLink";
+import Navbar from "../components/general/Navbar";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
 import authStore from "../context/authStore";
 

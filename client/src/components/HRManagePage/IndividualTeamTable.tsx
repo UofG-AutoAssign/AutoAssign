@@ -3,11 +3,11 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { departmentAndTeamListHRType } from "./HRManage/TeamTable";
+import { departmentAndTeamListHRType } from "./AllTeamsTable";
 import { FcDepartment } from "react-icons/all";
 import { AiOutlineTeam, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
 
-const ManageTeamsTable: FC<{
+const IndividualTeamTable: FC<{
   departmentAndTeamListHR: departmentAndTeamListHRType;
 }> = ({ departmentAndTeamListHR }) => {
   const {
@@ -101,4 +101,4 @@ const ManageTeamsTable: FC<{
     </div>
   );
 };
-export default ManageTeamsTable;
+export default IndividualTeamTable;

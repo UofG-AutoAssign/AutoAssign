@@ -3,8 +3,8 @@ import { FC, useState } from "react";
 import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { toast } from "react-toastify";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import authStore from "../context/authStore";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
+import authStore from "../../context/authStore";
 
 const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ createEmailFor }) => {
   const [emails, setEmails] = useState<string[]>([]);

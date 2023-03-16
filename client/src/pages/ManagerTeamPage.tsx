@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/general/Navbar";
 import { FC, useEffect, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,6 +10,8 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FcDepartment } from "react-icons/fc";
+import { ManagerTableInterface } from "../constants/Interfaces";
+import YourTeamTable from "../components/general/YourTeamTable";
 
 const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   initialState,
@@ -21,10 +23,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   const location = useLocation();
 
   const [subordinateList, setSubordinateList] = useState<
-    {
-      name: string;
-      email: string;
-    }[]
+    ManagerTableInterface[]
   >([{ name: "...", email: "..." }]);
 
   // List of available skills to de displayed in a drop down
@@ -74,41 +73,6 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
 
   const [sliderValue, setSliderValue] = useState<string>("50");
 
-  const TeamTable = (): JSX.Element => {
-    return (
-      <div className="relative flex overflow-x-visible rounded-sm shadow-lg wrap">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Team Members
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Email
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {subordinateList.map(({ name, email }, idx) => (
-              <tr
-                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={idx}
-              >
-                <th
-                  scope="row"
-                  className="flex flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {name}
-                </th>
-                <td className="px-6 py-4">{email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
   const TechnologyDropdown = ({
     selectedTechnology,
     rowId,
@@ -128,8 +92,8 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         ...selectedData,
         [rowId]: {
           value: value.value,
-          label: value.label
-        }
+          label: value.label,
+        },
       };
       setSelectedData(newData);
     };
@@ -139,7 +103,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         className="min-w-[200px] relative w-full h-10 text-black"
         value={selectedTechnology}
         onChange={(value) => {
-          handleSelectChange(value as typeof selectedTechnology, "selectedTechnology", Number(rowId));
+          handleSelectChange(
+            value as typeof selectedTechnology,
+            "selectedTechnology",
+            Number(rowId)
+          );
         }}
         options={allSkills}
       />
@@ -235,12 +203,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
-
   }, [location]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
     if (Object.keys(selectedData).length === 0) {
-      toast.error("At least 1 technology is required")
+      toast.error("At least 1 technology is required");
       return false;
     }
 
@@ -254,7 +221,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       "100": 1,
     };
 
-    const skill: number[] = []
+    const skill: number[] = [];
 
     Object.keys(selectedData).forEach((rowId) => {
       const value = selectedData[Number(rowId)].value;
@@ -264,19 +231,18 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       skill.push(value);
     });
 
-    console.log(skill)
+    console.log(skill);
 
     if (skill.length < 1) {
       toast.error("At least 1 technology is required");
       return false;
     }
 
-    // @Todo fix this (still 403)
     const { data } = await axios.put(
       `${environmentalVariables.backend}home/man/Team/UpdateSetting/`,
       {
         ratio: sliderValueMap[sliderValue],
-        skill
+        skill,
       },
       {
         headers: {
@@ -286,11 +252,10 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     );
     console.log(data);
 
-
     if (data.status === true) {
-      toast.success("Data successfully delivered!")
+      toast.success("Data successfully delivered!");
     } else {
-      toast.error(`Data failed to be delivered! ${data.detail}`)
+      toast.error(`Data failed to be delivered! ${data.detail}`);
     }
 
     return data.status;
@@ -311,21 +276,30 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
             return;
           }
 
-          const { depart_information: depInfo, man_information: manInfo, team_members: memberList, team_name: teamName } = response.data.data;
-          console.log(manInfo, memberList)
+          const {
+            depart_information: depInfo,
+            man_information: manInfo,
+            team_members: memberList,
+            team_name: teamName,
+          } = response.data.data;
+          console.log(manInfo, memberList);
           setTeamName(teamName);
           setDepName(depInfo[0].dep_name);
 
-          const newSubordinateList: (typeof subordinateList) = []; // This includes the manager at the top of the list
+          const newSubordinateList: typeof subordinateList = []; // This includes the manager at the top of the list
 
-          newSubordinateList.push({ email: manInfo[0].man_name, name: `[You] ${manInfo[0].man_name}` })
+          newSubordinateList.push({
+            email: manInfo[0].man_name,
+            name: `[You] ${manInfo[0].man_name}`,
+          });
 
           memberList.forEach(({ grad_id, grad_name, grad_email }: any) => {
-            newSubordinateList.push({ email: grad_email, name: grad_name })
+            newSubordinateList.push({ email: grad_email, name: grad_name });
           });
 
           setSubordinateList(newSubordinateList);
-        }).catch((error) => console.log(error))
+        })
+        .catch((error) => console.log(error));
     };
 
     const getTeamPreferenceInfo = async () => {
@@ -408,15 +382,17 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <Navbar />
       </nav>
       <div>
-      <div className="hi-text dark:text-white">{currentTab === "Your Team" ? "Your Team" : `Subordinate Preference`}</div>
+        <div className="hi-text dark:text-white">
+          {currentTab === "Your Team" ? "Your Team" : `Subordinate Preference`}
+        </div>
         <div className="hi-text dark:text-white text-3xl flex flex-row justify-center items-center">
-        <AiOutlineTeam className="text-3xl mr-3 bg-teal-100 rounded-full dark:text-blue-500" />
+          <AiOutlineTeam className="text-3xl mr-3 bg-teal-100 rounded-full dark:text-blue-500" />
           Team — {teamName}
-          </div>
+        </div>
         <div className="hi-text dark:text-white text-2xl flex flex-row justify-center items-center">
-        <FcDepartment className="text-3xl mr-3" />
+          <FcDepartment className="text-3xl mr-3" />
           Department — {depName}
-          </div>
+        </div>
         {currentTab !== "Your Team" && (
           <div className="flex flex-row items-center justify-center gap-5">
             <div className="hi-text dark:text-white text-xl">
@@ -459,7 +435,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <div className="w-3/4 pr-5">
           <div className="bg-white rounded-2xl">
             {currentTab === "Your Team" ? (
-              <TeamTable />
+              <YourTeamTable teammateList={subordinateList}/>
             ) : (
               <div className="">
                 <SettingsTable />
