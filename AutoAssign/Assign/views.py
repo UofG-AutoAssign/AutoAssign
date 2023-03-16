@@ -255,6 +255,7 @@ class ManView(APIView):
             {"code": 403, "status": False,
              'error': "Update personal information Fail", "detail": ser.errors})
 
+
 #  This functionality is not implemented in the frontend
 # class HrViewCreate(APIView):
 #     permission_classes = [HrPermission, ]
@@ -1144,17 +1145,20 @@ class AutoAssignAlg(APIView):
 
         return Response(context)
 
+
 class CheckHrPermission(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'hr'})
 
+
 class CheckManPermission(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'Manager'})
+
 
 class CheckGradPermission(APIView):
     permission_classes = [GradPermission, ]
