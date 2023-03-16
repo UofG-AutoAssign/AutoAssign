@@ -36,7 +36,7 @@ const RemoveManagerModal: FC<{
                 htmlFor={confirmGraduateToTeamModalId2}
                 className="btn bg-red-700 text-white"
               >
-                Yes, I'm sure
+                Yes, I&apos;m sure
               </label>
             </div>
           </div>

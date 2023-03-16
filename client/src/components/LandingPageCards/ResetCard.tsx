@@ -41,7 +41,9 @@ const ResetCard: FC = () => {
       } else {
         toast.error(`Failed to register new password: ${data.error}`);
       }
-    } catch (error) {}
+    } catch (error: any) {
+      toast.error(error)
+    }
   };
 
   return (

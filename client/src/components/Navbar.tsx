@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react";
+import { FC } from "react";
 import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -52,10 +52,6 @@ const Navbar: FC<{
     if (query) navigate(`/${query}`);
 
   }
-
-  useEffect(() => {
-    return () => { };
-  }, []);
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>

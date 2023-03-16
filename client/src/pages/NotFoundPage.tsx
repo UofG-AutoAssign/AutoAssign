@@ -18,7 +18,6 @@ const NotFoundPage: FC = () => {
       navigate("/");
     }, 2000);
 
-    return () => {};
   }, []);
 
   return (

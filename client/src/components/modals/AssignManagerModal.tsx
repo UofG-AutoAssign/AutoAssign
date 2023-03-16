@@ -31,7 +31,7 @@ const AssignManagerModal: FC<{
               htmlFor={confirmGraduateToTeamModalId3}
               className="btn bg-blue-800 text-white"
             >
-              Yes, I'm sure
+              Yes, I&apos;m sure
             </label>
             </div>
           </div>

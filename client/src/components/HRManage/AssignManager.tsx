@@ -221,7 +221,7 @@ const AssignManager: FC<{
     return (
       <div className="w-3/4 pr-5">
         <div className="mb-7 text-black dark:text-white">
-          Type the manager's email and the specific team you want to move them
+          Type the manager&apos;s email and the specific team you want to move them
           to.
         </div>
         <form>
