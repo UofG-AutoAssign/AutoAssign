@@ -2,45 +2,70 @@ image: python:3.8-alpine
 
 # Define the pipeline stages
 stages:
-  - build_test_quality
+  - backend_build_test_quality
+  - frontend_build_test_quality
+
+# Define cache keys
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - AutoAssign/venv/
+    - client/node_modules/
 
 # Define the backend jobs
 backend_build:
-  stage: build_test_quality
-  before_script:
+  stage: backend_build_test_quality
+  parallel: 2
+  cache:
+    key: "$CI_COMMIT_REF_SLUG-requirements"
+    paths:
+      - AutoAssign/venv/
+  script:
     # Install dependencies
     - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
+    - if [ ! -d "venv" ]; then python3 -m venv venv; fi
+    - source venv/bin/activate
     - pip install --no-cache-dir -r requirements.txt
-  script:
     # Build the Django backend
     - python manage.py makemigrations
     - python manage.py migrate
 
 backend_test:
-  stage: build_test_quality
-  needs: [backend_build]
-  before_script:
+  stage: backend_build_test_quality
+  parallel: 2
+  cache:
+    key: "$CI_COMMIT_REF_SLUG-requirements"
+    paths:
+      - AutoAssign/venv/
+  script:
     # Install dependencies
     - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
+    - if [ ! -d "venv" ]; then python3 -m venv venv; fi
+    - source venv/bin/activate
     - pip install --no-cache-dir -r requirements.txt
-  script:
     # Run the Django backend tests
-    - python manage.py test
+    - coverage run --source='.' manage.py test
+    - coverage report -m
 
 backend_quality:
-  stage: build_test_quality
-  needs: [backend_build]
-  before_script:
+  stage: backend_build_test_quality
+  parallel: 1
+  cache:
+    key: "$CI_COMMIT_REF_SLUG-requirements"
+    paths:
+      - AutoAssign/venv/
+  script:
     # Install dependencies
     - apk add --no-cache build-base
     - pip install --upgrade pip
     - cd "AutoAssign"
+    - if [ ! -d "venv" ]; then python3 -m venv venv; fi
+    - source venv/bin/activate
     - pip install --no-cache-dir pylint pylint-django
-  script:
     # Run pylint to check for coding style issues and other code quality problems
     - pylint --disable=C0114,C0115,R0903,C0116,E1101,W0105,W0613,E0401 ext
     - cd "Assign"
@@ -53,30 +78,10 @@ backend_quality:
     paths:
       - htmlcov/
 
-backend_coverage:
-  stage: build_test_quality
-  needs: [backend_test]
-  before_script:
-    # Install dependencies
-    - apk add --no-cache build-base
-    - pip install --upgrade pip
-    - cd "AutoAssign"
-    - pip install --no-cache-dir -r requirements.txt
-  script:
-    # Run tests with coverage
-    - coverage run --source='Assign' manage.py test
-    # Generate coverage report in XML format
-    - coverage xml
-  artifacts:
-    reports:
-      junit: test-results.xml
-    paths:
-      - coverage.xml
-
 # Define the frontend jobs
 frontend_build:
-  stage: build_test_quality
-  needs: []
+  stage: frontend_build_test_quality
+  parallel: 1
   cache:
     key:
       files:
@@ -95,13 +100,38 @@ frontend_build:
     paths:
       - public
 
-frontend_quality:
+frontend_test:
   stage: frontend_build_test_quality
+  parallel: 1
+  cache:
+    key:
+      files:
+        - client/package-lock.json
+      prefix: npm
+    paths:
+      - client/node_modules/
   image: node:16.5.0
-  before_script:
+  script:
     # Install dependencies
     - cd "client"
     - npm install
-    - npm install eslint eslint-plugin-react @typescript-eslint/parser @typescript-eslint/eslint-plugin
+    # Run frontend tests
+    - echo "Frontend tests"
+
+frontend_quality:
+  stage: frontend_build_test_quality
+  parallel: 1
+  cache:
+    key:
+      files:
+        - client/package-lock.json
+      prefix: npm
+    paths:
+      - client/node_modules/
+  image: node:16.5.0
   script:
+    # Install dependencies
+    - cd "client"
+    - npm install
+    - npm install eslint eslint-plugin-react @typescript-eslint/parser @typescript-eslint
     - npx eslint --ext .tsx --ext .ts
