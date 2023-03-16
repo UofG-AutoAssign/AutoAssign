@@ -18,7 +18,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     useState<initialComponentManager>(initialState);
 
   const navigate = useNavigate();
-  const location = useLocation();
+  const currentLocation = useLocation();
 
   const [subordinateList, setSubordinateList] = useState<
     {
@@ -236,7 +236,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
 
-  }, [location]);
+  }, [currentLocation]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
     if (Object.keys(selectedData).length === 0) {
