@@ -95,11 +95,11 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
       query === ""
         ? allManagerList
         : allManagerList.filter((manager) =>
-            manager.email
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
+          manager.email
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
 
     return (
       <div className="relative min-w-[72px] w-full z-30">
@@ -132,8 +132,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
                     <Combobox.Option
                       key={manager.id}
                       className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
+                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-blue-600 text-white" : "text-gray-900"
                         }`
                       }
                       value={manager}
@@ -141,17 +140,15 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
+                            className={`block truncate ${selected ? "font-medium" : "font-normal"
+                              }`}
                           >
                             {manager.email}
                           </span>
                           {selected ? (
                             <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
+                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-blue-600"
+                                }`}
                             >
                               ✅
                             </span>
@@ -176,11 +173,11 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
       query === ""
         ? departmentList
         : departmentList.filter((dep) =>
-            dep.depart_name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
+          dep.depart_name
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
 
     return (
       <div className="relative min-w-[72px] w-full z-40">
@@ -213,8 +210,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
                     <Combobox.Option
                       key={idx}
                       className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
+                        `relative cursor-default dark:bg-red select-none py-2 pl-10 pr-4 ${active ? "bg-blue-600 text-white" : "text-gray-900"
                         }`
                       }
                       value={dep.depart_name}
@@ -222,17 +218,15 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
+                            className={`block truncate ${selected ? "font-medium" : "font-normal"
+                              }`}
                           >
                             {dep.depart_name}
                           </span>
                           {selected ? (
                             <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
+                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-blue-600"
+                                }`}
                             >
                               ✅
                             </span>
@@ -342,23 +336,23 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
         </table>
       </div>
       <div className="flex flex-col justify-center gap-4 items-center w-full my-10 relative wrap shadow-2xl p-5 rounded-btn">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
 
             <tr>
               <th scope="col" className="px-2 py-3 flex flex-row gap-3 text-2xl items-center">
-              <AiFillSetting />
+                <AiFillSetting />
                 Create New Team
               </th>
             </tr>
           </thead>
         </table>
-        <div className="label-text w-full font-black text-black">
+        <div className="label-text w-full font-black text-black dark:text-white">
           Pick a Department
         </div>
         <DropdownDepartmentList />
 
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter New Team Name
         </div>
         <input
@@ -368,19 +362,19 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           placeholder="Enter New Team Name..."
           required
         ></input>
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Pick a Manager
         </div>
         <DropdownManagerList />
 
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter Team&aops;s Max Headcount
         </div>
         <input
           ref={maxCapacityInputRef}
           type="number"
           className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Max Team Capacity..."
+          placeholder="Enter Maximum Team Capacity..."
           required
         ></input>
         <button
@@ -416,7 +410,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           Add New Team
         </button>
       </div>
-      
+
     </div>
   );
 };
