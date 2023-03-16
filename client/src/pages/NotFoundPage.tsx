@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 const NotFoundPage: FC = () => {
   const navigate = useNavigate();
-  const [text, setText] = useState("Unauthorized personnel found")
+  const [text, setText] = useState("");
+
+  const placeholdertext = "Unauthorized personnel found 🤡"
 
   useEffect(() => {
-    setTimeout(() => {
-      setText("Redirecting back to login...")
-    }, 1000);
+    let idx = 0
+    setInterval(() => {
+      setText(placeholdertext.substring(0, idx))
+      idx += 1;
+    }, 30)
 
     setTimeout(() => {
       navigate("/");
