@@ -29,7 +29,6 @@ const RequireAuth: FC = () => {
     return true;
   };
 
-  // @Todo use JWT to autheticate
   const useTokenAuthWhenAPrivateRouteIsLoaded = useRef<boolean>(false);
 
   useEffect(() => {

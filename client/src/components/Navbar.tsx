@@ -12,7 +12,6 @@ const Navbar: FC<{
   hideAccountButton?: boolean;
 }> = ({ hideLogoutButton, hideAccountButton }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const BackButton = (): JSX.Element => {
     return (
@@ -45,7 +44,6 @@ const Navbar: FC<{
   };
 
   const goBackToLandingPage = () => {
-    // const query = location.pathname.split("/").at(1)?.toLowerCase();
     const query = sessionStorage.getItem("userType") || "";
     console.log(query);
     
