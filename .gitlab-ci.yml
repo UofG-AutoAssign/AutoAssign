@@ -80,6 +80,5 @@ frontend_quality:
     # Install dependencies
     - cd "client"
     - npm install
-    - npm install eslint eslint-plugin-react @typescript-eslint/parser @typescript-eslint/eslint-plugin
   script:
-    - npx eslint --ext .tsx --ext .ts
+    - npx eslint . --ext .js,.jsx,.ts,.tsx

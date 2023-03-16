@@ -1,6 +1,4 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { FC, Fragment, useContext, useState } from "react";
+import { FC } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
 import Navbar from "../components/Navbar";

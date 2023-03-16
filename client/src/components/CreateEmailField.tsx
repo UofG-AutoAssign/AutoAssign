@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FC, useState } from "react";
-import { ReactMultiEmail, isEmail } from "react-multi-email";
+import { ReactMultiEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { toast } from "react-toastify";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
@@ -76,7 +76,6 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
           }}
         />
         <br />
-        {/* <p>{emails.join(", ") || "empty"}</p> */}
       </form>
       <div className="w-full flex flex-row justify-center">
         <button
