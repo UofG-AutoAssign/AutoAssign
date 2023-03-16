@@ -120,10 +120,10 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
 
       let newTeamList: ManagerTableInterface[] = []; // This includes the manager at the top of the list
 
-      newTeamList.push({ email: manInfo[0].man_id, name: `[Manager] ${manInfo[0].man_name}` })
+      newTeamList.push({ email: manInfo[0].man_email, name: `[Manager] ${manInfo[0].man_name}` })
 
-      memberList.forEach(({ grad_id, grad_name }: any) => {
-        newTeamList.push({ email: String(grad_id), name: grad_name })
+      memberList.forEach(({ grad_id, grad_name, grad_email }: any) => {
+        newTeamList.push({ email: grad_email, name: grad_name })
       });
 
       setTeammateList(newTeamList)
