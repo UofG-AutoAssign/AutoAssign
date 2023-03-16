@@ -374,7 +374,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
         <DropdownManagerList />
 
         <div className="label-text w-full font-black text-balck text-black">
-          Enter Team's Max Headcount
+          Enter Team&aops;s Max Headcount
         </div>
         <input
           ref={maxCapacityInputRef}

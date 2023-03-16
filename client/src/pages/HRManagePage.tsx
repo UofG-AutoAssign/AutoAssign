@@ -12,7 +12,6 @@ import RemoveManager from "../components/HRManage/RemoveManager";
 import TeamTable from "../components/HRManage/TeamTable";
 import Navbar from "../components/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import { confirmGraduateToTeamModalId2 } from "../constants/ModalIDs";
 import { initialComponentHR } from "../constants/Types";
 import authStore from "../context/authStore";
 
@@ -116,21 +115,21 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     currentYear: number
   ): void => {
     if (currentYear === 1) {
-      let yearOneDummy = [...yearOneGrads].filter(
+      const yearOneDummy = [...yearOneGrads].filter(
         (grad) => grad.id !== graduate.id
       );
       setYearOneGrads(yearOneDummy);
 
-      let yearTwoDummy = [...yearTwoGrads];
+      const yearTwoDummy = [...yearTwoGrads];
       yearTwoDummy.push(graduate);
       setYearTwoGrads(yearTwoDummy);
     } else if (currentYear === 2) {
-      let yearTwoDummy = [...yearTwoGrads].filter(
+      const yearTwoDummy = [...yearTwoGrads].filter(
         (grad) => grad.id !== graduate.id
       );
       setYearTwoGrads(yearTwoDummy);
 
-      let yearOneDummy = [...yearOneGrads];
+      const yearOneDummy = [...yearOneGrads];
       yearOneDummy.push(graduate);
       setYearOneGrads(yearOneDummy);
     } else {
@@ -140,7 +139,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   // add all year 1s to year 2s
   const shiftAllYearOnesToTwo = (): void => {
-    let yearTwoDummy = [...yearTwoGrads];
+    const yearTwoDummy = [...yearTwoGrads];
     for (let idx = 0; idx < yearOneGrads.length; idx++) {
       yearTwoDummy.push(yearOneGrads[idx]);
     }
@@ -236,9 +235,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
                 </td>
               </tr>
             ) : (
-              filteredPeople.map((grad) => {
+              filteredPeople.map((grad, idx) => {
                 return (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -300,9 +299,9 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
                 <td className="py-4 px-6 text-right"></td>
               </tr>
             ) : (
-              filteredPeople.map((managerName) => {
+              filteredPeople.map((managerName, idx) => {
                 return (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
                       className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -374,6 +373,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
           <div>
             Managers
             <StaticListDisplayTable
+              // eslint-disable-next-line react/prop-types
               managerList={managerList.map((manager) => manager.email)}
             />
           </div>
@@ -388,8 +388,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   const showToastOnFirstLoad = useRef<boolean>(false);
 
   const AutoAssign = (): JSX.Element => {
-
-    let [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const closeModal = () => setIsOpen(false);
 
@@ -615,11 +614,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     if (currentTab === "Auto Assign") {
       return <AutoAssign />;
     }
-    return <div>This component shouldn't be returned 💀</div>;
+    return <div>This component shouldn&apos;t be returned 💀</div>;
   };
 
   const navigate = useNavigate();
-  let currentUrl = useLocation();
+  const currentUrl = useLocation();
 
   useEffect(() => {
     const query = currentUrl.pathname.split("/").at(-1);
@@ -637,7 +636,6 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     else if (query === "auto_assign") setCurrentTab("Auto Assign");
     else setCurrentTab("Teams");
 
-    return () => {};
   }, [currentUrl]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);

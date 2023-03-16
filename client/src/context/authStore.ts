@@ -22,9 +22,9 @@ type postType = {
   password: string;
 };
 class AuthStore {
-  username: string = "";
-  userType: string = "";
-  authToken: string = "";
+  username = "";
+  userType = "";
+  authToken = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -88,55 +88,6 @@ class AuthStore {
     }
   }
 
-  async getUserInfo(): Promise<void> {
-    const requestBody = {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${this.authToken}`,
-      },
-    };
-
-    // @Todo Use Axios Interceptor
-    await fetch("http://101.200.41.196:8000/home/hr", requestBody).then(
-      (response) => {
-        response.json().then((data: returnType) => {
-          const d = data.data;
-          console.log(d);
-          this.setUsername(d.first_name + d.second_name);
-        });
-      }
-    );
-  }
-
-  async createAccount(): Promise<void> {
-    const postObject: postType = {
-      first_name: "New",
-      second_name: "Two",
-      email: "Grad5@email.com",
-      role: "1",
-      password: "123456",
-    };
-
-    const requestBody = {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${this.authToken}`,
-      },
-      body: JSON.stringify(postObject),
-    };
-
-    // @Todo Use Axios Interceptor
-    let response = await fetch(
-      "http://101.200.41.196:8000/home/hr/creat",
-      requestBody
-    );
-    let data = await response.json();
-    console.log(data);
-  }
 }
 
 const authStore = new AuthStore();

@@ -69,7 +69,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   };
 
   const navigate = useNavigate();
-  let location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     const query = location.pathname.split("/").at(-1);
@@ -77,7 +77,6 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else setCurrentTab("Preference Form");
 
-    return () => {};
   }, [location]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);
@@ -103,7 +102,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
       setTeamName(teamName);
       setDepName(depInfo[0].dep_name);
 
-      let newTeamList: ManagerTableInterface[] = []; // This includes the manager at the top of the list
+      const newTeamList: ManagerTableInterface[] = []; // This includes the manager at the top of the list
 
       newTeamList.push({ email: manInfo[0].man_email, name: `[Manager] ${manInfo[0].man_name}` })
 

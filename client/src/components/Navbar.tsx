@@ -1,5 +1,5 @@
-import { useEffect, FC } from "react";
-import { BsFillMoonStarsFill, BsSun } from "react-icons/bs";
+import { FC } from "react";
+import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,7 +12,6 @@ const Navbar: FC<{
   hideAccountButton?: boolean;
 }> = ({ hideLogoutButton, hideAccountButton }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const BackButton = (): JSX.Element => {
     return (
@@ -45,17 +44,12 @@ const Navbar: FC<{
   };
 
   const goBackToLandingPage = () => {
-    // const query = location.pathname.split("/").at(1)?.toLowerCase();
     const query = sessionStorage.getItem("userType") || "";
     console.log(query);
     
     if (query) navigate(`/${query}`);
 
   }
-
-  useEffect(() => {
-    return () => { };
-  }, []);
 
   return (
     <div className={themeStore.isDarkMode ? "dark" : ""}>
