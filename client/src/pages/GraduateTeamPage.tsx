@@ -1,18 +1,12 @@
 import Navbar from "../components/Navbar";
-import { FC, useEffect, useRef, useState } from "react";
-import Select from "react-select";
-import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import authStore from "../context/authStore";
 import PreferenceFormTable from "../components/PreferenceFormTable";
-import { ItemInterface } from "../constants/Interfaces";
+import { FC, useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { initialComponentGraduate } from "../constants/Types";
 import { ManagerTableInterface } from "../constants/Interfaces";
-import {
-  experienceOptions,
-  interestOptions,
-} from "../constants/Options";
-import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import authStore from "../context/authStore";
 import { toast } from "react-toastify";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FcDepartment } from "react-icons/fc";
@@ -68,19 +62,10 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     );
   };
 
-  // Displays the Preference Form Table as well as a save button
-  const PreferenceTable = (): JSX.Element => {
-    return (
-      <div className="w-full bg-white rounded-2xl font-medium">
-        <PreferenceFormTable />
-      </div>
-    );
-  };
-
   // Display page corresponding to the active tab
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Your Team") return <YourTeamTable />;
-    else return <PreferenceTable />;
+    else return <PreferenceFormTable />;
   };
 
   const navigate = useNavigate();
@@ -92,7 +77,7 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else setCurrentTab("Preference Form");
 
-    return () => { };
+    return () => {};
   }, [location]);
 
   const effectRanOnFirstLoad = useRef<boolean>(false);

@@ -2,14 +2,12 @@ import Navbar from "../components/Navbar";
 import { FC, useEffect, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ItemInterface } from "../constants/Interfaces";
 import { initialComponentManager } from "../constants/Types";
 import axios from "axios";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import authStore from "../context/authStore";
 import Select from "react-select";
 import { toast } from "react-toastify";
-import { selectedDataType } from "../components/PreferenceFormTable";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FcDepartment } from "react-icons/fc";
 

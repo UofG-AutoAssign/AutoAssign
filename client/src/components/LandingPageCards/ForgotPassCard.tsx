@@ -2,7 +2,7 @@ import { MouseEvent, FC, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 
 const ForgotPassCard: FC = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);

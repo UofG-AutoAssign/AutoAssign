@@ -1,23 +1,20 @@
 import { FC } from "react";
 import "./App.css";
 import AccountPage from "./pages/AccountPage";
-import LoginPage from "./pages/LoginPage";
 import GraduatePage from "./pages/GraduatePage";
 import GraduateTeamPage from "./pages/GraduateTeamPage";
 import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
-import ForgotPassPage from "./pages/ForgotPassPage";
 import HRManagePage from "./pages/HRManagePage";
 import ManagerTeamPage from "./pages/ManagerTeamPage";
 import ManagerPage from "./pages/ManagerHomePage";
 import themeStore from "./context/themeStore";
-import SignUpPage from "./pages/SignUpPage";
 import HRHomePage from "./pages/HRhomePage";
 import { observer } from "mobx-react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RequireAuth from "./components/RequireAuth";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
+import LandingPage from "./pages/LandingPage";
 
 const App: FC = observer(() => {
   return (
@@ -28,10 +25,10 @@ const App: FC = observer(() => {
       <div className="page-background dark:bg-gray-800 overflow-y-auto">
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="forgot_password" element={<ForgotPassPage />} />
-          <Route path="/sign_up/:signUpToken" element={<SignUpPage />} />
-          <Route path="/enter_new_password/:newPasswordToken" element={<ResetPasswordPage />} />
+          <Route path="/" element={<LandingPage pageType="Login"/>} />
+          <Route path="forgot_password" element={<LandingPage pageType="SendEmail"/>} />
+          <Route path="/sign_up/:signUpToken" element={<LandingPage pageType="Signup"/>} />
+          <Route path="/enter_new_password/:newPasswordToken" element={<LandingPage pageType="ResetPassword"/>} />
           <Route path="*" element={<NotFoundPage />} />
 
           {/* Private Routes */}
