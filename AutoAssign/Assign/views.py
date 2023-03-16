@@ -25,8 +25,8 @@ class LoginView(APIView):
         user = request.data.get("username")
         pwd = request.data.get("password")
 
-        # Test
-        # print(request.data)
+        if not user or not pwd:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # 2.database validation
 
@@ -70,13 +70,17 @@ class LoginView(APIView):
 class Register(APIView):
     authentication_classes = []
 
+    # pylint: disable=R0911
     def post(self, request):
 
-        token = request.data['token']
+        token = request.data.get('token')
 
-        pwd1 = request.data['pwd1']
+        pwd1 = request.data.get('pwd1')
 
-        pwd2 = request.data['pwd2']
+        pwd2 = request.data.get('pwd1')
+
+        if not token or not pwd1 or not pwd2:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         if pwd1 != pwd2:
             return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
@@ -96,8 +100,11 @@ class Register(APIView):
 
         # Generating a register data
 
-        first_name = request.data['first_name']
-        second_name = request.data['second_name']
+        first_name = request.data.get('first_name')
+        second_name = request.data.get('second_name')
+
+        if not first_name or not second_name:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         registration_data = {"email": email, 'password': hash_pwd,
                              'first_name': first_name, 'second_name': second_name}
@@ -249,44 +256,49 @@ class ManView(APIView):
              'error': "Update personal information Fail", "detail": ser.errors})
 
 
-class HrViewCreate(APIView):
-    permission_classes = [HrPermission, ]
-
-    # 1.Get initial data
-    def post(self, request):
-
-        # Check that the request data is in the correct format
-        ser_role = serializers.RoleSerializer(data=request.data)
-
-        # If the data is valid,
-        # retrieve the role type from the serializer and hash the user's password
-        if ser_role.is_valid():
-            role = ser_role.validated_data["role"]
-
-            # Hashing encryption requires the stored password
-            hash_pwd = Encryption.hash_encryption(request.data['password'])
-            request.data['password'] = hash_pwd
-
-        # Based on the role type, serialize the request data
-        # using the appropriate serializer and create a response
-        if role == 1:
-            ser = serializers.CreateGraduateSerializer(data=request.data)
-            context = {"code": 200, "status": True, "Create": "Graduate", "Status": "success"}
-        elif role == 2:
-            ser = serializers.CreateMangerSerializer(data=request.data)
-            context = {"code": 200, "status": True, "Create": "Manager", "Status": "success"}
-        elif role == 3:
-            ser = serializers.CreateHrSerializer(data=request.data)
-            context = {"code": 200, "status": True, "Create": "Hr", "Status": "success"}
-
-        # If the serializer is valid, save the data and return a response indicating success
-        if ser.is_valid():
-            ser.save()
-            return Response(context)
-
-        # If the serializer is not valid, return an error response
-        return Response({"code": 403, "status": False,
-                         'error': "registration failed", "detail": ser.errors})
+#  This functionality is not implemented in the frontend
+# class HrViewCreate(APIView):
+#     permission_classes = [HrPermission, ]
+#
+#     # 1.Get initial data
+#     def post(self, request):
+#
+#         # Check that the request data is in the correct format
+#         ser_role = serializers.RoleSerializer(data=request.data)
+#
+#         # If the data is valid,
+#         # retrieve the role type from the serializer and hash the user's password
+#         if ser_role.is_valid():
+#             role = ser_role.validated_data["role"]
+#
+#             # Hashing encryption requires the stored password
+#             hash_pwd = Encryption.hash_encryption(request.data.get('password'))
+#             request.data['password'] = hash_pwd
+#
+#             if not hash_pwd:
+#                 return Response({"code": 406, "status": False,
+#                 'error': "Please check your parameters"})
+#
+#         # Based on the role type, serialize the request data
+#         # using the appropriate serializer and create a response
+#         if role == 1:
+#             ser = serializers.CreateGraduateSerializer(data=request.data)
+#             context = {"code": 200, "status": True, "Create": "Graduate", "Status": "success"}
+#         elif role == 2:
+#             ser = serializers.CreateMangerSerializer(data=request.data)
+#             context = {"code": 200, "status": True, "Create": "Manager", "Status": "success"}
+#         elif role == 3:
+#             ser = serializers.CreateHrSerializer(data=request.data)
+#             context = {"code": 200, "status": True, "Create": "Hr", "Status": "success"}
+#
+#         # If the serializer is valid, save the data and return a response indicating success
+#         if ser.is_valid():
+#             ser.save()
+#             return Response(context)
+#
+#         # If the serializer is not valid, return an error response
+#         return Response({"code": 403, "status": False,
+#                          'error': "registration failed", "detail": ser.errors})
 
 
 class SkillView(APIView):
@@ -314,6 +326,9 @@ class ChangePassword(APIView):
         pwd = request.data.get("pwd")
         pwd1 = request.data.get("pwd1")
         pwd2 = request.data.get("pwd2")
+
+        if not pwd or not pwd1 or not pwd2:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # Retrieve the current user object
         user = request.user
@@ -360,7 +375,7 @@ class FormView(APIView):
 
         # The front end is not allowed to illegally add forms for other grads through this interface
         for i in request.data:
-            if i["graduate"] != grad_id:
+            if i.get('graduate') != grad_id:
                 return Response({"code": 403, "status": False, 'error': "Update Form failed",
                                  "detail": "Please Check Graduate id "})
 
@@ -430,23 +445,6 @@ class TeamSettingView(APIView):
                          'error': "Update Team failed", "detail": ser.errors})
 
 
-class CreateTeamView(APIView):
-    permission_classes = [HrPermission, ]
-
-    # 1.Get initial data
-    def post(self, request):
-        # 2 Check data format
-        ser = serializers.CreateTeamSerializer(data=request.data)
-
-        if ser.is_valid():
-            ser.save()
-            context = {"code": 200, "status": True, "Create": "Team", "Status": "success"}
-            return Response(context)
-
-        return Response({"code": 403, "status": False,
-                         'error': "Create Team failed", "detail": ser.errors})
-
-
 class AllTeamView(APIView):
     permission_classes = [HrPermission, ]
 
@@ -498,8 +496,10 @@ class DeleteMan(APIView):
     # Process a POST request to delete a manager
     def post(self, request):
         # Retrieve the ID of the manager to be deleted from the request data
-        data = request.data
-        man_id = data['id']
+        man_id = request.data.get('id')
+
+        if not man_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # Retrieve the Manager object with the specified ID
         man_obj = models.Manager.objects.filter(id=man_id).first()
@@ -520,9 +520,11 @@ class DeleteGrad(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        # Retrieve the ID of the graduate to be deleted from the request data
-        data = request.data
-        grad_id = data['id']
+        # Retrieve the ID of the graduate to be deleted from the request dataa
+        grad_id = request.data.get('id')
+
+        if not grad_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # Retrieve the Graduate object with the specified ID
         grad_obj = models.Graduate.objects.filter(id=grad_id).first()
@@ -543,12 +545,15 @@ class AssignGradToTeam(APIView):
 
     def put(self, request):
         # Retrieve the graduate ID and team ID from the request data
-        data = request.data
-        grad_id = data['grad_id']
+
+        grad_id = request.data.get('grad_id')
+        team_id = request.data.get('team_id')
+
+        if not grad_id or not team_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # Retrieve the Graduate and Team objects with the specified IDs
         grad_obj = models.Graduate.objects.filter(id=grad_id).first()
-        team_id = data['team_id']
         team_obj = models.Team.objects.filter(id=team_id).first()
 
         # Check Team Capacity
@@ -577,6 +582,11 @@ class AssignGradToTeam(APIView):
 
         if ser.is_valid():
             ser.save()
+
+            old_dep_id = grad_obj.team_id.depart_id.id
+            grad_obj.old_dep_id = old_dep_id
+            grad_obj.save()
+
             context = {"code": 200, "status": True,
                        "Grad_id": grad_obj.id, "Team_id": team_obj.id, "detail": "Updated"}
             return Response(context)
@@ -590,12 +600,13 @@ class AssignManToTeam(APIView):
 
     def put(self, request):
 
-        data = request.data
+        man_id = request.data.get('man_id')
+        team_id = request.data.get('team_id')
 
-        man_id = data['man_id']
+        if not man_id or not team_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+
         man_obj = models.Manager.objects.filter(id=man_id).first()
-
-        team_id = data['team_id']
         team_obj = models.Team.objects.filter(id=team_id).first()
 
         if not man_obj:
@@ -649,12 +660,14 @@ class AssignTeamToDepartment(APIView):
     permission_classes = [HrPermission, ]
 
     def put(self, request):
-        data = request.data
 
-        depart_id = data['depart_id']
+        depart_id = request.data.get('depart_id')
+        team_id = request.data.get('team_id')
+
+        if not depart_id or not team_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+
         depart_obj = models.Department.objects.filter(id=depart_id).first()
-
-        team_id = data['team_id']
         team_obj = models.Team.objects.filter(id=team_id).first()
 
         if not depart_obj:
@@ -683,14 +696,23 @@ class DeleteTeam(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        data = request.data
-        team_id = data['Team_id']
+        team_id = request.data.get('Team_id')
+
+        if not team_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         team_obj = models.Team.objects.filter(id=team_id).first()
 
         context = {"code": 403, "status": False, "detail": "Fail to delete"}
 
         if team_obj:
+            grad_objs = models.Graduate.objects.filter(team_id=team_obj).all()
+            for grad in grad_objs:
+                if grad.year == 2:
+                    continue
+                grad.old_dep_id = None
+                grad.save()
+
             team_obj.delete()
             context = {"code": 200, "status": True, "detail": "Has been deleted"}
 
@@ -701,7 +723,10 @@ class DeleteAllYearTwo(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        check_num = request.data['check_num']
+        check_num = request.data.get('check_num')
+
+        if not check_num:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         if check_num != 1:
             context = {"code": 200, "status": False, "detail": "Fail to delete"}
@@ -725,18 +750,35 @@ class ChangeGraduateYear(APIView):
         data = request.data
 
         for grad in data:
-            grad_id = grad["grad_id"]
-            grad_year = grad["year"]
+            grad_id = grad.get("grad_id")
+            grad_year = grad.get("year")
+
+            if not grad_id or not grad_year:
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
+
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+
             if grad_year < 1 or grad_year > 2:
                 return Response({"code": 403, "status": False, "detail": "Please Check year"})
             if not grad_obj:
                 return Response({"code": 403, "status": False, "detail": "grad_id wrong"})
 
         for grad in data:
-            grad_id = grad["grad_id"]
-            grad_year = grad["year"]
+            grad_id = grad.get("grad_id")
+            grad_year = grad.get("year")
+
+            if not grad_id or not grad_year:
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
+
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
+
+            if grad_year == 2:
+                old_dep_id = grad_obj.team_id.depart_id.id
+                grad_obj.old_dep_id = old_dep_id
+            else:
+                grad_obj.old_dep_id = None
 
             grad_obj.year = grad_year
             grad_obj.save()
@@ -750,9 +792,12 @@ class BatchRegister(APIView):
     def post(self, request):
 
         # Get Email List and role
-        email_list = request.data['email']
-        role = request.data['role']
-        url = request.data['url']
+        email_list = request.data.get('email')
+        role = request.data.get('role')
+        url = request.data.get('url')
+
+        if not email_list or not role or not url:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         # Generating a registration list
         registration_list = []
@@ -807,10 +852,13 @@ class ResetPasswordByEmail(APIView):
 
     def post(self, request):
         # Get Email List and role
-        email = request.data['email']
-        url = request.data['url']
+        email = request.data.get('email')
+        url = request.data.get('url')
 
-        # Find the User
+        if not email or not url:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+
+            # Find the User
         manger_object = models.Manager.objects.filter(email=email).first()
         hr_object = models.HR.objects.filter(email=email).first()
         grad_object = models.Graduate.objects.filter(email=email).first()
@@ -855,13 +903,16 @@ class ResetPasswordByEmail(APIView):
     def put(self, request):
 
         # Get the token
-        token = request.data['token']
+        token = request.data.get('token')
 
-        pwd1 = request.data['pwd1']
+        pwd1 = request.data.get('pwd1')
 
-        pwd2 = request.data['pwd2']
+        pwd2 = request.data.get('pwd2')
 
-        # Check new password
+        if not token or pwd1 or pwd2:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
+
+            # Check new password
         if pwd1 != pwd2:
             return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
 
@@ -955,7 +1006,11 @@ class CrateTeam(APIView):
     def post(self, request):
         data_list = request.data
         for data in data_list:
-            capacity = data["num_positions"]
+            capacity = data.get("num_positions")
+
+            if not capacity:
+                return Response({"code": 406, "status": False,
+                                 'error': "Please check your parameters"})
 
             if 7 < capacity < 1:
                 return Response({"code": 403, "status": False, 'error': "Please Check Capacity "})
@@ -988,8 +1043,10 @@ class DeleteDepartment(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        data = request.data
-        dep_id = data['dep_id']
+        dep_id = request.data.get('dep_id')
+
+        if not dep_id:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         dep_obj = models.Department.objects.filter(id=dep_id).first()
 
@@ -1060,7 +1117,10 @@ class AutoAssignAlg(APIView):
 
     def post(self, request):
 
-        check_num = request.data['check_num']
+        check_num = request.data.get('check_num')
+
+        if not check_num:
+            return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         if check_num != 1:
             context = {"code": 200, "status": False, "detail": "Fail to delete"}
@@ -1069,9 +1129,22 @@ class AutoAssignAlg(APIView):
 
         alg.assign_graduates_to_teams()
 
+        # Loop through all Graduates, saving the old team for them.
+        grad_objs = models.Graduate.objects.filter(year=1).all()
+        for grad in grad_objs:
+
+            team_obj = grad.team_id
+            if not team_obj:
+                continue
+
+            old_dep_id = grad.team_id.depart_id.id
+            grad.old_dep_id = old_dep_id
+            grad.save()
+
         context = {"code": 200, "status": True, "detail": "Has been Assign"}
 
         return Response(context)
+
 
 class CheckHrPermission(APIView):
     permission_classes = [HrPermission, ]
@@ -1079,11 +1152,13 @@ class CheckHrPermission(APIView):
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'hr'})
 
+
 class CheckManPermission(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
         return Response({"code": 200, 'status': True, 'user_type': 'Manager'})
+
 
 class CheckGradPermission(APIView):
     permission_classes = [GradPermission, ]

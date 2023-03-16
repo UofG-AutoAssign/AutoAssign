@@ -36,9 +36,9 @@ class Graduate(models.Model):
 
     # One to Many Link to team
 
-    team_id = models.ForeignKey(to="Team", on_delete=models.SET_NULL,
-                                null=True,
-                                )
+    team_id = models.ForeignKey(to="Team", on_delete=models.SET_NULL, null=True)
+
+    old_dep_id = models.IntegerField(verbose_name="old_dep_id", null=True)
 
     first_name = models.CharField(verbose_name="first name", max_length=30,
                                   null=False)
@@ -185,10 +185,10 @@ class Team(models.Model):
 
     # One to One Link to Manger
 
-    man_id = models.OneToOneField(to="Manager", on_delete=models.CASCADE, null=True)
+    man_id = models.OneToOneField(to="Manager", on_delete=models.SET_NULL, null=True)
 
     # One to Many Link to Departments
-    depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)
+    depart_id = models.ForeignKey(to="Department", on_delete=models.SET_NULL, null=True)
 
     ratio = models.FloatField(verbose_name="Ratio",
                               null=True, default=0.5)
