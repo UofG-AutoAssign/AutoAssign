@@ -70,6 +70,11 @@ const RemoveGraduate: FC<{
 
       if (data.status === true) {
         toast.success("All year 2 graduate(s) successfully deleted!");
+
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+
         return true;
       } else {
         toast.error(`Failed to delete all year 2 graduate(s): ${data.detail}`);
