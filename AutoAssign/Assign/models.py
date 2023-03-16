@@ -185,10 +185,10 @@ class Team(models.Model):
 
     # One to One Link to Manger
 
-    man_id = models.OneToOneField(to="Manager", on_delete=models.CASCADE, null=True)
+    man_id = models.OneToOneField(to="Manager", on_delete=models.SET_NULL, null=True)
 
     # One to Many Link to Departments
-    depart_id = models.ForeignKey(to="Department", on_delete=models.CASCADE, null=True)
+    depart_id = models.ForeignKey(to="Department", on_delete=models.SET_NULL, null=True)
 
     ratio = models.FloatField(verbose_name="Ratio",
                               null=True, default=0.5)
