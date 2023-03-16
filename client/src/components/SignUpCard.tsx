@@ -4,6 +4,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 
+function checkPassword(password: string): boolean {
+  if (password.length < 6 || /\s/.test(password) || !/\d/.test(password)) {
+    return false;
+  }
+  return true;
+}
+
 const SignUpCard: FC = () => {
   const firstNameInputRef = useRef<HTMLInputElement>(null);
   const lastNameInputRef = useRef<HTMLInputElement>(null);
@@ -23,34 +30,62 @@ const SignUpCard: FC = () => {
       return;
     }
     e.preventDefault();
-    
+
     // Notification when the two password fields don't match
     if (
       passwordInputRef.current.value !== confirmPasswordInputRef.current.value
-      ) {
+    ) {
       toast.error("Unmatching passwords");
+      return;
+    }
+
+    // Password validity checks
+    if (
+      passwordInputRef.current.value.length < 6 ||
+      passwordInputRef.current.value.length > 15
+    ) {
+      toast.error("Password must be between 6 to 15 characters long");
+      return;
+    }
+
+    if (passwordInputRef.current.value.includes(" ")) {
+      toast.error("You cannot have spaces in your password");
+      return;
+    }
+
+    let noDigit = true;
+
+    for (let i = 0; i < passwordInputRef.current.value.length; i++) {
+      const charCode = passwordInputRef.current.value.charCodeAt(i);
+      if (!isNaN(charCode) && charCode >= 48 && charCode <= 57) {
+        noDigit = false;
+      }
+    }
+
+    if (noDigit) {
+      toast.error("Password must have a digit");
       return;
     }
 
     const token = location.pathname.split("/").at(-1);
     console.log(token);
-    
+
     // @Todo change to actual token endpoint
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/register/`,
       {
         first_name: firstNameInputRef.current.value,
-        second_name: lastNameInputRef.current.value, 
+        second_name: lastNameInputRef.current.value,
         token,
         pwd1: passwordInputRef.current.value,
-        pwd2: confirmPasswordInputRef.current.value
-      },
+        pwd2: confirmPasswordInputRef.current.value,
+      }
     );
     console.log(data);
-    
+
     if (data.status === true) {
       toast.success("Sucessfully registered!");
-      navigate("/")
+      navigate("/");
     } else {
       toast.error(`Failed to register new password: ${data.error}`);
     }
@@ -64,7 +99,7 @@ const SignUpCard: FC = () => {
             Sign Up
           </h1>
           <form className="space-y-4 md:space-y-6" action="#">
-          <div>
+            <div>
               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -101,6 +136,7 @@ const SignUpCard: FC = () => {
               >
                 New Password
               </label>
+
               <input
                 ref={passwordInputRef}
                 type="password"
