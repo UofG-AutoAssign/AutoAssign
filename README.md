@@ -1,34 +1,7 @@
 # Table of Contents
-- [Authors and Support](#authors-and-support)
-- [AutoAssign - Project Summary](#autoassign---project-summary)
-  * [Visuals](#visuals)
-  * [Links](#links)
-  * [Badges](#badges)
-  * [Project status](#project-status)
-  * [Roadmap / Releases](#roadmap---releases)
-    + [Release 0.1 – November 30th 2022](#release-01---november-30th-2022)
-    + [Release 0.2 – January 17th 2022](#release-02---january-17th-2022)
-    + [Release 0.3 – February 15th 2023](#release-03---february-15th-2023)
-    + [Release 1.0 – March 17th 2023](#release-10---march-17th-2023)
-- [User Guide](#user-guide)
-  * [Installation](#installation)
-    + [Automated](#automated)
-    + [Manual](#manual)
-      - [Django](#django)
-      - [React](#react)
-  * [Usage](#usage)
-    + [Automated](#automated-1)
-    + [Manual](#manual-1)
-  * [General features for all users](#general-features-for-all-users)
-  * [User: Graduate](#user--graduate)
-  * [User: Manager](#user--manager)
-  * [User: HR](#user--hr)
-  * [User Registration after HR creates an account](#user-registration-after-hr-creates-an-account)
-- [Contributing](#contributing)
-- [License](#license)
+[[_TOC_]]
 
 # Authors and Support
-
 Members  
 Naral Chalermchaikosol - 2783720c@student.gla.ac.uk  
 Max Wang - 2561238w@student.gla.ac.uk  
@@ -117,6 +90,7 @@ If you have run out of energy or time for your project, put a note at the top of
 A full list of dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
 
 ### Automated
+<b>NOTE: Tested on Linux and MacOS. Automated installation does not work on windows as the library required to implement it is not secure. </b>
 1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
 
 ### Manual
@@ -130,10 +104,12 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 - Try replacing ```python3``` with ```py``` if the above steps do not work
 
 #### React
-3) Setup React react using: ```npm install``` inside [client](client/)
+3) Setup React using: ```npm install``` inside [client](client/)
 
 ## Usage
+
 ### Automated
+<b>NOTE: Tested on Linux and MacOS. Automated startup does not work on windows as the library required to implement it is not secure. </b>
 1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
 
 ### Manual
@@ -146,10 +122,16 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 ## General features for all users
 Login Page:
 - On the right side of the login page, there is a “Sign in to your account” interface. You can enter your email address and your password to log in.
-  
+- On the bottom right of the password input there is a 'forgot password' button, this will take you to a separate page where you can reset your password.
+
+Forgot Password Page:
+- On the right side of the page is an input box where you can input the email address attached to your account.
+- This will send a password reset link to your email account, click on the link in the email.
+- This will take you to a webpage, enter your new password in both boxes and click the submit button.
+- You can now log in with your new password.
 
 Light/Dark Mode:
-- On the right side of the top navigation bar, you will find the icon of the sun, click on it to switch between light and dark mode. 
+- On the right side of the top navigation bar, you will find the icon of the sun, click on it to switch between light and dark mode.
 
 Accounts Page (after logged on):
 - Click the avatar icon in the top navigation bar to go to the accounts page interface. It will take you to the contact details subpage by default and can edit you first and last name by clicking the edit button.
