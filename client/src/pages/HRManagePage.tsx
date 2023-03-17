@@ -201,10 +201,10 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? gradList
         : gradList.filter((gradName) => {
-            const gradFullname = `${gradName.first_name}  ${gradName.second_name}`;
+          const gradFullname = `${gradName.first_name}  ${gradName.second_name}`;
 
-            return gradFullname.toLowerCase().includes(query.toLowerCase());
-          });
+          return gradFullname.toLowerCase().includes(query.toLowerCase());
+        });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -274,8 +274,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       query === ""
         ? managerList
         : managerList.filter((managerName) => {
-            return managerName.toLowerCase().includes(query.toLowerCase());
-          });
+          return managerName.toLowerCase().includes(query.toLowerCase());
+        });
 
     return (
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg h-96 w-96 overflow-y-scroll">
@@ -399,7 +399,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         if (teamCapacity < gradsCreated) {
           toast.warning("Headcount exceeds vacancy. Some graduates will not be assigned to teams");
         }
-        
+
         const { data } = await axios.post(
           `${environmentalVariables.backend}home/hr/AutoAssign/`,
           {
@@ -430,73 +430,76 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     const AutoAssignModal = (): JSX.Element => {
       return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={closeModal}>
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="fixed inset-0 bg-black bg-opacity-25" />
-              </Transition.Child>
+          <Dialog as="div" className="relative z-50" onClose={closeModal}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
 
-              <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center p-4 text-center">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 scale-95"
-                    enterTo="opacity-100 scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 scale-100"
-                    leaveTo="opacity-0 scale-95"
-                  >
-                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-lg font-medium leading-6 text-gray-900"
-                      >
-                        Assign Teams?
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          {teamCapacity >= gradsCreated
-                            ? "Are you sure you want to assign teams? This action can not be reversed."
-                            : "team capacity is too low, some graduates will be left unassigned.  This action cannot be undone"}
-                        </p>
-                      </div>
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-gray-900"
+                    >
+                      Assign Teams?
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        {teamCapacity >= gradsCreated
+                          ? "Are you sure you want to assign teams? This action can not be reversed."
+                          : "team capacity is too low, some graduates will be left unassigned.  This action cannot be undone"}
+                      </p>
+                    </div>
 
-                      <div className="mt-4">
-                        <button
-                          type="button"
-                          className={`inline-flex justify-center rounded-md border border-transparent  ${
-                            teamCapacity >= gradsCreated
-                              ? "bg-blue-600"
-                              : "bg-red-500"
-                          }  px-4 py-2 text-sm font-medium text-white ${
-                            teamCapacity >= gradsCreated
-                              ? "hover:bg-blue-200"
-                              : "hover:bg-red-800"
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        className={`inline-flex justify-center rounded-md border border-transparent  ${teamCapacity >= gradsCreated
+                          ? "bg-blue-600"
+                          : "bg-red-500"
+                          }  px-4 py-2 text-sm font-medium text-white ${teamCapacity >= gradsCreated
+                            ? "hover:bg-blue-200"
+                            : "hover:bg-red-800"
                           } focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
-                          onClick={() => {
-                            handleAutoAssign();
-                            setIsOpen(false);
-                          }}
-                        >
-                          {teamCapacity >= gradsCreated
-                            ? "Assign Teams"
-                            : "Assign Anyway"}
-                        </button>
-                      </div>
-                    </Dialog.Panel>
-                  </Transition.Child>
-                </div>
+                        onClick={() => {
+                          handleAutoAssign();
+                          setIsOpen(false);
+
+                          setTimeout(() => {
+                            location.reload();
+                          }, 1500);
+
+                        }}
+                      >
+                        {teamCapacity >= gradsCreated
+                          ? "Assign Teams"
+                          : "Assign Anyway"}
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
               </div>
-            </Dialog>
-          </Transition>
+            </div>
+          </Dialog>
+        </Transition>
 
       );
     }
@@ -508,12 +511,12 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         toast.info(infoMessageForAutoAssign);
         showToastOnFirstLoad.current = true;
       }
-    
+
       return () => {
         showToastOnFirstLoad.current = true;
       };
     }, [infoMessageForAutoAssign]);
-    
+
 
     return (
       <div className="w-3/4 pr-5 flex flex-col items-center">
@@ -537,13 +540,11 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
             <button
               type="button"
               onClick={openModal}
-              className={`text-white ${
-                teamCapacity >= gradsCreated ? "bg-green-500" : "bg-red-500"
-              } ${
-                teamCapacity >= gradsCreated
+              className={`text-white ${teamCapacity >= gradsCreated ? "bg-green-500" : "bg-red-500"
+                } ${teamCapacity >= gradsCreated
                   ? "hover:bg-green-800"
                   : "hover:bg-red-800"
-              } focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
+                } focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150 w-96`}
             >
               AUTO ASSIGN
             </button>
@@ -558,7 +559,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
         <div className="flex flex-col lg:flex-row gap-5 px-10">
           <div>
             Unassigned Graduates
-            <StaticListDisplayTable managerList={unAssignedGradList.map((manager) => manager.email)}/>
+            <StaticListDisplayTable managerList={unAssignedGradList.map((manager) => manager.email)} />
           </div>
           <div>
             Unassigned Managers

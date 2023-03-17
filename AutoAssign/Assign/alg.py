@@ -62,7 +62,6 @@ def has_required_skills(graduate, skill_objs):
 
 
 def calculate_match_score(graduate, team):
-    # pylint: disable=R0914
     """
         Calculate the match score between a graduate and a team.
     """
@@ -127,7 +126,6 @@ def match_graduates_to_teams(sorted_teams, grad_year):
     Match graduates to teams.
     """
     # Loop through each team
-    # pylint: disable=W0640, W0612
     for team_id, preference_ratio in sorted_teams:
         team = models.Team.objects.get(id=team_id)
         skill_objs = team.skill.all()
