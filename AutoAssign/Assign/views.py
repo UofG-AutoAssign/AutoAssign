@@ -819,8 +819,8 @@ class ResetPasswordByEmail(APIView):
         register_url = url + token
 
         send_mail(
-            subject='Registration link from AutoAssign',
-            message='Here is your Register link : ' + register_url,
+            subject='Password Reset Link from AutoAssign',
+            message='Here is your Reset Link : ' + register_url,
             from_email='wenda76629@vip.163.com',
             recipient_list=[email],
             fail_silently=False
