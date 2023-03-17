@@ -203,7 +203,6 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
-
   }, [currentLocation]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
@@ -254,12 +253,11 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     console.log(data);
 
     if (data.status === true) {
-      toast.success("Data successfully delivered!")
+      toast.success("Data successfully delivered!");
 
       setTimeout(() => {
         location.reload();
       }, 1500);
-
     } else {
       toast.error(`Data failed to be delivered! ${data.detail}`);
     }
@@ -388,7 +386,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <Navbar />
       </nav>
       <div>
-          <div className="hi-text dark:text-white">
+        <div className="hi-text dark:text-white">
           {currentTab === "Your Team" ? "Your Team" : `Subordinate Preference`}
         </div>
         <div className="hi-text dark:text-white text-3xl flex flex-row justify-center items-center">
@@ -441,7 +439,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <div className="w-3/4 pr-5">
           <div className="bg-white rounded-2xl">
             {currentTab === "Your Team" ? (
-              <YourTeamTable teammateList={subordinateList}/>
+              <YourTeamTable teammateList={subordinateList} />
             ) : (
               <div className="">
                 <SettingsTable />
