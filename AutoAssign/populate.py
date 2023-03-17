@@ -283,7 +283,7 @@ def populate():
 
     for Grad in grad_list:
 
-        i = random.randint(0, 4)
+        interest = random.randint(0, 4)
         j = random.randint(0, 4)
 
         new_grad = Graduate.objects.create(email=Grad['email'], first_name=Grad['first_name'],
@@ -294,7 +294,7 @@ def populate():
 
             skill_id = skill_id + 1
 
-            new_Form = Form.objects.create(interest=i, experience=j, skill_id=skill_obj, graduate=new_grad)
+            new_Form = Form.objects.create(interest=interest, experience=j, skill_id=skill_obj, graduate=new_grad)
             new_Form.save()
 
         new_grad.save()

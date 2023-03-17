@@ -1,4 +1,3 @@
-# pylint: disable=C0302
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -14,14 +13,11 @@ from Assign import models
 from Assign import alg
 
 
-# Create your views here.
-
 class LoginView(APIView):
     authentication_classes = []
 
     def post(self, request):
         # 1.Receive username and password submitted by user POST
-        # print(request.query_params)
         user = request.data.get("username")
         pwd = request.data.get("password")
 
@@ -70,13 +66,11 @@ class LoginView(APIView):
 class Register(APIView):
     authentication_classes = []
 
-    # pylint: disable=R0911
     def post(self, request):
-
+        # Retrieve the user's current password, new password,
+        # and confirmation password from the request data
         token = request.data.get('token')
-
         pwd1 = request.data.get('pwd1')
-
         pwd2 = request.data.get('pwd1')
 
         if not token or not pwd1 or not pwd2:
@@ -150,17 +144,14 @@ class HrView(APIView):
         # Retrieve the user's information and serialize it using the HrSerializer
         ser = serializers.HrSerializer(instance=request.user)
 
-        # Create a dictionary containing the response data
         context = {"code": 200, "status": True, "data": ser.data}
 
-        # Return a response with the context data
         return Response(context)
 
     def put(self, request):
         # Update the user's information with the data provided in the request
         ser = serializers.HrSerializer(instance=request.user, data=request.data)
 
-        # If the serializer is valid, save the updated information and create a response
         if ser.is_valid():
             ser.save()
             context = {"code": 200, "status": True, "Hr_id": request.user.id, "data": ser.data}
@@ -175,27 +166,22 @@ class GradView(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-        # Retrieve the user's information and serialize it using the GradSerializer
         ser = serializers.GradSerializer(instance=request.user)
 
-        # Create a dictionary containing the response data
         context = {"code": 200, "status": True, "data": ser.data}
 
-        # Return a response with the context data
         return Response(context)
 
     def put(self, request):
         # Update the user's information with the data provided in the request
         ser = serializers.GradSerializer(instance=request.user, data=request.data)
 
-        # If the serializer is valid, save the updated information and create a response
         if ser.is_valid():
             ser.save()
             context = {"code": 200, "status": True,
                        "Grad_id": request.user.id, "data": ser.data}
             return Response(context)
 
-        # If the serializer is not valid, create a response with an error message and details
         return Response(
             {"code": 403, "status": False,
              'error': "Update personal information Fail", "detail": ser.errors})
@@ -205,10 +191,8 @@ class ViewGradTeamInfo(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-        # Retrieve the current graduate's object
-        grad_obj = request.user
 
-        # Retrieve the current graduate's team object, if it exists
+        grad_obj = request.user
         team_obj = grad_obj.team_id
 
         # If the current graduate has a team,
@@ -216,13 +200,10 @@ class ViewGradTeamInfo(APIView):
         if team_obj:
             ser = serializers.TeamViewSerializer(instance=team_obj)
 
-            # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
 
-            # Return a response with the context data
             return Response(context)
 
-        # If the current graduate does not have a team, return an error response
         return Response({"code": 403, "status": False,
                          'error': "This Graduate dose not has a team yet"})
 
@@ -231,98 +212,44 @@ class ManView(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
-        # Retrieve the user's information and serialize it using the ManSerializer
+
         ser = serializers.ManSerializer(instance=request.user)
 
-        # Create a dictionary containing the response data
         context = {"code": 200, "status": True, "data": ser.data}
 
-        # Return a response with the context data
         return Response(context)
 
     def put(self, request):
         # Update the user's information with the data provided in the request
         ser = serializers.ManSerializer(instance=request.user, data=request.data)
 
-        # If the serializer is valid, save the updated information and create a response
         if ser.is_valid():
             ser.save()
             context = {"code": 200, "status": True, "Man_id": request.user.id, "data": ser.data}
             return Response(context)
 
-        # If the serializer is not valid, create a response with an error message and details
         return Response(
             {"code": 403, "status": False,
              'error': "Update personal information Fail", "detail": ser.errors})
 
 
-#  This functionality is not implemented in the frontend
-# class HrViewCreate(APIView):
-#     permission_classes = [HrPermission, ]
-#
-#     # 1.Get initial data
-#     def post(self, request):
-#
-#         # Check that the request data is in the correct format
-#         ser_role = serializers.RoleSerializer(data=request.data)
-#
-#         # If the data is valid,
-#         # retrieve the role type from the serializer and hash the user's password
-#         if ser_role.is_valid():
-#             role = ser_role.validated_data["role"]
-#
-#             # Hashing encryption requires the stored password
-#             hash_pwd = Encryption.hash_encryption(request.data.get('password'))
-#             request.data['password'] = hash_pwd
-#
-#             if not hash_pwd:
-#                 return Response({"code": 406, "status": False,
-#                 'error': "Please check your parameters"})
-#
-#         # Based on the role type, serialize the request data
-#         # using the appropriate serializer and create a response
-#         if role == 1:
-#             ser = serializers.CreateGraduateSerializer(data=request.data)
-#             context = {"code": 200, "status": True, "Create": "Graduate", "Status": "success"}
-#         elif role == 2:
-#             ser = serializers.CreateMangerSerializer(data=request.data)
-#             context = {"code": 200, "status": True, "Create": "Manager", "Status": "success"}
-#         elif role == 3:
-#             ser = serializers.CreateHrSerializer(data=request.data)
-#             context = {"code": 200, "status": True, "Create": "Hr", "Status": "success"}
-#
-#         # If the serializer is valid, save the data and return a response indicating success
-#         if ser.is_valid():
-#             ser.save()
-#             return Response(context)
-#
-#         # If the serializer is not valid, return an error response
-#         return Response({"code": 403, "status": False,
-#                          'error': "registration failed", "detail": ser.errors})
-
-
 class SkillView(APIView):
 
-    # Retrieve a list of all available skills
     def get(self, request):
         # Retrieve all Skill objects from the database and serialize them using the SkillSerializer
         skill_queryset = models.Skill.objects.all()
 
         ser = serializers.SkillSerializer(instance=skill_queryset, many=True)
 
-        # Create a dictionary containing the response data
         context = {"code": 200, "status": True, "data": ser.data}
 
-        # Return a response with the context data
         return Response(context)
 
 
 class ChangePassword(APIView):
 
-    # Process a PUT request to change the user's password
     def put(self, request):
-        # Retrieve the user's current password, new password,
-        # and confirmation password from the request data
+
         pwd = request.data.get("pwd")
         pwd1 = request.data.get("pwd1")
         pwd2 = request.data.get("pwd2")
@@ -330,7 +257,6 @@ class ChangePassword(APIView):
         if not pwd or not pwd1 or not pwd2:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
-        # Retrieve the current user object
         user = request.user
 
         # Hash the user's current password and check that it matches the stored password
@@ -344,7 +270,6 @@ class ChangePassword(APIView):
         if hash_pwd != user.password:
             return Response({"code": 403, "status": False, 'error': 'password error'})
 
-        # Hash the new password and update the user object with the new password
         hash_pwd = Encryption.hash_encryption(pwd1)
         user.password = hash_pwd
         user.save()
@@ -357,7 +282,6 @@ class ChangePassword(APIView):
 class FormView(APIView):
     permission_classes = [GradPermission, ]
 
-    # Retrieve the current graduate's form data
     def get(self, request):
         ser = serializers.FormSerializer(instance=request.user)
 
@@ -365,7 +289,6 @@ class FormView(APIView):
 
         return Response(context)
 
-    # Process a POST request to update the current graduate's form data
     def post(self, request):
         grad_obj = request.user
         grad_id = grad_obj.id
@@ -392,7 +315,6 @@ class TeamMemberView(APIView):
     permission_classes = [ManagerPermission, ]
 
     def get(self, request):
-        # Retrieve the current user and their team object
         user_obj = request.user
         team_obj = models.Team.objects.filter(man_id=user_obj).first()
 
@@ -400,9 +322,7 @@ class TeamMemberView(APIView):
         # and serialize them using TeamViewSerializer
         if team_obj:
             ser = serializers.TeamViewSerializer(instance=team_obj)
-            # Create a dictionary containing the response data
             context = {"code": 200, "status": True, "data": ser.data}
-
             return Response(context)
 
         return Response({"code": 403, "status": False, 'error': 'This manager has no Team yet'})
@@ -449,8 +369,6 @@ class AllTeamView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        # Retrieve all Team objects from the database
-        # and serialize them using the AllTeamViewSerializer
         team_obj = models.Team.objects.filter().all()
 
         ser = serializers.AllTeamViewSerializer(instance=team_obj, many=True)
@@ -464,8 +382,6 @@ class AllGradView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        # Retrieve all Graduate objects from the database
-        # and serialize them using the AllGradSerializer
         grad_obj = models.Graduate.objects.filter().all()
 
         ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
@@ -479,8 +395,6 @@ class AllManView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        # Retrieve all Manager objects from the database
-        # and serialize them using the AllManSerializer
         man_obj = models.Manager.objects.filter().all()
 
         ser = serializers.AllManSerializer(instance=man_obj, many=True)
@@ -493,7 +407,6 @@ class AllManView(APIView):
 class DeleteMan(APIView):
     permission_classes = [HrPermission, ]
 
-    # Process a POST request to delete a manager
     def post(self, request):
         # Retrieve the ID of the manager to be deleted from the request data
         man_id = request.data.get('id')
@@ -504,7 +417,6 @@ class DeleteMan(APIView):
         # Retrieve the Manager object with the specified ID
         man_obj = models.Manager.objects.filter(id=man_id).first()
 
-        # Create a default response context indicating that the deletion failed
         context = {"code": 403, "status": False, "detail": "Fail to delete"}
 
         # If a Manager object with the specified ID was found,
@@ -520,7 +432,6 @@ class DeleteGrad(APIView):
     permission_classes = [HrPermission, ]
 
     def post(self, request):
-        # Retrieve the ID of the graduate to be deleted from the request dataa
         grad_id = request.data.get('id')
 
         if not grad_id:
@@ -544,8 +455,6 @@ class AssignGradToTeam(APIView):
     permission_classes = [HrPermission, ]
 
     def put(self, request):
-        # Retrieve the graduate ID and team ID from the request data
-
         grad_id = request.data.get('grad_id')
         team_id = request.data.get('team_id')
 
@@ -680,7 +589,7 @@ class AssignTeamToDepartment(APIView):
                 {"code": 403, "status": False,
                  'error': "Assign Team failed", "detail": "Please Check Team"})
 
-        ser = serializers.AssignTeamtoDepartment(instance=team_obj, data=request.data)
+        ser = serializers.AssignTeamToDepartment(instance=team_obj, data=request.data)
 
         if ser.is_valid():
             ser.save()
@@ -909,10 +818,10 @@ class ResetPasswordByEmail(APIView):
 
         pwd2 = request.data.get('pwd2')
 
-        if not token or pwd1 or pwd2:
+        if not token or not pwd1 or not pwd2:
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
-            # Check new password
+        # Check new password
         if pwd1 != pwd2:
             return Response({"code": 403, "status": False, 'error': "Please confirm your password"})
 
@@ -1011,9 +920,6 @@ class CrateTeam(APIView):
             if not capacity:
                 return Response({"code": 406, "status": False,
                                  'error': "Please check your parameters"})
-
-            if 7 < capacity < 1:
-                return Response({"code": 403, "status": False, 'error': "Please Check Capacity "})
 
         ser = serializers.CreateNewTeamSerializer(data=request.data, many=True)
 
@@ -1123,7 +1029,7 @@ class AutoAssignAlg(APIView):
             return Response({"code": 406, "status": False, 'error': "Please check your parameters"})
 
         if check_num != 1:
-            context = {"code": 200, "status": False, "detail": "Fail to delete"}
+            context = {"code": 200, "status": False, "error": "Fail to delete"}
 
             return Response(context)
 
@@ -1150,7 +1056,7 @@ class CheckHrPermission(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        return Response({"code": 200, 'status': True, 'user_type': 'hr'})
+        return Response({"code": 200, 'status': True, 'user_type': 'Hr'})
 
 
 class CheckManPermission(APIView):
@@ -1164,4 +1070,4 @@ class CheckGradPermission(APIView):
     permission_classes = [GradPermission, ]
 
     def get(self, request):
-        return Response({"code": 200, 'status': True, 'user_type': 'hr'})
+        return Response({"code": 200, 'status': True, 'user_type': 'Graduate'})
