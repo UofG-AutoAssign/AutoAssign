@@ -82,7 +82,6 @@ backend_quality:
 # Define the frontend jobs
 frontend_build:
   stage: frontend_build_test_quality
-  parallel: 2
   cache:
     key:
       files:
@@ -90,7 +89,7 @@ frontend_build:
       prefix: npm
     paths:
       - client/node_modules/
-  image: node:latest
+  image: node:16.5.0
   script:
     - cd "client"
     - npm install
@@ -111,7 +110,7 @@ frontend_test:
       prefix: npm
     paths:
       - client/node_modules/
-  image: node:latest
+  image: node:16.5.0
   script:
     # Install dependencies
     - cd "client"
@@ -129,10 +128,9 @@ frontend_quality:
       prefix: npm
     paths:
       - client/node_modules/
-  image: node:latest
+  image: node:16.5.0
   script:
     # Install dependencies
     - cd "client"
     - npm install
     - echo "Frontend quality tests"
-
