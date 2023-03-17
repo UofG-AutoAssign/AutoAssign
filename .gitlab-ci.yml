@@ -135,4 +135,3 @@ frontend_quality:
     - cd "client"
     - npm install
     - echo "Frontend quality tests"
-
