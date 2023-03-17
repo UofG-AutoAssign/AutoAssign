@@ -18,13 +18,13 @@ const ManageTeamsTable: FC<{
     teamName,
     teamMembers,
   } = departmentAndTeamListHR;
-  
+
   return (
-    <div className="w-full min-w-min rounded-2xl bg-white p-2">
+    <div className="w-full min-w-min rounded-2xl bg-white p-2 dark:bg-gray-800">
       <Disclosure>
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex w-full justify-between rounded-lg bg-loginBlue px-4 py-2 text-left text-sm font-medium  text-black hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-100 focus-visible:ring-opacity-75">
+            <Disclosure.Button className="flex w-full justify-between rounded-lg bg-loginBlue px-4 py-2 text-left text-sm font-medium  text-black hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-100 focus-visible:ring-opacity-75 dark:text-white">
               <span>
                 <div className="text-xl font-black flex flex-row">
                   <FcDepartment className="w-5 h-5 pt-1" />
@@ -46,11 +46,10 @@ const ManageTeamsTable: FC<{
                 </div>
               </span>
               <ChevronUpIcon
-                className={`${
-                  open
-                    ? "rotate-180 transform duration-150"
-                    : "hue-rotate-60 transform duration-150"
-                } h-5 w-5   text-black`}
+                className={`${open
+                  ? "rotate-180 transform duration-150"
+                  : "hue-rotate-60 transform duration-150"
+                  } h-5 w-5   text-black`}
               />
             </Disclosure.Button>
             <Disclosure.Panel
