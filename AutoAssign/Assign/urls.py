@@ -36,9 +36,11 @@ urlpatterns = [
     path('home/hr/CreateDepartment/', views.CreateDepartment.as_view(), name="CreateDepartment"),
     path('home/hr/AssignTeam/', views.AssignTeamToDepartment.as_view(), name="AssignTeamToDepartment"),
     path('home/hr/DeleteTeam/', views.DeleteTeam.as_view(), name="DeleteTeam"),
-    path('home/hr/AddTeam/', views.BatchRegister.as_view(), name="Register"),
     path('home/hr/Register/', views.BatchRegister.as_view(), name="Register"),
     path('home/hr/DeleteYearTwo/', views.DeleteAllYearTwo.as_view(), name="DeleteYearTwo"),
     path('home/skill/', views.SkillView.as_view(), name="skill"),
     path('home/ChangePassword/', views.ChangePassword.as_view(), name="ChangePassWord"),
+    path('home/check/hr/', views.CheckHrPermission.as_view(), name="CheckHrPermission"),
+    path('home/check/man/', views.CheckManPermission.as_view(), name="CheckManPermission"),
+    path('home/check/grad/', views.CheckGradPermission.as_view(), name="CheckGradPermission"),
 ]

@@ -20,7 +20,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     useState<initialComponentManager>(initialState);
 
   const navigate = useNavigate();
-  const location = useLocation();
+  const currentLocation = useLocation();
 
   const [subordinateList, setSubordinateList] = useState<
     ManagerTableInterface[]
@@ -198,12 +198,13 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
   };
 
   useEffect(() => {
-    const query = location.pathname.split("/").at(-1);
+    const query = currentLocation.pathname.split("/").at(-1);
 
     if (query === "view_team") setCurrentTab("Your Team");
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
-  }, [location]);
+
+  }, [currentLocation]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
     if (Object.keys(selectedData).length === 0) {
@@ -253,7 +254,12 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     console.log(data);
 
     if (data.status === true) {
-      toast.success("Data successfully delivered!");
+      toast.success("Data successfully delivered!")
+
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+
     } else {
       toast.error(`Data failed to be delivered! ${data.detail}`);
     }
@@ -382,7 +388,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         <Navbar />
       </nav>
       <div>
-        <div className="hi-text dark:text-white">
+          <div className="hi-text dark:text-white">
           {currentTab === "Your Team" ? "Your Team" : `Subordinate Preference`}
         </div>
         <div className="hi-text dark:text-white text-3xl flex flex-row justify-center items-center">

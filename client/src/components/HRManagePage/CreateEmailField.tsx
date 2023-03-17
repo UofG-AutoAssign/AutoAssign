@@ -24,7 +24,7 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
       email: emails, role: createEmailFor === "Graduates" ? 1 : 2, url: location.host + "/sign_up/"
     }
     console.log(postBody);
-    
+
 
     const { data } = await axios.post(
       `${environmentalVariables.backend}home/hr/Register/`,
@@ -37,8 +37,13 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
     );
 
     console.log(data);
-    
+
     if (data.status === true) {
+
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+
       return true;
     } else {
       return false;
@@ -76,12 +81,12 @@ const CreateEmailField: FC<{ createEmailFor: "Graduates" | "Managers" }> = ({ cr
         <button
           onClick={() => {
             toast.promise(
-                handleEmailSubmission,
-                {
-                  pending: 'Delivering email(s) to server... \n Please do not close this page',
-                  success: 'Sucessfully delivered email(s) to server!',
-                  error: 'Failed to send email(s) to server'
-                }
+              handleEmailSubmission,
+              {
+                pending: 'Delivering email(s) to server... \n Please do not close this page',
+                success: 'Sucessfully delivered email(s) to server!',
+                error: 'Failed to send email(s) to server'
+              }
             )
           }}
           type="button"

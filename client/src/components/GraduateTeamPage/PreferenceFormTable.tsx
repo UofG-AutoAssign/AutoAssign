@@ -209,7 +209,7 @@ const PreferenceFormTable: FC = () => {
         skill_id: selectedTechnology.value,
         graduate: graduateIdForSubmission
       })
-      
+
     }
 
     console.log(postBody);
@@ -228,6 +228,11 @@ const PreferenceFormTable: FC = () => {
 
     if (data.status === true) {
       toast.success("Form saved to database!");
+
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+
       return true;
     } else {
       toast.error("Form failed to deliver...");
@@ -283,7 +288,7 @@ const PreferenceFormTable: FC = () => {
             ) => {
               // console.log(Interest, Experience);
               // console.log(interestOptions[Interest], experienceOptions[Experience]);
-              
+
 
               setSelectedData((prevSelectedData) => ({
                 ...prevSelectedData,
@@ -389,7 +394,7 @@ const PreferenceFormTable: FC = () => {
           type="button"
           className="my-5 text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:scale-110 transition-all duration-150"
           onClick={() => {
-             handleFormSubmission();
+            handleFormSubmission();
           }}
         >
           Save
