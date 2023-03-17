@@ -124,7 +124,6 @@ Otherwise, see [this page](https://nodejs.org/en/download/package-manager) for g
 2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
 - ``` python3 manage.py makemigrations ```  
 - ``` python3 manage.py migrate ```
-- ``` python3 populate.py ```
 - Start the backend server with: <nobr>```python3 manage.py runserver```</nobr> inside [AutoAssign](AutoAssign/)
 - Try replacing ```python3``` with ```py``` if the above steps do not work
 
@@ -135,6 +134,9 @@ Otherwise, see [this page](https://nodejs.org/en/download/package-manager) for g
 - Finally, open the URL provided by the server
 - Here are a few useful commands: [Frontend Useful Notes](./client/Notes.md)
 
+### Testing
+For testing purposes a [population script](AutoAssign/populate.py) is included which fills the database with example records. To use this script, run the following command inside [AutoAssign](AutoAssign/): <nobr>``` python3 populate.py ```</nobr> <br>
+If the above step does not work, try: <nobr>```py populate.py```</nobr>
 ## General features for all users
 Login Page:
 - On the right side of the login page, there is a “Sign in to your account” interface. You can enter your email address and your password to log in.
