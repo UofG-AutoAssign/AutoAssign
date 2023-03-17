@@ -1,6 +1,11 @@
-# Front-end Notes
-## If you've just cloned the project
-### List of Useful Commands
+# Front-end Notes (If you've just cloned the project)
+### List of Useful Commands (`cd client` followed by `npm i` first!)
+1. `npm run start` to start both front and backend
+1. `npm run dev:watch` to start only frontend + run linting and tests at start
+1. `npm run dev` to start only frontend
+1. `npm run test` to run frontend tests
+1. `npm run lint` to run frontend linting/styling enforcement
+1. `npm run build` to build the project (can be used for manual deployment) 
 1. `npm run start` to start both front and backend
 1. `npm run dev:watch` to start only frontend + run linting and tests at start
 1. `npm run dev` to start only frontend

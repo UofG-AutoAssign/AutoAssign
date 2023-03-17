@@ -86,121 +86,41 @@ If you have run out of energy or time for your project, put a note at the top of
 
 # User Guide
 
-## Installation
-A full list of dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
-
-### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated installation does not work on windows as the library required to implement it is not secure. </b>
-1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
-
-### Manual
-1) First install all dependancies using: ```pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
-
-#### Django
-2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
-- ``` python3 manage.py makemigrations ```  
-- ``` python3 manage.py migrate ```
-- ``` python3 populate.py ```
-- Try replacing ```python3``` with ```py``` if the above steps do not work
-
-#### React
-3) Setup React using: ```npm install``` inside [client](client/)
-
-## Usage
-
-### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated startup does not work on windows as the library required to implement it is not secure. </b>
-1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
-
-### Manual
-1) Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
-
-2) Then, start the fronted server with: ```npm run dev``` inside [client](client/)
-
-3) Finally, open the URL provided by the frontend server, usually [http://localhost:5173](http://localhost:5173)
-
-## Front-end Notes (If you've just cloned the project)
-### List of Useful Commands (`cd client` first!)
-1. `npm run start` to start both front and backend
-1. `npm run dev:watch` to start only frontend + run linting and tests at start
-1. `npm run dev` to start only frontend
-1. `npm run test` to run frontend tests
-1. `npm run lint` to run frontend linting/styling enforcement
-1. `npm run build` to build the project (can be used for manual deployment) 
-
-## Useful Tutorials/Documentations
-1. React/TypeScript
-    > https://youtube.com/playlist?list=PLNqp92_EXZBJ4CBroxVBJEpAXoz1g-naZ
-    > https://youtu.be/z8lDwLKthr8  
-    > https://youtu.be/Z5iWr6Srsj8  
-2. MobX
-    > https://youtu.be/nGZCL6Wd_zQ  
-3. Tailwind CSS
-    > https://youtu.be/UBOj6rqRUME  
-4. Other Documents
-    > https://www.typescriptlang.org/docs/handbook/react.html  
-    > https://tailwindcss.com/docs/utility-first  
-    > https://nerdcave.com/tailwind-cheat-sheet  
-    > https://mobx.js.org/README.html  
-
-
-## Steps to generate a skeleton project with `React, TypeScript, Tailwind`
-
+## Installation / Setting up the Project
 ### Prerequisites
 - Code editor of your choice (VSCode/Webstorm)
+- Python 3
 - Node.js
 - NPM (Node Package Manager)
     > Installing Node.js + NPM: https://youtu.be/JcwHHpim-CY
 
-### Generating a `React + TypeScript` skeleton project 
-1. `npm install vite@latest`
-1. `npm create vite@latest` then enter your project name
-2. Navigate down to React -> TypeScript
-3. `cd {your_project_name}`
-4. `code .` (to open up VSCode in that directory)
-5. `npm install`
-6. `npm run dev` (to check if it works)
+A full list of dependancies can be seen in 
+- Django [requirements.txt](AutoAssign/requirements.txt)
+- React [package.json](./client//package.json)
 
+### Automated
+<b>NOTE: Tested on Linux and MacOS. Automated installation/startup does not work on windows as the library required to implement it is not secure. </b>
+1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
+1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
 
-### Installing `Tailwind`
-1. Install `PostCSS Language Support` extension on VSCode
-1. `npm install -D tailwindcss postcss autoprefixer`
-2. `npx tailwindcss init -p`
-3. Your `tailwind.config.js` should look like this:
-``` 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-```
-4. Put 👇 in all .css files, since we're writing Tailwind CSS
-```
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-5. If you're playing around with the skeleton and Tailwind doesn't seem to work — make sure to wipe all generated CSS from `App.css` and `Index.css`
+### Manual
+#### Django
+1) First install all dependancies using: ```pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
 
-### Recommended Extensions for VSCode 
-- `HTML CSS Support`
-- `ES7+ React/Redux/React-Native snippets`
-- `JavaScript and TypeScript Nightly`
-- `Tailwind CSS IntelliSense`
-- `Path Intellisense`
-- `Live Share`
-- `Live Server`
+2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
+- ``` python3 manage.py makemigrations ```  
+- ``` python3 manage.py migrate ```
+- ``` python3 populate.py ```
+- Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
+- Try replacing ```python3``` with ```py``` if the above steps do not work
 
-### Frontend Deployment Notes
-- Login to/Signup for a Netlify account
-- `ntl` and connect to your desired Netlify hosting repo
-- `npm run build`
-- `ntl deploy`
-- `ntl deploy --prod`
-- Make a new file under /public called `_redirects` with `/* /index.html 200` inside it
+#### React
+3) Install the necessary dependencies and start the development server in [client](client/) by:
+- `npm i`
+- `npm run dev`
+- Finally, open the URL provided by the server
+- Here are a few useful commands: [Frontend Useful Notes](./client/README.md)
+
 ## General features for all users
 Login Page:
 - On the right side of the login page, there is a “Sign in to your account” interface. You can enter your email address and your password to log in.
