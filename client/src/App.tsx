@@ -17,17 +17,10 @@ import "react-toastify/dist/ReactToastify.css";
 import RequireAuth from "./components/general/RequireAuth";
 import LandingPage from "./pages/LandingPage";
 
-const App: FC = (() => {
-  const ThemeWrapper = observer(({ children }: { children: JSX.Element }) => {
-    return <div className={themeStore.isDarkMode ? "dark" : ""}>{children}</div>;
-  });
+const App: FC = observer(() => {
   
-
   return (
-    <ThemeWrapper>
-      {/* <nav className="sticky top-0 z-50">
-        <Navbar />
-      </nav> */}
+    <div className={themeStore.isDarkMode ? "dark" : ""}>
       <div className="page-background dark:bg-gray-800 overflow-y-auto">
         <Routes>
           {/* Public Routes */}
@@ -132,7 +125,7 @@ const App: FC = (() => {
           theme="light"
         />
       </div>
-    </ThemeWrapper>
+      </div>
   );
 });
 

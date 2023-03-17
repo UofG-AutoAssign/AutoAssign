@@ -347,21 +347,21 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
         <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
 
             <tr>
-              <th scope="col" className="px-2 py-3 flex flex-row gap-3 text-2xl items-center">
+              <th scope="col" className="px-2 py-3 flex flex-row gap-3 text-2xl items-center dark:text-white">
               <AiFillSetting />
                 Create New Team
               </th>
             </tr>
           </thead>
         </table>
-        <div className="label-text w-full font-black text-black">
+        <div className="label-text w-full font-black text-black dark:text-white">
           Pick a Department
         </div>
         <DropdownDepartmentList />
         {/* <div className="z-50 w-full">
         <DropdownAutoComplete type="DepartmentOnly" selected={selectedDepartment} setSelected={setSelectedDepartment} itemList={departmentList}  />
         </div> */}
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter New Team Name
         </div>
         <input
@@ -371,13 +371,13 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           placeholder="Enter New Team Name..."
           required
         ></input>
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Pick a Manager
         </div>
         <DropdownManagerList />
         {/* <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  />  */}
 
-        <div className="label-text w-full font-black text-balck text-black">
+        <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter Team&apos;s  Max Headcount
         </div>
         <input
