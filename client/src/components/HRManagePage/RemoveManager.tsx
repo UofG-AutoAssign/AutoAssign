@@ -7,105 +7,25 @@ import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { managerType } from "../../pages/HRManagePage";
 import AssignRemoveModal from "../general/AssignRemoveModal";
+import DropdownAutoComplete from "../general/DropdownAutoComplete";
 
 // Permanently delete a manager account
 const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }) => {
   const [selectedManager, setSelectedManager] = useState<string>("");
 
-  const DropdownManagerList = (): JSX.Element => {
-    const [query, setQuery] = useState<string>("");
-
-    const filteredPeople =
-      query === ""
-        ? allManagerList
-        : allManagerList.filter((manager) =>
-        manager.email
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return (
-      <div className="relative min-w-[72px] w-full z-50">
-        <Combobox value={selectedManager} onChange={setSelectedManager}>
-          <div className="relative mt-1">
-            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
-              <Combobox.Input
-                className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                displayValue={(manager) => (manager as any).email}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                V
-              </Combobox.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              afterLeave={() => setQuery("")}
-            >
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {filteredPeople.length === 0 && query !== "" ? (
-                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                    Nothing found.
-                  </div>
-                ) : (
-                  filteredPeople.map((manager) => (
-                    <Combobox.Option
-                      key={manager.id}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
-                        }`
-                      }
-                      value={manager}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                            {manager.email}
-                          </span>
-                          {selected ? (
-                            <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
-                            >
-                              ✅
-                            </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))
-                )}
-              </Combobox.Options>
-            </Transition>
-          </div>
-        </Combobox>
-      </div>
-    );
-  };
-
   const handleRemoveManager = async (): Promise<void> => {
     try {
-      const gradId = (selectedManager as any).id;
-      console.log(gradId);
+      const manId = (selectedManager as any).id;
+      console.log(manId);
 
-      if (!selectedManager || !gradId) {
+      if (!selectedManager || !manId) {
         toast.error("No empty input fields allowed")
       }
 
       const { data } = await axios.post(
         `${environmentalVariables.backend}home/hr/DeleteMan/`,
         {
-          id: gradId,
+          id: manId,
         },
         {
           headers: {
@@ -145,7 +65,7 @@ const RemoveManager: FC<{ allManagerList: managerType[] }> = ({ allManagerList }
               Manager email
             </label>
           </div>
-          <DropdownManagerList />
+          <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  /> 
           <div className="flex flex-col items-center">
             <label
               htmlFor={confirmGraduateToTeamModalId2}

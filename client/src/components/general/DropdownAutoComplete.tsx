@@ -88,7 +88,8 @@ const DropdownAutoComplete: FC<DropdownAutoCompleteType> = ({
               className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 "
               displayValue={(item) => {
                 if (["Graduate", "Manager"].includes(type)) return (item as any).email;
-                else if (["DepartmentOnly", "TeamAndDepartment"].includes(type)) return (item as any).depart_name;
+                else if (["DepartmentOnly",].includes(type)) return (item as any).depart_name;
+                else if (["TeamAndDepartment"].includes(type)) return (item as any).team_name;
               }}
               onChange={(event) => setQuery(event.target.value)}
             />
