@@ -49,7 +49,7 @@ backend_test:
     - pip install --no-cache-dir -r requirements.txt
     # Run the Django backend tests
     - pip install coverage
-    - coverage run --source='.' manage.py test Assign
+    - coverage run --source='Assign' manage.py test Assign
     - coverage report -m
 
 backend_quality:
