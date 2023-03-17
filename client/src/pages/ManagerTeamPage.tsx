@@ -203,6 +203,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     if (query === "view_team") setCurrentTab("Your Team");
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
+
   }, [currentLocation]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
@@ -253,11 +254,12 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     console.log(data);
 
     if (data.status === true) {
-      toast.success("Data successfully delivered!");
+      toast.success("Data successfully delivered!")
 
       setTimeout(() => {
         location.reload();
       }, 1500);
+
     } else {
       toast.error(`Data failed to be delivered! ${data.detail}`);
     }
