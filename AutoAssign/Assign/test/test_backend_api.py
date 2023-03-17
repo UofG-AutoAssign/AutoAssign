@@ -44,6 +44,120 @@ class LoginTestCase(APITestCase):
         self.assertEqual(response.data['user_type'], 'Manager')
 
 
+# Test Reset (All get reqeust)
+class ResetPasswordByEmailTestCase(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.reset_password_url = '/home/reset/'
+
+        models.Graduate.objects.create(email='Graduate@email.com',
+                                       first_name='Graduate', second_name='Test',
+                                       password='5fa5f62fe937033750ed096d66c866be', role='1')
+
+    def test_reset_password_valid_email(self):
+        # Test sending email with valid email and url
+        data = {
+            'email': 'Graduate@email.com',
+            'url': 'https://example.com/reset-password/'
+        }
+
+        response = self.client.post(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'user_type': 'Graduate', 'Detail': 'Email has been send'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_invalid_email(self):
+        # Test sending email with invalid email
+        data = {
+            'email': 'invalid_email',
+            'url': 'https://example.com/reset-password/'
+        }
+        response = self.client.post(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 403, 'status': False, 'error': 'Please check the email'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_invalid_parameters(self):
+        # Test sending email with missing parameters
+        data = {}
+        response = self.client.post(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 406, 'status': False, 'error': 'Please check your parameters'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_valid_token(self):
+        # Test changing password with valid token and passwords
+
+        grad_obj = models.Graduate.objects.create(email='Graduate2@email.com',
+                                                  first_name='Graduate', second_name='Test',
+                                                  password='5fa5f62fe937033750ed096d66c866be',
+                                                  role='1', token="abcdfeg")
+
+        token = grad_obj.token
+
+        data = {
+            'token': token,
+            'pwd1': '1234567',
+            'pwd2': '1234567',
+        }
+        response = self.client.put(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'user_type': 'Graduate', 'Detail': 'Password Changed'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_invalid_token(self):
+        # Test changing password with invalid token
+
+        grad_obj = models.Graduate.objects.create(email='Graduate3@email.com',
+                                                  first_name='Graduate', second_name='Test',
+                                                  password='5fa5f62fe937033750ed096d66c866be',
+                                                  role='1', token="abcdfeg")
+        data = {
+            'token': 'invalid_token',
+            'pwd1': 'new_password',
+            'pwd2': 'new_password',
+        }
+        response = self.client.put(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 403, 'status': False, 'error': 'Token incorrect'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_invalid_passwords(self):
+        # Test changing password with different passwords
+        grad_obj = models.Graduate.objects.create(email='Graduate2@email.com',
+                                                  first_name='Graduate', second_name='Test',
+                                                  password='5fa5f62fe937033750ed096d66c866be',
+                                                  role='1', token="abcdfeg")
+
+        token = grad_obj.token
+
+        data = {
+            'token': token,
+            'pwd1': '1234527',
+            'pwd2': '1234567',
+        }
+
+        response = self.client.put(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 403, 'status': False, 'error': 'Please confirm your password'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_reset_password_missing_parameters(self):
+        # Test changing password with missing parameters
+        data = {}
+        response = self.client.put(self.reset_password_url, data, format='json')
+
+        validate_data = {'code': 406, 'status': False, 'error': 'Please check your parameters'}
+
+        self.assertEqual(response.data, validate_data)
+
+
 # Test Information View
 class ViewTestCase(APITestCase):
 
@@ -489,6 +603,27 @@ class testHrApi(APITestCase):
 
         self.assertEqual(new_response.data, validate_data)
 
+        # View all One
+
+        new_response = self.client.get("/home/hr/AllYearOneGrad/", format="json")
+
+        data = [
+            {
+                'id': 1,
+                'email': 'Graduate@email.com',
+                'first_name': 'Graduate',
+                'second_name': 'Test'
+            }
+        ]
+
+        validate_data = {
+            'code': 200,
+            'status': True,
+            'data': data
+        }
+
+        self.assertEqual(new_response.data, validate_data)
+
         # View all Man
 
         new_response = self.client.get("/home/hr/ManView/", format="json")
@@ -768,3 +903,402 @@ class testHrApi(APITestCase):
         validate_data = {'code': 200, 'status': True, 'Man_id': 2, 'Team_id': 2, 'detail': 'Updated'}
 
         self.assertEqual(new_response.data, validate_data)
+
+
+# Test ResetPassword
+
+class Register(APITestCase):
+
+    def setUp(self):
+        self.token = "test_token"
+        self.pwd1 = "password123"
+        self.pwd2 = "password123"
+        self.first_name = "John"
+        self.second_name = "Doe"
+        self.role = 1
+        self.email = "test@example.com"
+        self.register_obj = models.Registration.objects.create(
+            token=self.token, role=self.role, email=self.email)
+
+    def test_register_valid_data(self):
+        url = '/home/register/'
+        data = {
+            "token": self.token,
+            "pwd1": self.pwd1,
+            "pwd2": self.pwd2,
+            "first_name": self.first_name,
+            "second_name": self.second_name,
+        }
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'detail': 'Has been added',
+                         'data': {'email': 'test@example.com',
+                                  'password': 'ab444efee71801698dfd0a95995c02fd',
+                                  'first_name': 'John', 'second_name': 'Doe'}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_register_invalid_token(self):
+        url = '/home/register/'
+        data = {
+            "token": "invalid_token",
+            "pwd1": self.pwd1,
+            "pwd2": self.pwd2,
+            "first_name": self.first_name,
+            "second_name": self.second_name,
+        }
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 403, 'status': False, 'error': 'token wrong'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_register_invalid_password_confirmation(self):
+        url = '/home/register/'
+        data = {
+            "token": self.token,
+            "pwd1": self.pwd1,
+            "pwd2": "invalid_password",
+            "first_name": self.first_name,
+            "second_name": self.second_name,
+        }
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'detail': 'Has been added',
+                         'data': {'email': 'test@example.com',
+                                  'password': 'ab444efee71801698dfd0a95995c02fd', 'first_name': 'John',
+                                  'second_name': 'Doe'}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_register_missing_fields(self):
+        url = '/home/register/'
+        data = {
+            "token": self.token,
+            "pwd1": self.pwd1,
+            "pwd2": self.pwd2,
+        }
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 406, 'status': False, 'error': 'Please check your parameters'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_register_missing_names(self):
+        url = '/home/register/'
+        data = {
+            "token": self.token,
+            "pwd1": self.pwd1,
+            "pwd2": self.pwd2,
+            "first_name": self.first_name,
+        }
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 406, 'status': False, 'error': 'Please check your parameters'}
+
+        self.assertEqual(response.data, validate_data)
+
+
+class BatchRegisterTest(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.valid_payload = {
+            "email": ["test1@gmail.com", "test2@gmail.com"],
+            "role": 1,
+            "url": "/home/hr/Register/"
+        }
+        self.invalid_payload = {
+            "email": ["test1@gmail.com", "test2@gmail.com"],
+            "role": None,
+            "url": "/home/hr/Register/"
+        }
+
+        models.HR.objects.create(email='Hr@email.com',
+                                 first_name='Hr', second_name='Test',
+                                 password='5fa5f62fe937033750ed096d66c866be', role='3')
+
+    def test_create_valid_registration(self):
+        url = "/home/hr/Register/"
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        response = self.client.post(
+            url,
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+
+        data = [
+            {"email": "test1@gmail.com", "role": 1},
+            {"email": "test2@gmail.com", "role": 1}
+        ]
+
+        validate_data = OrderedDict([
+            ('code', 200),
+            ('status', True),
+            ('detail', 'Email has been Send'),
+            ('data', [OrderedDict(d) for d in data])
+        ])
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_create_invalid_registration(self):
+        url = "/home/hr/Register/"
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        response = self.client.post(
+            url,
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json'
+        )
+
+        validate_data = {'code': 406, 'status': False, 'error': 'Please check your parameters'}
+
+        self.assertEqual(response.data, validate_data)
+
+
+class TeamAndDepartment(APITestCase):
+    def setUp(self):
+        self.depart1 = models.Department.objects.create(
+            depart_name="Department 1",
+        )
+
+        self.team1 = models.Team.objects.create(
+            team_name="Team 1",
+        )
+
+        models.HR.objects.create(email='Hr@email.com',
+                                 first_name='Hr', second_name='Test',
+                                 password='5fa5f62fe937033750ed096d66c866be', role='3')
+
+    def test_assign_team_to_department_successfully(self):
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/AssignTeam/"
+
+        valid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": self.team1.id
+        }
+
+        response = self.client.put(url, valid_payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], True)
+        self.assertEqual(response.data["Status"], "success")
+
+        # Ensure that team1 is now associated with depart1
+        self.team1.refresh_from_db()
+        self.assertEqual(self.team1.depart_id, self.depart1)
+
+    def test_assign_team_to_department_with_invalid_team_id(self):
+        invalid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": 99999
+        }
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/AssignTeam/"
+
+        valid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": self.team1.id
+        }
+
+        response = self.client.put(url, valid_payload, format="json")
+
+        validate_data = {'code': 200, 'status': True, 'Status': 'success', 'data': {'depart_id': 1}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_assign_team_to_department_with_invalid_depart_id(self):
+        invalid_payload = {
+            "depart_id": 99999,
+            "team_id": self.team1.id
+        }
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/AssignTeam/"
+
+        valid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": self.team1.id
+        }
+
+        response = self.client.put(url, valid_payload, format="json")
+
+        validate_data = {'code': 200, 'status': True, 'Status': 'success', 'data': {'depart_id': 1}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_assign_team_to_department_with_missing_params(self):
+        invalid_payload = {
+            "depart_id": self.depart1.id
+        }
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/AssignTeam/"
+
+        valid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": self.team1.id
+        }
+
+        response = self.client.put(url, valid_payload, format="json")
+
+        validate_data = {'code': 200, 'status': True, 'Status': 'success', 'data': {'depart_id': 1}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_assign_team_to_department_with_invalid_params(self):
+        invalid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": "not a valid id"
+        }
+
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/AssignTeam/"
+
+        valid_payload = {
+            "depart_id": self.depart1.id,
+            "team_id": self.team1.id
+        }
+
+        response = self.client.put(url, valid_payload, format="json")
+
+        validate_data = {'code': 200, 'status': True, 'Status': 'success', 'data': {'depart_id': 1}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_create_department(self):
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        url = "/home/hr/CreateDepartment/"
+        data = {'depart_name': 'Test Department'}
+
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True,
+                         'Create': 'Department', 'Status': 'success',
+                         'data': {'depart_name': 'Test Department'}}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_create_team(self):
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+        url = "/home/hr/CreateTeam/"
+        data = [{'team_name': 'Test Team 1', 'num_positions': 10}, {'team_name': 'Test Team 2', 'num_positions': 15}]
+
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {
+            "code": 200,
+            "status": True,
+            "data": [
+                {
+                    "man_id": None,
+                    "depart_id": None,
+                    "num_positions": 10
+                },
+                {
+                    "man_id": None,
+                    "depart_id": None,
+                    "num_positions": 15
+                }
+            ]
+        }
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_delete_department(self):
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        department = models.Department.objects.create(depart_name='Test Department')
+        url = "/home/hr/DeleteDepartment/"
+        data = {'dep_id': department.id}
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'detail': 'Has been deleted'}
+
+        self.assertEqual(response.data, validate_data)
+
+    def test_delete_team(self):
+        body = {"username": "Hr@email.com", "password": "123456"}
+
+        response = self.client.post("", body, format="json")
+
+        token = response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=token)
+
+        team = models.Team.objects.create(team_name='Test Team', num_positions=10)
+        url = "/home/hr/DeleteTeam/"
+        data = {'Team_id': team.id}
+        response = self.client.post(url, data, format='json')
+
+        validate_data = {'code': 200, 'status': True, 'detail': 'Has been deleted'}
+
+        self.assertEqual(response.data, validate_data)
