@@ -33,13 +33,13 @@ const ResetCard: FC = () => {
       console.log(data);
 
       if (data.status === true) {
-        toast.success("Sucessfully Sent!");
+        toast.success("Password reset successful!");
 
         setTimeout(() => {
           navigate("/")
         }, 1000);
       } else {
-        toast.error(`Failed to register new password: ${data.error}`);
+        toast.error(`Password reset unsuccessful: ${data.error}`);
       }
     } catch (error: any) {
       toast.error(error)

@@ -20,7 +20,7 @@ const ForgotPassCard: FC = () => {
         `${environmentalVariables.backend}home/reset/`,
         {
           email: emailInputRef.current.value,
-          url: location.hostname + ":5173" + "/enter_new_password/"
+          url: location.hostname + "/enter_new_password/"
         }
       );
       console.log(data);
