@@ -4,7 +4,7 @@ import { MemoryRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import React from "react";
 
-it("AvatarBar", () => {
+it("LandingButtonLink", () => {
   render(
     <Router>
       <LandingButtonLink

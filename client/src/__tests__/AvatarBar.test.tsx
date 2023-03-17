@@ -6,5 +6,5 @@ import React from 'react';
 it("AvatarBar", () => {
     render(<AvatarBar firstName="Ben" lastName="Dover"/>);
     const fullName = screen.getByText("Ben Dover")
-    expect(fullName).toBeInTheDocument();
+    expect(fullName).toBeInTheDocument();  
 });
