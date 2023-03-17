@@ -90,7 +90,7 @@ frontend_build:
       prefix: npm
     paths:
       - client/node_modules/
-  image: node:16.5.0-alpine
+  image: node:16.5.0
   script:
     - cd "client"
     - npm install
