@@ -100,26 +100,35 @@ If you have run out of energy or time for your project, put a note at the top of
 - Python 3
 - Node.js
 - NPM (Node Package Manager)
-    > Installing Node.js + NPM: https://youtu.be/JcwHHpim-CY
 
-A full list of dependancies can be seen in 
+A full list of dependencies can be seen in: 
 - Django [requirements.txt](AutoAssign/requirements.txt)
 - React [package.json](./client//package.json)
 
+### Node.js
+Node.js and its package manager, npm, are required dependencies for this project, please see below for installation instructions before proceeding.
+
+#### Windows and macOS
+Download and run the latest <b>LTS</b> installer for your OS from the [node.js website](https://nodejs.org/en/download)
+
+#### Linux
+Many linux distributions come with node.js pre-installed, before proceeding, check for an existing version by running 
+<nobr>```npm -v```</nobr> in a terminal. If the terminal returns a version number you have an existing installation and can skip Node.js installation.
+<br><br>
+Otherwise, see [this page](https://nodejs.org/en/download/package-manager) for guidance on how to install node.js for your specific distribution.
 ### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated installation/startup does not work on windows as the library required to implement it is not secure. </b>
-1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
-1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
+1) Run [install.py](install.py)
+2) Run [startup.py](startup.py)
 
 ### Manual
 #### Django
-1) First install all dependancies using: ```pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
+1) First install all dependencies using: <nobr>```pip install -r requirements.txt```</nobr>  inside [AutoAssign](AutoAssign/)
 
 2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
 - ``` python3 manage.py makemigrations ```  
 - ``` python3 manage.py migrate ```
 - ``` python3 populate.py ```
-- Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
+- Start the backend server with: <nobr>```python3 manage.py runserver```</nobr> inside [AutoAssign](AutoAssign/)
 - Try replacing ```python3``` with ```py``` if the above steps do not work
 
 #### React
@@ -127,7 +136,7 @@ A full list of dependancies can be seen in
 - `npm i`
 - `npm run dev`
 - Finally, open the URL provided by the server
-- Here are a few useful commands: [Frontend Useful Notes](./client/README.md)
+- Here are a few useful commands: [Frontend Useful Notes](./client/Notes.md)
 
 ## General features for all users
 Login Page:
