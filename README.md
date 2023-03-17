@@ -87,14 +87,27 @@ If you have run out of energy or time for your project, put a note at the top of
 # User Guide
 
 ## Installation
-A full list of dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
+A full list of python dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
 
+### Node.js
+Node.js and its package manager, npm, are required dependencies for this project, please see below for installation instructions before proceeding.
+
+#### Windows
+Download and run the latest <b>LTS</b> Windows installer from the [node.js website](https://nodejs.org/en/download)
+
+#### macOS
+Download and run the latest <b>LTS</b> macOS installer from the [node.js website](https://nodejs.org/en/download)
+
+#### Linux
+Many linux distrobutions come with node.js pre-installed, before proceeding, check for an existing version by running 
+<nobr>```npm -v```</nobr> in a terminal. If the terminal returns a version number you have an existing installation and can skip Node.js installation.
+<br><br>
+Otherwise, see [this page](https://nodejs.org/en/download/package-manager) for guidance on how to install node.js for your specific distribution.
 ### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated installation does not work on windows as the library required to implement it is not secure. </b>
-1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
+1) Run [install.py](install.py)
 
 ### Manual
-1) First install all dependancies using: ```pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
+1) First install all dependancies using: <nobr>```pip install -r requirements.txt```</nobr>  inside [AutoAssign](AutoAssign/)
 
 #### Django
 2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
@@ -104,18 +117,17 @@ A full list of dependancies can be seen in [requirements.txt](AutoAssign/require
 - Try replacing ```python3``` with ```py``` if the above steps do not work
 
 #### React
-3) Setup React using: ```npm install``` inside [client](client/)
+3) Setup React using: <nobr>```npm install```</nobr>  inside [client](client/)
 
 ## Usage
 
 ### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated startup does not work on windows as the library required to implement it is not secure. </b>
-1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
+1) Run [startup.py](startup.py)
 
 ### Manual
-1) Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
+1) Start the backend server with: <nobr>```python3 manage.py runserver```</nobr>  inside [AutoAssign](AutoAssign/)
 
-2) Then, start the fronted server with: ```npm run dev``` inside [client](client/)
+2) Then, start the fronted server with: <nobr>```npm run dev```</nobr>  inside [client](client/)
 
 3) Finally, open the URL provided by the frontend server, usually [http://localhost:5173](http://localhost:5173)
 
