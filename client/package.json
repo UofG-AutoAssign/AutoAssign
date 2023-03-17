@@ -5,9 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "concurrently \"npm run start:react\" \"npm run start:django\"",
-    "start:react": "cd ./client && npm run dev",
-    "start:django": "cd ./AutoAssign && python manage.py runserver",
     "test": "jest",
     "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "tsc && vite build",
