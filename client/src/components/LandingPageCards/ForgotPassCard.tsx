@@ -28,6 +28,10 @@ const ForgotPassCard: FC = () => {
       if (data.status === true) {
         toast.success("Sucessfully Sent!");
 
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+
       } else {
         toast.error(`Failed to register new password: ${data.error}`);
       }
