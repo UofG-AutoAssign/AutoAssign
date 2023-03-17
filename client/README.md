@@ -1,12 +1,12 @@
 # Front-end Notes
-## Current front-end technologies:
-> ### React, TypeScript, MobX, Tailwind CSS
-
 ## If you've just cloned the project
-### Steps (Work in Progress)
-1. `cd ./client`
-2. `npm install`
-3. `npm run dev`
+### List of Useful Commands
+1. `npm run start` to start both front and backend
+1. `npm run dev:watch` to start only frontend + run linting and tests at start
+1. `npm run dev` to start only frontend
+1. `npm run test` to run frontend tests
+1. `npm run lint` to run frontend linting/styling enforcement
+1. `npm run build` to build the project (can be used for manual deployment) 
 
 ## Useful Tutorials/Documentations
 1. React/TypeScript
@@ -74,7 +74,9 @@ module.exports = {
 - `Live Share`
 - `Live Server`
 
-### Deployment Notes
+### Frontend Deployment Notes
+- Login to/Signup for a Netlify account
+- `ntl` and connect to your desired Netlify hosting repo
 - `npm run build`
 - `ntl deploy`
 - `ntl deploy --prod`
