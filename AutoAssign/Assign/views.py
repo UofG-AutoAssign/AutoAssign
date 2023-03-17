@@ -894,7 +894,7 @@ class AllUnGradView(APIView):
     permission_classes = [HrPermission, ]
 
     def get(self, request):
-        grad_obj = models.Graduate.objects.filter(team_id=None).all()
+        grad_obj = models.Graduate.objects.filter(team_id__isnull=True).all()
 
         ser = serializers.AllGradSerializer(instance=grad_obj, many=True)
 
