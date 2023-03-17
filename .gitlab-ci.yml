@@ -118,6 +118,7 @@ frontend_test:
     - npm install
     # Run frontend tests
     - echo "Frontend tests"
+    - npm run test
 
 frontend_quality:
   stage: frontend_build_test_quality
@@ -135,3 +136,4 @@ frontend_quality:
     - cd "client"
     - npm install
     - echo "Frontend quality tests"
+    - npm run lint

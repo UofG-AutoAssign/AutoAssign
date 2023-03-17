@@ -89,168 +89,6 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
   const [selectedManager, setSelectedManager] = useState<string>("");
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
-  const DropdownManagerList = (): JSX.Element => {
-    const [query, setQuery] = useState<string>("");
-
-    const filteredPeople =
-      query === ""
-        ? allManagerList
-        : allManagerList.filter((manager) =>
-            manager.email
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return (
-      <div className="relative min-w-[72px] w-full z-30">
-        <Combobox value={selectedManager} onChange={setSelectedManager}>
-          <div className="relative mt-1">
-            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
-              <Combobox.Input
-                className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 "
-                displayValue={(manager) => (manager as any).email}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                V
-              </Combobox.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              afterLeave={() => setQuery("")}
-            >
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {filteredPeople.length === 0 && query !== "" ? (
-                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                    Nothing found.
-                  </div>
-                ) : (
-                  filteredPeople.map((manager) => (
-                    <Combobox.Option
-                      key={manager.id}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
-                        }`
-                      }
-                      value={manager}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                            {manager.email}
-                          </span>
-                          {selected ? (
-                            <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
-                            >
-                              ✅
-                            </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))
-                )}
-              </Combobox.Options>
-            </Transition>
-          </div>
-        </Combobox>
-      </div>
-    );
-  };
-
-  const DropdownDepartmentList = (): JSX.Element => {
-    const [query, setQuery] = useState<string>("");
-
-    const filteredTeam =
-      query === ""
-        ? departmentList
-        : departmentList.filter((dep) =>
-            dep.depart_name
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return (
-      <div className="relative min-w-[72px] w-full z-40">
-        <Combobox value={selectedDepartment} onChange={setSelectedDepartment}>
-          <div className="relative mt-1">
-            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
-              <Combobox.Input
-                className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                displayValue={(team) => team as any}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                V
-              </Combobox.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              afterLeave={() => setQuery("")}
-            >
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {filteredTeam.length === 0 && query !== "" ? (
-                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                    Nothing found.
-                  </div>
-                ) : (
-                  filteredTeam.map((dep, idx) => (
-                    <Combobox.Option
-                      key={idx}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
-                        }`
-                      }
-                      value={dep.depart_name}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                            {dep.depart_name}
-                          </span>
-                          {selected ? (
-                            <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
-                              }`}
-                            >
-                              ✅
-                            </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))
-                )}
-              </Combobox.Options>
-            </Transition>
-          </div>
-        </Combobox>
-      </div>
-    );
-  };
-
   const effectRanOnFirstLoad = useRef<boolean>(false);
   useEffect(() => {
     const getAllTeamsAndDepartmentsForHR = async () => {
@@ -357,10 +195,9 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
         <div className="label-text w-full font-black text-black dark:text-white">
           Pick a Department
         </div>
-        <DropdownDepartmentList />
-        {/* <div className="z-50 w-full">
-        <DropdownAutoComplete type="DepartmentOnly" selected={selectedDepartment} setSelected={setSelectedDepartment} itemList={departmentList}  />
-        </div> */}
+        <div className="z-50 w-full">
+          <DropdownAutoComplete type="DepartmentOnly" selected={selectedDepartment} setSelected={setSelectedDepartment} itemList={departmentList}  />
+        </div>
         <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter New Team Name
         </div>
@@ -374,9 +211,9 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
         <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Pick a Manager
         </div>
-        <DropdownManagerList />
-        {/* <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  />  */}
-
+        <div className="z-40 w-full">
+          <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  /> 
+        </div>
         <div className="label-text w-full font-black text-balck text-black dark:text-white">
           Enter Team&apos;s  Max Headcount
         </div>
@@ -391,7 +228,7 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           type="button"
           className="my-10 gap-1000 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           onClick={() => {
-            const depId = departmentList.find((dep) => dep.depart_name === selectedDepartment)?.id;
+            const depId = (selectedDepartment as any).id
 
             if (
               selectedDepartment === "" || selectedManager === "" || depId === undefined ||
@@ -400,6 +237,7 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
               teamNameInputRef.current?.value === undefined ||
               !teamNameInputRef.current?.value
             ) {
+              console.log(depId)
               toast.error("No empty input fields allowed");
               return;
             }

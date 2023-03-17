@@ -94,38 +94,40 @@ If you have run out of energy or time for your project, put a note at the top of
 
 # User Guide
 
-## Installation
-A full list of dependancies can be seen in [requirements.txt](AutoAssign/requirements.txt)
+## Installation / Setting up the Project
+### Prerequisites
+- Code editor of your choice (VSCode/Webstorm)
+- Python 3
+- Node.js
+- NPM (Node Package Manager)
+    > Installing Node.js + NPM: https://youtu.be/JcwHHpim-CY
+
+A full list of dependancies can be seen in 
+- Django [requirements.txt](AutoAssign/requirements.txt)
+- React [package.json](./client//package.json)
 
 ### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated installation does not work on windows as the library required to implement it is not secure. </b>
+<b>NOTE: Tested on Linux and MacOS. Automated installation/startup does not work on windows as the library required to implement it is not secure. </b>
 1) Run [install.py](AutoAssign/install.py) found inside [AutoAssign](AutoAssign/)
+1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
 
 ### Manual
+#### Django
 1) First install all dependancies using: ```pip install -r requirements.txt``` inside [AutoAssign](AutoAssign/)
 
-#### Django
 2) Create the database by running the following commands inside [AutoAssign](AutoAssign/):  
 - ``` python3 manage.py makemigrations ```  
 - ``` python3 manage.py migrate ```
 - ``` python3 populate.py ```
+- Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
 - Try replacing ```python3``` with ```py``` if the above steps do not work
 
 #### React
-3) Setup React using: ```npm install``` inside [client](client/)
-
-## Usage
-
-### Automated
-<b>NOTE: Tested on Linux and MacOS. Automated startup does not work on windows as the library required to implement it is not secure. </b>
-1) Run [startup.py](AutoAssign/startup.py) found inside [AutoAssign](AutoAssign/)
-
-### Manual
-1) Start the backend server with: ```python3 manage.py runserver``` inside [AutoAssign](AutoAssign/)
-
-2) Then, start the fronted server with: ```npm run dev``` inside [client](client/)
-
-3) Finally, open the URL provided by the frontend server, usually [http://localhost:5173](http://localhost:5173)
+3) Install the necessary dependencies and start the development server in [client](client/) by:
+- `npm i`
+- `npm run dev`
+- Finally, open the URL provided by the server
+- Here are a few useful commands: [Frontend Useful Notes](./client/README.md)
 
 ## General features for all users
 Login Page:
