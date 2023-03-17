@@ -1,12 +1,13 @@
 import { FC, useRef, useState, Fragment, useEffect } from "react";
-import ManageTeamsTable from "../ManageTeamsTable";
+import IndividualTeamTable from "./IndividualTeamTable";
 import { toast } from "react-toastify";
 import { Combobox, Transition } from "@headlessui/react";
-import { departmentType, managerType, teamAndDepartmentType } from "../../pages/HRManagePage";
+import { departmentType, managerType } from "../../pages/HRManagePage";
 import axios from "axios";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import authStore from "../../context/authStore";
 import { AiFillSetting } from "react-icons/all";
+import DropdownAutoComplete from "../general/DropdownAutoComplete";
 
 export type departmentAndTeamListHRType = {
   departmentName: string;
@@ -21,7 +22,7 @@ export type departmentAndTeamListHRType = {
   }[];
 };
 
-const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentType[]; }> = ({
+const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departmentType[]; }> = ({
   allManagerList, departmentList
 }) => {
   const maxCapacityInputRef = useRef<HTMLInputElement>(null);
@@ -330,7 +331,7 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
                   className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-black dark:text-white"
                   key={rowId}
                 >
-                  <ManageTeamsTable
+                  <IndividualTeamTable
                     departmentAndTeamListHR={
                       departmentAndTeamListHR[Number(rowId)]
                     }
@@ -357,7 +358,9 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           Pick a Department
         </div>
         <DropdownDepartmentList />
-
+        {/* <div className="z-50 w-full">
+        <DropdownAutoComplete type="DepartmentOnly" selected={selectedDepartment} setSelected={setSelectedDepartment} itemList={departmentList}  />
+        </div> */}
         <div className="label-text w-full font-black text-balck text-black">
           Enter New Team Name
         </div>
@@ -372,9 +375,10 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
           Pick a Manager
         </div>
         <DropdownManagerList />
+        {/* <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  />  */}
 
         <div className="label-text w-full font-black text-balck text-black">
-          Enter Team&aops;s Max Headcount
+          Enter Team&apos;s  Max Headcount
         </div>
         <input
           ref={maxCapacityInputRef}
@@ -421,4 +425,4 @@ const TeamTable: FC<{ allManagerList: managerType[], departmentList: departmentT
   );
 };
 
-export default TeamTable;
+export default AllTeamsTable;

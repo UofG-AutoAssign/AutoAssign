@@ -1,5 +1,5 @@
 import {  render, screen } from "@testing-library/react";
-import AvatarBar from "../components/AvatarBar";
+import AvatarBar from "../components/AccountPage/AvatarBar";
 import '@testing-library/jest-dom';
 import React from 'react';
 

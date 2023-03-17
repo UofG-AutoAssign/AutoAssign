@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { LandingButtonLinkProps } from "../constants/Interfaces";
+import { LandingButtonLinkProps } from "../../constants/Interfaces";
 
 const LandingButtonLink: FC<LandingButtonLinkProps> = ({
   title,

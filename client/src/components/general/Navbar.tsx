@@ -1,11 +1,11 @@
 import { FC } from "react";
 import { BsFillMoonStarsFill, BsSun } from "react-icons/all";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { MdOutlineSwitchAccount } from "react-icons/md";
-import themeStore from "../context/themeStore";
-import logo from "../assets/logo.svg"
+import themeStore from "../../context/themeStore";
+import logo from "../../assets/logo.svg";
 
 const Navbar: FC<{
   hideLogoutButton?: boolean;
@@ -25,7 +25,6 @@ const Navbar: FC<{
       </>
     );
   };
-
 
   const ThemeToggleButton = (): JSX.Element => {
     return (

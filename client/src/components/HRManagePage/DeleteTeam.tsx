@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { teamAndDepartmentType } from "../../pages/HRManagePage";
-import AssignRemoveModal from "../modals/AssignRemoveModal";
+import AssignRemoveModal from "../general/AssignRemoveModal";
 
 // Assigns a graduate to a specific team/department
 const DeleteTeam: FC<{ teamAndDepartmentList: teamAndDepartmentType[]; }> = ({ teamAndDepartmentList }) => {

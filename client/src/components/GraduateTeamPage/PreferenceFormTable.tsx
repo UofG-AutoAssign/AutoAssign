@@ -2,9 +2,9 @@ import { FC, useEffect, useState, useRef } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import Select from "react-select";
 import axios from "axios";
-import { environmentalVariables } from "../constants/EnvironmentalVariables";
-import authStore from "../context/authStore";
-import { experienceOptions, interestOptions } from "../constants/Options";
+import { environmentalVariables } from "../../constants/EnvironmentalVariables";
+import authStore from "../../context/authStore";
+import { experienceOptions, interestOptions } from "../../constants/Options";
 import { toast } from "react-toastify";
 
 export type selectedDataType = {
