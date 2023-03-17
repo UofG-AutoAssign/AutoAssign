@@ -32,6 +32,34 @@ const SignUpCard: FC = () => {
       return;
     }
 
+    // Password validity checks
+    if (
+      passwordInputRef.current.value.length < 6 ||
+      passwordInputRef.current.value.length > 15
+    ) {
+      toast.error("Password must be between 6 to 15 characters long");
+      return;
+    }
+
+    if (passwordInputRef.current.value.includes(" ")) {
+      toast.error("You cannot have spaces in your password");
+      return;
+    }
+
+    let noDigit = true;
+
+    for (let i = 0; i < passwordInputRef.current.value.length; i++) {
+      const charCode = passwordInputRef.current.value.charCodeAt(i);
+      if (!isNaN(charCode) && charCode >= 48 && charCode <= 57) {
+        noDigit = false;
+      }
+    }
+
+    if (noDigit) {
+      toast.error("Password must have a digit");
+      return;
+    }
+
     const token = location.pathname.split("/").at(-1);
     console.log(token);
     

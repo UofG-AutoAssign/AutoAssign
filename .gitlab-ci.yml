@@ -136,4 +136,3 @@ frontend_quality:
     - npm install
     - echo "Frontend quality tests"
 
-
