@@ -7,6 +7,7 @@ import axios from "axios";
 import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import authStore from "../../context/authStore";
 import { AiFillSetting } from "react-icons/all";
+import DropdownAutoComplete from "../general/DropdownAutoComplete";
 
 export type departmentAndTeamListHRType = {
   departmentName: string;
@@ -357,7 +358,9 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           Pick a Department
         </div>
         <DropdownDepartmentList />
-
+        {/* <div className="z-50 w-full">
+        <DropdownAutoComplete type="DepartmentOnly" selected={selectedDepartment} setSelected={setSelectedDepartment} itemList={departmentList}  />
+        </div> */}
         <div className="label-text w-full font-black text-balck text-black">
           Enter New Team Name
         </div>
@@ -372,9 +375,10 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           Pick a Manager
         </div>
         <DropdownManagerList />
+        {/* <DropdownAutoComplete type="Manager" selected={selectedManager} setSelected={setSelectedManager} itemList={allManagerList}  />  */}
 
         <div className="label-text w-full font-black text-balck text-black">
-          Enter Team&aops;s Max Headcount
+          Enter Team&apos;s  Max Headcount
         </div>
         <input
           ref={maxCapacityInputRef}
