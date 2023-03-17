@@ -205,7 +205,7 @@ class ViewGradTeamInfo(APIView):
             return Response(context)
 
         return Response({"code": 403, "status": False,
-                         'error': "This Graduate dose not has a team yet"})
+                         'error': "This Graduate does not have a team yet"})
 
 
 class ManView(APIView):
@@ -684,11 +684,31 @@ class ChangeGraduateYear(APIView):
             grad_obj = models.Graduate.objects.filter(id=grad_id).first()
 
             if grad_year == 2:
-                old_dep_id = grad_obj.team_id.depart_id.id
-                grad_obj.old_dep_id = old_dep_id
-            else:
                 grad_obj.old_dep_id = None
+                grad_obj.year = grad_year
+                grad_obj.save()
+                continue
 
+            old_team = grad_obj.team_id
+
+            if not old_team:
+                grad_obj.old_dep_id = None
+                grad_obj.year = grad_year
+                grad_obj.save()
+                continue
+
+            old_dep = old_team.depart_id
+
+            if not old_dep:
+                grad_obj.old_dep_id = None
+                grad_obj.year = grad_year
+                grad_obj.save()
+                continue
+
+            old_dep_id = old_dep.id
+            grad_obj.old_dep_id = old_dep_id
+
+            grad_obj.old_dep_id = None
             grad_obj.year = grad_year
             grad_obj.save()
 
