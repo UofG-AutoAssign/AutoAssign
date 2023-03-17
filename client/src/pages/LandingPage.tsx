@@ -3,7 +3,7 @@ import ForgotPassCard from "../components/LandingPageCards/ForgotPassCard";
 import LoginCard from "../components/LandingPageCards/LoginCard";
 import ResetCard from "../components/LandingPageCards/ResetCard";
 import SignUpCard from "../components/LandingPageCards/SignUpCard";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/general/Navbar";
 
 type LandingPageProps = {
   pageType: "Login" | "Signup" | "SendEmail" | "ResetPassword";

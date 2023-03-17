@@ -3,14 +3,14 @@ import axios from "axios";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CreateEmailField from "../components/CreateEmailField";
-import AssignGraduate from "../components/HRManage/AssignGraduate";
-import AssignManager from "../components/HRManage/AssignManager";
-import DeleteTeam from "../components/HRManage/DeleteTeam";
-import RemoveGraduate from "../components/HRManage/RemoveGraduate";
-import RemoveManager from "../components/HRManage/RemoveManager";
-import TeamTable from "../components/HRManage/TeamTable";
-import Navbar from "../components/Navbar";
+import CreateEmailField from "../components/HRManagePage/CreateEmailField";
+import AssignGraduate from "../components/HRManagePage/AssignGraduate";
+import AssignManager from "../components/HRManagePage/AssignManager";
+import DeleteTeam from "../components/HRManagePage/DeleteTeam";
+import RemoveGraduate from "../components/HRManagePage/RemoveGraduate";
+import RemoveManager from "../components/HRManagePage/RemoveManager";
+import AllTeamsTable from "../components/HRManagePage/AllTeamsTable";
+import Navbar from "../components/general/Navbar";
 import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { initialComponentHR } from "../constants/Types";
 import authStore from "../context/authStore";
@@ -389,10 +389,8 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
 
   const AutoAssign = (): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false);
-
-    const closeModal = () => setIsOpen(false);
-
-    const openModal = () => setIsOpen(true);
+    const closeModal = (): void => setIsOpen(false);
+    const openModal = (): void => setIsOpen(true);
 
     const handleAutoAssign = async (): Promise<boolean> => {
       try {
@@ -575,7 +573,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
   const DisplayComponent = (): JSX.Element => {
     if (currentTab === "Teams") {
       return (
-        <TeamTable
+        <AllTeamsTable
           allManagerList={managerList}
           departmentList={departmentOnlyList}
         />

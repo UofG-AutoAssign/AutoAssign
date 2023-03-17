@@ -14,12 +14,17 @@ import HRHomePage from "./pages/HRhomePage";
 import { observer } from "mobx-react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RequireAuth from "./components/RequireAuth";
+import RequireAuth from "./components/general/RequireAuth";
 import LandingPage from "./pages/LandingPage";
 
-const App: FC = observer(() => {
+const App: FC = (() => {
+  const ThemeWrapper = observer(({ children }: { children: JSX.Element }) => {
+    return <div className={themeStore.isDarkMode ? "dark" : ""}>{children}</div>;
+  });
+  
+
   return (
-    <div className={themeStore.isDarkMode ? "dark" : ""}>
+    <ThemeWrapper>
       {/* <nav className="sticky top-0 z-50">
         <Navbar />
       </nav> */}
@@ -127,7 +132,7 @@ const App: FC = observer(() => {
           theme="light"
         />
       </div>
-    </div>
+    </ThemeWrapper>
   );
 });
 

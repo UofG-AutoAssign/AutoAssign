@@ -1,7 +1,7 @@
 import { FC } from "react";
-import LandingButtonLink from "../components/LandingButtonLink";
+import LandingButtonLink from "../components/general/LandingButtonLink";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/general/Navbar";
 import authStore from "../context/authStore";
 
 const HRHomePage: FC = () => {
