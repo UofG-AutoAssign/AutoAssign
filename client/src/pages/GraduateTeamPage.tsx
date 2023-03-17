@@ -1,7 +1,7 @@
-import Navbar from "../components/Navbar";
+import Navbar from "../components/general/Navbar";
 import axios from "axios";
 import authStore from "../context/authStore";
-import PreferenceFormTable from "../components/PreferenceFormTable";
+import PreferenceFormTable from "../components/GraduateTeamPage/PreferenceFormTable";
 import { FC, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { initialComponentGraduate } from "../constants/Types";
@@ -10,6 +10,7 @@ import { environmentalVariables } from "../constants/EnvironmentalVariables";
 import { toast } from "react-toastify";
 import { AiOutlineTeam } from "react-icons/ai";
 import { FcDepartment } from "react-icons/fc";
+import YourTeamTable from "../components/general/YourTeamTable";
 
 
 const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
@@ -26,45 +27,9 @@ const GraduateTeamPage: FC<{ initialComponent: initialComponentGraduate }> = ({
   const [teamName, setTeamName] = useState<string>("...");
   const [depName, setDepName] = useState<string>("...");
 
-  // Displays the table for the graduate to view their team
-  const YourTeamTable = (): JSX.Element => {
-    return (
-      <div className="relative flex overflow-x-visible shadow-lg rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Team Members
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Email
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {teammateList.map(({ name, email }, idx) => (
-              <tr
-                className="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                key={idx}
-              >
-                <th
-                  scope="row"
-                  className="flex flex-row px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  {name}
-                </th>
-                <td className="px-6 py-4">{email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
   // Display page corresponding to the active tab
   const DisplayComponent = (): JSX.Element => {
-    if (currentTab === "Your Team") return <YourTeamTable />;
+    if (currentTab === "Your Team") return <YourTeamTable teammateList={teammateList} />;
     else return <PreferenceFormTable />;
   };
 

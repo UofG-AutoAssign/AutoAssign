@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import LandingButtonLink from "../components/LandingButtonLink";
+import LandingButtonLink from "../components/general/LandingButtonLink";
 import { MemoryRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import React from "react";

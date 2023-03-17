@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import AvatarBar from "../components/AccountPage/AvatarBar";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/general/Navbar";
 import AccountTable from "../components/AccountPage/AccountTable";
 import axios from "axios";
 import authStore from "../context/authStore";

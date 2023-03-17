@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const experienceOptions: any[] = [
   { value: 4, label: "Second Nature" },
   { value: 3, label: "Proficient" },
