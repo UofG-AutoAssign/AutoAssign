@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 // Add dark theme to sessionStorage later
 class ThemeStore {
-  isDarkMode: boolean = false;
+  isDarkMode = false;
 
   constructor() {
     makeAutoObservable(this);

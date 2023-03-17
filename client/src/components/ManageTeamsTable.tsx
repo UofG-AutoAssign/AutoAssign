@@ -1,7 +1,7 @@
-import { FC, useRef, useState } from "react";
+import { FC } from "react";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Dialog, Transition } from "@headlessui/react";
+import { Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { departmentAndTeamListHRType } from "./HRManage/TeamTable";
 import { FcDepartment } from "react-icons/all";

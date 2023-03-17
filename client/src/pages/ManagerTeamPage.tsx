@@ -18,7 +18,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     useState<initialComponentManager>(initialState);
 
   const navigate = useNavigate();
-  let location = useLocation();
+  const location = useLocation();
 
   const [subordinateList, setSubordinateList] = useState<
     {
@@ -124,7 +124,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
       property: string,
       rowId: number
     ) => {
-      let newData = {
+      const newData = {
         ...selectedData,
         [rowId]: {
           value: value.value,
@@ -236,7 +236,6 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
     else if (query === "team_preference") setCurrentTab("Team Preference");
     else setCurrentTab("Your Team");
 
-    () => { };
   }, [location]);
 
   const handleTeamPreferenceSave = async (): Promise<boolean> => {
@@ -317,7 +316,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
           setTeamName(teamName);
           setDepName(depInfo[0].dep_name);
 
-          let newSubordinateList: (typeof subordinateList) = []; // This includes the manager at the top of the list
+          const newSubordinateList: (typeof subordinateList) = []; // This includes the manager at the top of the list
 
           newSubordinateList.push({ email: manInfo[0].man_name, name: `[You] ${manInfo[0].man_name}` })
 
@@ -382,7 +381,7 @@ const ManagerTeamPage: FC<{ initialState: initialComponentManager }> = ({
         .then((response) => {
           const data = response.data.data;
 
-          let newAllSkills: any[] = [];
+          const newAllSkills: any[] = [];
 
           data.forEach(({ id, skill_name }: any) => {
             newAllSkills.push({ value: id, label: skill_name });

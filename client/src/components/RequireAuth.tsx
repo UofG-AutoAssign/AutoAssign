@@ -18,6 +18,8 @@ const RequireAuth: FC = () => {
   }
 
   const userTypeMatchesUrl = (): boolean => {
+    // if (!userType) return false;
+
     const query = location.pathname.split("/").at(1)?.toLowerCase();
 
     if (query === "account" && userType) return true;
@@ -29,7 +31,6 @@ const RequireAuth: FC = () => {
     return true;
   };
 
-  // @Todo use JWT to autheticate
   const useTokenAuthWhenAPrivateRouteIsLoaded = useRef<boolean>(false);
 
   useEffect(() => {

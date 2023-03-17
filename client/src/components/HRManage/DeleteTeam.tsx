@@ -6,7 +6,7 @@ import { environmentalVariables } from "../../constants/EnvironmentalVariables";
 import { confirmGraduateToTeamModalId2 } from "../../constants/ModalIDs";
 import authStore from "../../context/authStore";
 import { teamAndDepartmentType } from "../../pages/HRManagePage";
-import DeleteTeamModal from "../modals/DeleteTeamModal";
+import AssignRemoveModal from "../modals/AssignRemoveModal";
 
 // Assigns a graduate to a specific team/department
 const DeleteTeam: FC<{ teamAndDepartmentList: teamAndDepartmentType[]; }> = ({ teamAndDepartmentList }) => {
@@ -162,7 +162,7 @@ const DeleteTeam: FC<{ teamAndDepartmentList: teamAndDepartmentType[]; }> = ({ t
               id={confirmGraduateToTeamModalId2}
               className="modal-toggle"
             />
-            <DeleteTeamModal handleDeleteTeam={handleDeleteTeam} />
+            <AssignRemoveModal handleSubmission={handleDeleteTeam} modalType="DeleteTeam" />
           </div>
         </form>
       </div>

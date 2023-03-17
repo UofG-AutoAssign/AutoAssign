@@ -1,5 +1,4 @@
-import { observer } from "mobx-react";
-import { FC, useContext, useEffect } from "react";
+import { FC } from "react";
 import LandingButtonLink from "../components/LandingButtonLink";
 import Navbar from "../components/Navbar";
 import { LandingButtonLinkProps } from "../constants/Interfaces";
@@ -35,9 +34,10 @@ const ManagerPage: FC = () => {
         </div>
         <div className="p-16 flex flex-col gap-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {data.map((e) => {
+            {data.map((e, idx) => {
               return (
                 <LandingButtonLink
+                  key={idx}
                   title={e.title}
                   desc={e.desc}
                   btn_color={e.btn_color}

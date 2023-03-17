@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { FC } from "react";
 import "./App.css";
 import AccountPage from "./pages/AccountPage";
