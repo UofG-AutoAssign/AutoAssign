@@ -11,6 +11,7 @@ from Assign import serializers
 from Assign import models
 
 from Assign import alg
+from Assign.email_utils import send_registration_email, send_password_reset_email
 
 
 class LoginView(APIView):
@@ -686,10 +687,12 @@ class ChangeGraduateYear(APIView):
             if grad_year == 2:
                 grad_obj.old_dep_id = None
                 grad_obj.year = grad_year
+                grad_obj.team_id = None
                 grad_obj.save()
                 continue
 
             old_team = grad_obj.team_id
+            grad_obj.team_id = None
 
             if not old_team:
                 grad_obj.old_dep_id = None
@@ -764,13 +767,7 @@ class BatchRegister(APIView):
 
             register_url = url + token
 
-            send_mail(
-                subject='Registration link from AutoAssign',
-                message='Here is your Register link : ' + register_url,
-                from_email='wenda76629@vip.163.com',
-                recipient_list=[email],
-                fail_silently=False
-            )
+            send_registration_email(email, register_url)
 
         return Response({"code": 200, "status": True,
                          "detail": "Email has been Send", "data": ser.data})
@@ -818,13 +815,7 @@ class ResetPasswordByEmail(APIView):
         # send the email
         register_url = url + token
 
-        send_mail(
-            subject='Password Reset Link from AutoAssign',
-            message='Here is your Reset Link : ' + register_url,
-            from_email='wenda76629@vip.163.com',
-            recipient_list=[email],
-            fail_silently=False
-        )
+        send_password_reset_email(email, register_url)
 
         return Response({"code": 200, 'status': True,
                          'user_type': user_type, 'Detail': "Email has been send"})
