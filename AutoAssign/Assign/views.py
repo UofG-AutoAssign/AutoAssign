@@ -1,8 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from django.core.mail import send_mail
-
 from ext.per import HrPermission, ManagerPermission, GradPermission
 from ext.jwt_auth import create_token
 from ext.encryption import Encryption
