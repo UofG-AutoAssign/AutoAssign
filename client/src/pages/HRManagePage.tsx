@@ -574,7 +574,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
     if (currentTab === "Teams") {
       return (
         <AllTeamsTable
-          allManagerList={managerList}
+          allManagerList={unAssignedManagersList}
           departmentList={departmentOnlyList}
         />
       );
@@ -724,7 +724,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedUnassignedGradList = data.data;
-      console.log(fetchedUnassignedGradList);
+      // console.log(fetchedUnassignedGradList);
       setUnAssignedGradList(fetchedUnassignedGradList);
     };
 
@@ -740,7 +740,7 @@ const HRManagePage: FC<{ initialState: initialComponentHR }> = ({
       );
 
       const fetchedUnassignedManagersList: gradType[] = data.data;
-      console.log(fetchedUnassignedManagersList);
+      // console.log(fetchedUnassignedManagersList);
       setUnAssignedManagersList(fetchedUnassignedManagersList);
     };
 

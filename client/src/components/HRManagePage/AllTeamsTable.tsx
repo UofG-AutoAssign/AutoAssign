@@ -25,8 +25,8 @@ export type departmentAndTeamListHRType = {
 const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departmentType[]; }> = ({
   allManagerList, departmentList
 }) => {
-  const maxCapacityInputRef = useRef<HTMLInputElement>(null);
-  const teamNameInputRef = useRef<HTMLInputElement>(null);
+  const [maxCapacityInput, setMaxCapacityInput] = useState<string>("");
+  const [teamNameInput, setTeamNameInput] = useState<string>("");
 
   const [departmentAndTeamListHR, setDepartmentAndTeamListHR] = useState<{
     [rowId: number]: departmentAndTeamListHRType;
@@ -105,9 +105,7 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
         toast.error("Failed to fetch departments and teams list");
         return;
       }
-      // console.log(data);
       const fetchedTeamList = data.data;
-      console.log(data)
       // @Todo get manager eamil, team capacity
       let newData = {};
       let idx = 0;
@@ -150,6 +148,18 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
       effectRanOnFirstLoad.current = true;
     };
   }, []);
+
+  const allFieldsFilled = (): boolean => {
+    const depId = (selectedDepartment as any).id
+      if (
+        selectedDepartment === "" || selectedManager === "" || depId === undefined || 
+        maxCapacityInput === "" || teamNameInput === ""
+      ){
+        return false;
+      } else{
+        return true;
+      }
+  };
 
   return (
     <div className="relative wrap w-full px-5 py-3">
@@ -202,7 +212,8 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           Enter New Team Name
         </div>
         <input
-          ref={teamNameInputRef}
+          value={teamNameInput}
+          onChange={(e) => setTeamNameInput(e.target.value)}
           type="text"
           className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Enter New Team Name..."
@@ -218,7 +229,9 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
           Enter Team&apos;s  Max Headcount
         </div>
         <input
-          ref={maxCapacityInputRef}
+          value={maxCapacityInput}
+          onChange={(e) => setMaxCapacityInput(e.target.value)}
+          min={1}
           type="number"
           className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Enter Max Team Capacity..."
@@ -226,32 +239,34 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
         ></input>
         <button
           type="button"
-          className="my-10 gap-1000 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className={`${allFieldsFilled() ? "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300" : "bg-gray-500 hover:cursor-not-allowed"} my-10 gap-1000 text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`}
           onClick={() => {
             const depId = (selectedDepartment as any).id
 
             if (
-              selectedDepartment === "" || selectedManager === "" || depId === undefined ||
-              maxCapacityInputRef.current?.value === undefined ||
-              !maxCapacityInputRef.current?.value ||
-              teamNameInputRef.current?.value === undefined ||
-              !teamNameInputRef.current?.value
+              allFieldsFilled() === false
             ) {
               console.log(depId)
               toast.error("No empty input fields allowed");
               return;
             }
 
-            if (Number(maxCapacityInputRef.current?.value) < 1) {
-              toast.error("Teams need at least 1 empty slot");
-              return;
-            }
-
+            // if (Number(maxCapacityInputRef.current?.value) < 1) {
+            //   toast.error("Teams need at least 1 empty slot");
+            //   return;
+            // }
+            
+            // handleCreateNewTeam(
+            //   teamNameInputRef.current?.value || "",
+            //   depId,
+            //   (selectedManager as any).id,
+            //   Number(maxCapacityInputRef.current?.value)
+            // );
             handleCreateNewTeam(
-              teamNameInputRef.current?.value,
+              teamNameInput,
               depId,
               (selectedManager as any).id,
-              Number(maxCapacityInputRef.current?.value)
+              Number(maxCapacityInput)
             );
           }}
         >
@@ -264,3 +279,5 @@ const AllTeamsTable: FC<{ allManagerList: managerType[], departmentList: departm
 };
 
 export default AllTeamsTable;
+
+

@@ -79,9 +79,9 @@ const AccountTable: FC<{ data: string[] }> = ({ data }) => {
                 >
                   {textAccordingtoRowId(rowId)}
                   {isCurrentlyEditingData && (rowId === 0 || rowId === 1) ? (
-                    <input
+                    <input 
                       type="text"
-                      className="h-5"
+                      className="h-5 bg-gray-400"
                       defaultValue={rowId === 0 ? firstName : lastName}
                       onChange={(e) => {
                         if (rowId === 0) {
